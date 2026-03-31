@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { supabase } from '../../lib/supabase';
+import { BRAND_PINK } from '../../lib/constants';
 
 export default function AuthCallback() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function AuthCallback() {
 
   return (
     <View className="flex-1 bg-black items-center justify-center">
-      <ActivityIndicator color="#FF69B4" size="large" />
+      <ActivityIndicator color={BRAND_PINK} size="large" />
     </View>
   );
 }
