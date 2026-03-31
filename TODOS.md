@@ -1,58 +1,41 @@
 # wediary TODOs
 
-## [ ] signed URL 만료 시 자동 갱신
-**What:** photoUrls 상태가 1시간 후 만료된 signed URL을 갱신하지 않음.
-**Why:** 상세 화면을 1시간 이상 열어두면 사진이 조용히 깨짐 (catch{} 때문에 에러도 안 뜸).
-**Pros:** 사용자가 장시간 화면 열어두는 경우 사진 항상 정상 표시.
-**Cons:** 타이머 로직 추가 or RQ staleTime 조정 필요.
-**Context:** [id].tsx. photoUrls는 raw state. Promise.all 리팩토링 완료됨 — 이제 URL 갱신 로직 추가 가능. React Query의 staleTime/refetchInterval로 자동 갱신하거나, 만료 직전 타이머로 재요청하는 방식.
-**Depends on:** ~~Promise.all 리팩토링~~ (완료 2026-03-31).
+## [x] signed URL 만료 시 자동 갱신 (완료 2026-03-31)
+**Fix:** `photos` 쿼리에 `refetchInterval: 55 * 60 * 1000` 추가. URL 로드 effect에서 기존 URL 필터 제거 → photos 리페치 시 전체 URL 갱신.
+**Commit:** c804bba — `[id].tsx`
 
-## [ ] memories 테이블 wedding_id UNIQUE 제약 확인
-**What:** Supabase memories 테이블에 wedding_id UNIQUE 제약이 실제로 있는지 확인.
-**Why:** 없으면 빠른 더블탭 시 중복 rows 생성, getMemory의 maybeSingle()이 에러 유발.
-**Pros:** 데이터 무결성 보장.
-**Cons:** 마이그레이션 작성 필요 (이미 있으면 0 비용).
-**Context:** upsertMemory는 onConflict: 'wedding_id'에 의존. 제약 없으면 충돌 감지 안 됨.
-**Depends on:** Supabase 대시보드 또는 마이그레이션 파일 확인.
+## [x] memories 테이블 wedding_id UNIQUE 제약 확인 (완료 2026-03-31)
+**Fix:** `supabase/migrations/20260331000000_memories_unique_wedding_id.sql` 작성.
+`CREATE UNIQUE INDEX IF NOT EXISTS memories_wedding_id_unique ON memories (wedding_id)`
+**적용 방법:** `supabase db push` 또는 Supabase 대시보드 SQL Editor에서 직접 실행.
+**Commit:** 6ff4993
 
-## [ ] 테스트 인프라 설정 (Jest)
-**What:** Expo 내장 Jest 설정을 활성화하고 lib/db.ts 순수 함수 단위 테스트 작성.
-**Why:** 현재 테스트 0%. isUpcoming 수정 같은 로직 변경 시 회귀 보호 없음.
-**Pros:** formatDateKR, isUpcoming 같은 함수는 5분이면 테스트 가능. 이후 변경에 안전망.
-**Cons:** 초기 설정 시간 ~30분.
-**Context:** Expo 프로젝트는 package.json에 jest 설정 추가만 하면 됨. react-native preset 사용.
-  시작 파일: `app/__tests__/db.test.ts`
-  우선순위 테스트: formatDateKR, isUpcoming(날짜 기준), handleSave 유효성 검증.
-**Depends on:** 없음. 지금 당장 시작 가능.
+## [x] 테스트 인프라 설정 (완료 2026-03-31)
+**Fix:** `jest-expo` preset, `app/__tests__/db.test.ts` 생성.
+**실행:** `cd app && npm test`
+**테스트 목록 (7개 통과):**
+- `formatDateKR`: 날짜 포맷, 앞자리 0 제거, 12월
+- `isUpcoming`: 오늘/미래 = true, 과거 = false (fake timer 사용)
+**Commit:** 437b2c0
 
 ---
 
-## Design findings (from /design-review, 2026-03-31)
+## Design findings (from /design-review, 2026-03-31) — 모두 완료
 
-### [x] FINDING-002 — ActivityIndicator 색상 통일 (FIXED)
-`#FF69B4` (CSS hotpink) → `#f472b6` (Tailwind pink-400). index.tsx, new.tsx, [id].tsx 3파일.
+### [x] FINDING-001 — 출석 상태 상수 공유화
+`lib/constants.ts`에 `ATTENDANCE_LABEL`, `ATTENDANCE_TEXT_COLOR`, `ATTENDANCE_PILL_BG` 추출. commit: 768a2d1.
 
-### [x] FINDING-003 — 불러오기 버튼 sky-400 → pink-400 (FIXED)
-primary action 버튼은 pink-400 사용. new.tsx:147.
+### [x] FINDING-002 — ActivityIndicator 색상 단일화
+`#FF69B4` → `BRAND_PINK` (`#f472b6`). commit: 481690f, 768a2d1.
 
-### [x] FINDING-004 — 편집 링크 sky-400 → pink-400 (FIXED)
-sky-400은 이 앱에서 "미정" 상태를 의미. 편집 링크는 pink-400으로 통일. [id].tsx:173.
+### [x] FINDING-003 — 불러오기 버튼 sky-400 → pink-400
+commit: 3b73d9a.
 
-### [x] FINDING-005 — 상세 화면 필드 라벨 스타일 통일 (FIXED)
-메모/감정/축의금/사진 라벨에 `uppercase tracking-widest` 추가. [id].tsx.
+### [x] FINDING-004 — 편집 링크 sky-400 → pink-400
+commit: c825ff8.
 
-### [x] FINDING-001 — 출석 상태 상수 공유화 (FIXED, 2026-03-31)
-`ATTENDANCE_LABEL`, `ATTENDANCE_TEXT_COLOR`, `ATTENDANCE_PILL_BG`를 `lib/constants.ts`로 추출.
-index.tsx, [id].tsx에서 import로 교체. commit: 768a2d1.
+### [x] FINDING-005 — 상세 화면 필드 라벨 스타일 통일
+메모/감정/축의금/사진 라벨에 `uppercase tracking-widest` 추가. commit: 9fdf107.
 
-### [x] FINDING-007 — 데스크탑 max-width (FIXED, 2026-03-31)
-`(app)/_layout.tsx`에 `Platform.OS === 'web'` 조건으로 `maxWidth: 430, alignSelf: 'center'` 적용.
-`global.css`에 `body { background: #000 }` 추가해서 외부 여백도 검게 처리. commit: 1007b64, e5d02a0.
-
-### [x] FINDING-002 — ActivityIndicator 색상 통일 (FIXED)
-`#FF69B4` → `BRAND_PINK` (`#f472b6`). `lib/constants.ts`의 단일 상수로 관리.
-
-### [x] FINDING-003 — 불러오기 버튼 sky-400 → pink-400 (FIXED)
-### [x] FINDING-004 — 편집 링크 sky-400 → pink-400 (FIXED)
-### [x] FINDING-005 — 상세 화면 필드 라벨 스타일 통일 (FIXED)
+### [x] FINDING-007 — 데스크탑 max-width
+`(app)/_layout.tsx`에서 web일 때 `maxWidth: 430, alignSelf: 'center'`. `global.css`에 `body { background: #000 }`. commit: 1007b64, e5d02a0.
