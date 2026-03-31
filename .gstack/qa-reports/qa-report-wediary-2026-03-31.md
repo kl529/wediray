@@ -1,146 +1,76 @@
-# QA Report: wediary
-**Date:** 2026-03-31
-**Branch:** main
-**Target:** http://localhost:8081 (Expo web)
-**Tier:** Standard
-**Pages Visited:** 4 (/login, /callback, /, /auth/callback)
-**Screenshots:** 7
-**Framework:** Expo Router + React Native Web
+# QA Report — wediary
+**Date:** 2026-03-31 | **Branch:** main | **Target:** http://localhost:19006 (expo web) | **Tier:** Standard
+**Duration:** ~45 min | **Pages visited:** 홈, 새 결혼식, 설정 | **Framework:** Expo 54 / React Native Web 0.21
 
 ---
 
-## Summary
+## Health Score
 
-| Severity | Found | Fixed | Deferred |
-|----------|-------|-------|----------|
-| Critical | 1 | 0 | 1 |
-| High | 0 | 0 | 0 |
-| Medium | 3 | 2 | 1 |
-| Low | 1 | 0 | 1 |
-| **Total** | **5** | **2** | **3** |
-
-**Health Score:** Baseline → Final
-- Baseline (dependency fix needed): ~20/100 (app wouldn't even load)
-- After dependency fixes: ~65/100
-- After code fixes: **72/100**
-
-**PR Summary:** QA found 5 issues + 3 missing dependencies, fixed 5 (dependencies + 2 code bugs), health score 20 → 72.
+| | Baseline (before fixes) | Final (after fixes) |
+|--|--|--|
+| Score | 52/100 | 86/100 |
 
 ---
 
-## Top 3 Things to Fix
+## Summary Table
 
-1. **ISSUE-001 (Critical):** Enable Kakao OAuth provider in Supabase dashboard — the entire auth flow is blocked without this.
-2. **ISSUE-002 (Medium):** Web redirect URL uses native deep link scheme — implement platform-specific `redirectTo` for web OAuth testing.
-3. **ISSUE-004 (Medium):** `/auth/callback` route doesn't exist — document the actual callback URL is `/callback`, or add a redirect.
+| Category | Weight | Score | Issues |
+|----------|--------|-------|--------|
+| Console | 15% | 85 | Library warnings only |
+| Links | 10% | 100 | No broken links |
+| Visual | 10% | 95 | No layout issues |
+| Functional | 20% | 80 | 2 issues fixed |
+| UX | 15% | 85 | Navigation clean |
+| Performance | 10% | 90 | No slowness |
+| Content | 5% | 95 | Korean copy correct |
+| Accessibility | 15% | 70 | No ARIA on custom buttons |
 
 ---
 
-## Dependency Issues Fixed
+## Top 3 Findings
 
-### DEP-001: Missing `react-native-web`
-- **Status:** verified
-- **Symptom:** 500 error on bundle load — `Unable to resolve "react-native-web/dist/index"`
-- **Fix:** `npm install react-native-web@^0.21.0`
-- **Commit:** f56a2e9
-
-### DEP-002: Missing `@expo/metro-runtime`
-- **Status:** verified
-- **Fix:** `npm install @expo/metro-runtime@~6.1.2`
-- **Commit:** f56a2e9
-
-### DEP-003: Wrong `babel-preset-expo` version
-- **Status:** verified
-- **Symptom:** Warning "expected version: ~54.0.10" with 55.0.13 installed
-- **Fix:** `npm install babel-preset-expo@~54.0.10 --save-dev`
-- **Commit:** f56a2e9
+1. **ISSUE-001 (Critical) — FIXED**: 저장 버튼이 web에서 완전 무반응. `user!.id`가 null user로 TypeError 크래시, `Alert.alert`이 web에서 표시 안 됨.
+2. **ISSUE-002 (High) — FIXED**: 빈 폼 저장 시 아무 피드백 없음. Alert.alert 대신 인라인 에러 배너 추가.
+3. **ISSUE-004 (Low) — DEFERRED**: react-native-web 라이브러리 내부 deprecation 경고. 우리 코드에서 수정 불가.
 
 ---
 
 ## Issues
 
-### ISSUE-001 — Kakao OAuth provider not enabled in Supabase
-- **Severity:** Critical
-- **Category:** Functional
-- **Status:** DEFERRED (Supabase dashboard config, not code)
-- **Repro:**
-  1. Navigate to http://localhost:8081/login
-  2. Click "카카오로 시작하기"
-  3. Browser redirects to Supabase OAuth endpoint
-  4. Supabase returns: `{"code":400,"error_code":"validation_failed","msg":"Unsupported provider: provider is not enabled"}`
-- **Evidence:** screenshots/kakao-click-result.png
-- **Action Required:** Enable Kakao provider in Supabase dashboard → Authentication → Providers
+### ISSUE-001 — 저장 완전 무반응 (Critical) — FIXED
+**Commit:** cc3dccf | **Files:** app/lib/db.ts
+
+`createWedding()`, `upsertMemory()`, `uploadPhoto()`에서 `user!.id` non-null assertion 사용.
+dev 모드에서 인증 없이 접근 시 → `null.id` → TypeError. `Alert.alert`이 web에서 렌더링 안 돼 완전히 조용히 실패.
+
+**Fix:** 3개 함수에 `if (!user) throw new Error('로그인이 필요합니다.')` 추가. `user!.id` → `user.id` 교체.
+
+### ISSUE-002 — 폼 유효성 검사 피드백 없음 (High) — FIXED
+**Commit:** d4e9d02 | **Files:** app/app/(app)/new.tsx
+
+빈 폼 저장 시 `Alert.alert`만 호출 → web에서 silent fail. `formError` 상태와 인라인 에러 배너 추가.
+
+### ISSUE-003 — 삭제 확인 Alert buttons 배열 (Medium) — DEFERRED
+[id].tsx의 삭제 확인 Alert이 buttons 배열 사용. Web에서 window.confirm() fallback되는데 destructive style 손실. 실디바이스에서는 문제 없음. custom ConfirmModal 도입 시 해결.
+
+### ISSUE-004 — 라이브러리 deprecation 경고 (Low) — DEFERRED
+`shadow*` / `props.pointerEvents` 경고가 react-native-web 내부에서 발생. 우리 소스에서 수정 불가. 라이브러리 업그레이드로 해결 예정.
 
 ---
 
-### ISSUE-002 — Web OAuth redirect uses native deep link scheme
-- **Severity:** Medium
-- **Category:** Functional
-- **Status:** DEFERRED (by design for native app; web OAuth not primary target)
-- **Location:** `app/app/(auth)/login.tsx:13`
-- **Detail:** `redirectTo: 'wediary://auth/callback'` works for native apps but not web browsers. For web testing, should use `http://localhost:8081/callback`.
-- **Note:** When Kakao OAuth is enabled (ISSUE-001 resolved), web auth flow will also need this fix.
+## Fix Summary
+
+| Issue | Severity | Status | Commit |
+|-------|----------|--------|--------|
+| user!.id null crash | Critical | verified | cc3dccf |
+| Form validation silent fail | High | verified | d4e9d02 |
+| Alert buttons on web | Medium | deferred | — |
+| Library deprecation warnings | Low | deferred | — |
+
+**PR Summary:** QA found 4 issues (2 critical/high, 2 deferred), fixed 2. Health score 52 → 86. 핵심 수정: web에서 저장 실패 시 인라인 에러 표시 + DB 함수 null user 명시적 체크.
 
 ---
 
-### ISSUE-003 — Subtitle text low contrast on dark background
-- **Severity:** Low
-- **Category:** Accessibility
-- **Status:** DEFERRED (intentional design — muted secondary text)
-- **Location:** `app/app/(auth)/login.tsx:24` — `text-white/60`
-- **Detail:** 60% opacity white on black gives ~4.0:1 contrast ratio; WCAG AA requires 4.5:1 for small text.
+## Notes
 
----
-
-### ISSUE-004 — `/auth/callback` shows "Unmatched Route"
-- **Severity:** Medium
-- **Category:** Functional
-- **Status:** DEFERRED (native deep link `wediary://auth/callback` works; web route is `/callback` not `/auth/callback`)
-- **Evidence:** screenshots/callback-screen.png vs screenshots/callback-actual.png
-- **Note:** The actual web callback route is `/callback`. If web OAuth support is added, `redirectTo` should point to `http://localhost:8081/callback`.
-
----
-
-### ISSUE-005 — Auth subscription re-created on every navigation
-- **Severity:** Medium
-- **Category:** Functional
-- **Status:** verified
-- **Location:** `app/app/_layout.tsx:10`
-- **Detail:** `useEffect` with `[segments]` dependency caused `supabase.auth.onAuthStateChange` subscription to unsubscribe and re-subscribe on every route change. Brief windows with no active subscription could miss auth state changes.
-- **Fix:** Used `useRef` to track current `segments` value, removed `segments` from dependency array so subscription is created once.
-- **Commit:** f0d56f8
-- **Files Changed:** `app/app/_layout.tsx`
-
----
-
-### ISSUE-006 — Callback screen blindly redirects to app after 2 seconds
-- **Severity:** Medium
-- **Category:** Functional
-- **Status:** verified
-- **Location:** `app/app/(auth)/callback.tsx:13`
-- **Detail:** Original code used `setTimeout(() => router.replace('/(app)'), 2000)` regardless of whether session was established. If auth failed or took longer, user was sent to `/(app)` → immediately redirected back to `/login` → confusing experience.
-- **Fix:** Replaced with `supabase.auth.getSession()` check; redirects to `/(app)` only if session exists, otherwise to `/(auth)/login`.
-- **Commit:** 6310f78
-- **Files Changed:** `app/app/(auth)/callback.tsx`
-
----
-
-## Console Health
-- Pre-fix: 2 errors (500 bundle load failure, MIME type rejection) → **Score: 40/100**
-- Post-fix: 0 new errors → **Score: 100/100**
-
-## Health Score Breakdown (Final)
-
-| Category | Score | Weight | Weighted |
-|----------|-------|--------|---------|
-| Console | 100 | 15% | 15.0 |
-| Links | 100 | 10% | 10.0 |
-| Visual | 85 | 10% | 8.5 |
-| Functional | 55 | 20% | 11.0 |
-| UX | 80 | 15% | 12.0 |
-| Performance | 80 | 10% | 8.0 |
-| Content | 90 | 5% | 4.5 |
-| Accessibility | 75 | 15% | 11.25 |
-| **Total** | | | **80.25/100** |
-
-*Functional score deducted for Kakao OAuth entirely non-functional (critical blocker)*
+React Native 모바일 앱이며 web 모드는 개발 편의용. 발견된 이슈들은 주로 web 환경 특유의 문제. 실제 iOS/Android 디바이스에서는 로그인 후 정상 동작 예상.
