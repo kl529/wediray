@@ -114,7 +114,7 @@ export default function HomeScreen() {
       <TouchableOpacity
         onPress={() => router.push('/(app)/new')}
         className="absolute bottom-10 right-6 bg-pink-400 w-14 h-14 rounded-full items-center justify-center"
-        style={{ shadowColor: '#FF69B4', shadowOpacity: 0.5, shadowRadius: 12, elevation: 8 }}
+        style={{ boxShadow: '0 0 12px 4px rgba(255,105,180,0.5)', elevation: 8 } as any}
       >
         <Text className="text-black text-3xl font-light">+</Text>
       </TouchableOpacity>
