@@ -23,29 +23,60 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: 'private address not allowed' }), { status: 400 });
     }
 
-    const res = await fetch(url, {
+    let res = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; WediaryBot/1.0)' },
     });
+    // Some short links (e.g. naver.me) redirect through a bridge page that wraps
+    // the real URL in a `url=` query parameter. Follow it one level deeper.
+    const finalParsed = new URL(res.url);
+    if (finalParsed.searchParams.has('url')) {
+      const inner = finalParsed.searchParams.get('url')!;
+      try {
+        const innerParsed = new URL(inner);
+        if (innerParsed.protocol === 'https:') {
+          res = await fetch(inner, {
+            headers: { 'User-Agent': 'Mozilla/5.0 (compatible; WediaryBot/1.0)' },
+          });
+        }
+      } catch { /* not a valid URL, ignore */ }
+    }
     const html = await res.text();
 
     const result: Record<string, string> = {};
 
     // Extract names from common Korean wedding invitation patterns
+    // og:title pattern covers "신랑 ♡ 신부 결혼 합니다" style (barunsoncard, etc.)
+    const ogTitleMatch = html.match(/og:title[^>]*content="([^"]+)"/);
+    if (!ogTitleMatch) {
+      // also try reversed attribute order
+      html.match(/content="([^"]+)"[^>]*og:title/);
+    }
+    const titleStr = ogTitleMatch ? ogTitleMatch[1] : '';
+    const titleNames = titleStr.match(/([가-힣]{2,5})\s*[♡♥❤]\s*([가-힣]{2,5})/);
+
     const groomPatterns = [
-      /신랑[^\S\n]*[:：]?\s*([가-힣]{2,5})/,
+      // og:title first — most reliable
+      ...(titleNames ? [new RegExp(`(${titleNames[1]})`)] : []),
       /"groom"\s*:\s*"([^"]+)"/,
       /class="groom[^"]*"[^>]*>([가-힣]{2,5})/,
+      // fallback: 신랑 followed immediately by name (no 측/혼주/etc in between)
+      /신랑\s{0,2}([가-힣]{2,4})(?!\s*측|\s*혼주)/,
     ];
     const bridePatterns = [
-      /신부[^\S\n]*[:：]?\s*([가-힣]{2,5})/,
+      ...(titleNames ? [new RegExp(`(${titleNames[2]})`)] : []),
       /"bride"\s*:\s*"([^"]+)"/,
       /class="bride[^"]*"[^>]*>([가-힣]{2,5})/,
+      /신부\s{0,2}([가-힣]{2,4})(?!\s*측|\s*혼주)/,
     ];
     const datePatterns = [
-      /(\d{4})[년.\s-]+(\d{1,2})[월.\s-]+(\d{1,2})/,
+      // hidden input id="eventDate" value="YYYY-MM-DD" (barunsoncard, etc.)
+      /id="eventDate"\s+value="(\d{4}-\d{2}-\d{2})"/,
       /"date"\s*:\s*"(\d{4}-\d{2}-\d{2})"/,
+      // Korean 년월일 format — returns YYYY-MM-DD
+      /(\d{4})[년\s]+(\d{1,2})[월\s]+(\d{1,2})/,
     ];
     const venuePatterns = [
+      /<div class="text-wrapper-2">([^<]{4,50})</,
       /장소[^\S\n]*[:：]?\s*([^\n<]{4,40})/,
       /웨딩홀[^\S\n]*[:：]?\s*([^\n<]{4,40})/,
       /"venue"\s*:\s*"([^"]+)"/,
@@ -62,11 +93,13 @@ serve(async (req) => {
     for (const p of datePatterns) {
       const m = html.match(p);
       if (m) {
-        if (m[0].includes('-')) {
-          result.date = m[1];
-        } else {
+        if (p.source.includes('년')) {
+          // Korean format: capture groups are year, month, day
           const y = m[1], mo = m[2].padStart(2, '0'), d = m[3].padStart(2, '0');
           result.date = `${y}-${mo}-${d}`;
+        } else {
+          // ISO format: m[1] is the full YYYY-MM-DD string
+          result.date = m[1];
         }
         break;
       }
