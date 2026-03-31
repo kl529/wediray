@@ -1,15 +1,17 @@
 import '../global.css';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { supabase } from '../lib/supabase';
 
 export default function RootLayout() {
   const router = useRouter();
   const segments = useSegments();
+  const segmentsRef = useRef(segments);
+  segmentsRef.current = segments;
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      const inAuthGroup = segments[0] === '(auth)';
+      const inAuthGroup = segmentsRef.current[0] === '(auth)';
 
       if (session && inAuthGroup) {
         router.replace('/(app)');
@@ -19,7 +21,7 @@ export default function RootLayout() {
     });
 
     return () => subscription.unsubscribe();
-  }, [segments]);
+  }, []);
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
