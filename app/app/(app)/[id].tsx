@@ -8,7 +8,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
 import {
   getWedding, getMemory, getPhotos, upsertMemory,
-  uploadPhoto, deletePhoto, deleteWedding,
+  uploadPhoto, deletePhoto, deleteWedding, deleteWeddingPhotos,
   getPhotoUrl, formatDateKR, type Photo,
 } from '../../lib/db';
 
@@ -79,14 +79,16 @@ export default function EventDetailScreen() {
 
   // Load signed URLs for photos
   useEffect(() => {
-    photos.forEach(async (p) => {
-      if (!photoUrls[p.id]) {
-        try {
-          const url = await getPhotoUrl(p.storage_path);
-          setPhotoUrls((prev) => ({ ...prev, [p.id]: url }));
-        } catch {}
-      }
-    });
+    const newPhotos = photos.filter((p) => !photoUrls[p.id]);
+    if (newPhotos.length === 0) return;
+    Promise.all(
+      newPhotos.map((p) => getPhotoUrl(p.storage_path).then((url) => ({ id: p.id, url })))
+    )
+      .then((results) => {
+        const updates = Object.fromEntries(results.map(({ id, url }) => [id, url]));
+        setPhotoUrls((prev) => ({ ...prev, ...updates }));
+      })
+      .catch((e: Error) => Alert.alert('사진 로딩 실패', e.message));
   }, [photos]);
 
   const saveMemory = useMutation({
@@ -110,7 +112,7 @@ export default function EventDetailScreen() {
         quality: 0.8,
       });
       if (result.canceled) return;
-      await uploadPhoto(id, result.assets[0].uri);
+      await uploadPhoto(id, result.assets[0].uri, result.assets[0].mimeType ?? undefined);
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['photos', id] }),
     onError: (e: Error) => Alert.alert('업로드 실패', e.message),
@@ -129,9 +131,14 @@ export default function EventDetailScreen() {
         text: '삭제',
         style: 'destructive',
         onPress: async () => {
-          await deleteWedding(id);
-          qc.invalidateQueries({ queryKey: ['weddings'] });
-          router.back();
+          try {
+            await deleteWeddingPhotos(id);
+            await deleteWedding(id);
+            qc.invalidateQueries({ queryKey: ['weddings'] });
+            router.back();
+          } catch (e: any) {
+            Alert.alert('삭제 실패', e.message);
+          }
         },
       },
     ]);

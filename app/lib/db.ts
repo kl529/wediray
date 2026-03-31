@@ -34,9 +34,12 @@ export type Photo = {
 // ── Weddings ──────────────────────────────────────────────
 
 export async function getWeddings() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('로그인이 필요합니다.');
   const { data, error } = await supabase
     .from('weddings')
     .select('*')
+    .eq('user_id', user.id)
     .order('date', { ascending: true });
   if (error) throw error;
   return data as Wedding[];
@@ -78,6 +81,15 @@ export async function updateWedding(
     .single();
   if (error) throw error;
   return data as Wedding;
+}
+
+export async function deleteWeddingPhotos(weddingId: string) {
+  const photos = await getPhotos(weddingId);
+  if (photos.length === 0) return;
+  const { error } = await supabase.storage
+    .from('wedding-photos')
+    .remove(photos.map((p) => p.storage_path));
+  if (error) throw error;
 }
 
 export async function deleteWedding(id: string) {
@@ -127,11 +139,11 @@ export async function getPhotos(weddingId: string) {
   return data as Photo[];
 }
 
-export async function uploadPhoto(weddingId: string, uri: string) {
+export async function uploadPhoto(weddingId: string, uri: string, mimeType?: string) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('로그인이 필요합니다.');
   const ext = uri.split('.').pop()?.toLowerCase() ?? 'jpg';
-  const contentType = ext === 'png' ? 'image/png' : 'image/jpeg';
+  const contentType = mimeType ?? (ext === 'png' ? 'image/png' : 'image/jpeg');
   const filename = `${user.id}/${weddingId}/${Date.now()}.${ext}`;
 
   const response = await fetch(uri);

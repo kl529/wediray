@@ -85,7 +85,7 @@ export default function HomeScreen() {
           className={`flex-1 py-2 rounded-lg items-center ${tab === 'done' ? 'bg-pink-400' : ''}`}
         >
           <Text className={`text-sm font-semibold ${tab === 'done' ? 'text-black' : 'text-white/40'}`}>
-            참석완료 {done.length > 0 ? `(${done.length})` : ''}
+            지난 결혼식 {done.length > 0 ? `(${done.length})` : ''}
           </Text>
         </TouchableOpacity>
       </View>

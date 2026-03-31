@@ -3,6 +3,7 @@ import {
   View, Text, TextInput, TouchableOpacity,
   ScrollView, ActivityIndicator, Alert, KeyboardAvoidingView, Platform,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
@@ -24,7 +25,8 @@ export default function NewEventScreen() {
 
   const [groom, setGroom] = useState('');
   const [bride, setBride] = useState('');
-  const [date, setDate] = useState('');
+  const [dateObj, setDateObj] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [venue, setVenue] = useState('');
   const [attendance, setAttendance] = useState<Attendance>('pending');
   const [inviteUrl, setInviteUrl] = useState('');
@@ -37,21 +39,27 @@ export default function NewEventScreen() {
     enabled: isEdit,
   });
 
+  function dateObjToString(d: Date) {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+
   useEffect(() => {
     if (existing) {
       setGroom(existing.groom);
       setBride(existing.bride);
-      setDate(existing.date);
+      setDateObj(new Date(existing.date + 'T00:00:00'));
       setVenue(existing.venue);
       setAttendance(existing.attendance);
     }
   }, [existing]);
 
   const mutation = useMutation({
-    mutationFn: () =>
-      isEdit
+    mutationFn: () => {
+      const date = dateObjToString(dateObj);
+      return isEdit
         ? updateWedding(id!, { groom, bride, date, venue, attendance })
-        : createWedding({ groom, bride, date, venue, attendance }),
+        : createWedding({ groom, bride, date, venue, attendance });
+    },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['weddings'] });
       if (isEdit) qc.invalidateQueries({ queryKey: ['wedding', id] });
@@ -73,7 +81,7 @@ export default function NewEventScreen() {
       if (error) throw error;
       if (data.groom) setGroom(data.groom);
       if (data.bride) setBride(data.bride);
-      if (data.date) setDate(data.date);
+      if (data.date) setDateObj(new Date(data.date + 'T00:00:00'));
       if (data.venue) setVenue(data.venue);
     } catch {
       Alert.alert('파싱 실패', '직접 입력해주세요.');
@@ -84,14 +92,9 @@ export default function NewEventScreen() {
 
   function handleSave() {
     setFormError('');
-    if (!groom.trim() || !bride.trim() || !date.trim() || !venue.trim()) {
+    if (!groom.trim() || !bride.trim() || !venue.trim()) {
       setFormError('모든 항목을 채워주세요.');
       Alert.alert('입력 확인', '모든 항목을 채워주세요.');
-      return;
-    }
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-      setFormError('날짜는 YYYY-MM-DD 형식으로 입력해주세요. 예: 2026-05-24');
-      Alert.alert('날짜 형식', 'YYYY-MM-DD 형식으로 입력해주세요.\n예: 2026-05-24');
       return;
     }
     mutation.mutate();
@@ -179,14 +182,36 @@ export default function NewEventScreen() {
         {/* Date */}
         <View className="mb-4">
           <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">날짜</Text>
-          <TextInput
-            value={date}
-            onChangeText={setDate}
-            placeholder="YYYY-MM-DD"
-            placeholderTextColor="#ffffff33"
-            keyboardType="numbers-and-punctuation"
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-base"
-          />
+          {Platform.OS === 'ios' ? (
+            <DateTimePicker
+              value={dateObj}
+              mode="date"
+              display="compact"
+              onChange={(_, d) => { if (d) setDateObj(d); }}
+              themeVariant="dark"
+              style={{ alignSelf: 'flex-start', marginLeft: -8 }}
+            />
+          ) : (
+            <>
+              <TouchableOpacity
+                onPress={() => setShowDatePicker(true)}
+                className="bg-white/5 border border-white/10 rounded-xl px-4 py-3"
+              >
+                <Text className="text-white text-base">{dateObjToString(dateObj)}</Text>
+              </TouchableOpacity>
+              {showDatePicker && (
+                <DateTimePicker
+                  value={dateObj}
+                  mode="date"
+                  display="default"
+                  onChange={(_, d) => {
+                    setShowDatePicker(false);
+                    if (d) setDateObj(d);
+                  }}
+                />
+              )}
+            </>
+          )}
         </View>
 
         {/* Venue */}
