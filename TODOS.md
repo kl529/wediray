@@ -42,11 +42,17 @@ sky-400은 이 앱에서 "미정" 상태를 의미. 편집 링크는 pink-400으
 ### [x] FINDING-005 — 상세 화면 필드 라벨 스타일 통일 (FIXED)
 메모/감정/축의금/사진 라벨에 `uppercase tracking-widest` 추가. [id].tsx.
 
-### [ ] FINDING-001 — 출석 상태 뱃지 렌더링 불일치 (DEFERRED, medium)
-**What:** 홈 리스트에서는 `text-lime-400` 인라인 텍스트, 상세 화면에서는 `bg-lime-400` 필 배지. ATTENDANCE_COLOR 맵이 두 파일에 중복 (다른 값으로).
-**Fix:** 공유 컴포넌트 또는 공유 상수로 추출. index.tsx:13-17, [id].tsx:17-21.
+### [x] FINDING-001 — 출석 상태 상수 공유화 (FIXED, 2026-03-31)
+`ATTENDANCE_LABEL`, `ATTENDANCE_TEXT_COLOR`, `ATTENDANCE_PILL_BG`를 `lib/constants.ts`로 추출.
+index.tsx, [id].tsx에서 import로 교체. commit: 768a2d1.
 
-### [ ] FINDING-007 — 데스크탑 max-width 없음 (DEFERRED, medium)
-**What:** 1280px 데스크탑에서 탭바와 컨텐츠가 화면 전체 폭으로 늘어남.
-**Fix:** 각 화면 root View에 `max-w-sm mx-auto w-full` 추가 또는 `_layout.tsx`에서 wrapper 적용.
-**Note:** 모바일 앱이라 의도적일 수 있음.
+### [x] FINDING-007 — 데스크탑 max-width (FIXED, 2026-03-31)
+`(app)/_layout.tsx`에 `Platform.OS === 'web'` 조건으로 `maxWidth: 430, alignSelf: 'center'` 적용.
+`global.css`에 `body { background: #000 }` 추가해서 외부 여백도 검게 처리. commit: 1007b64, e5d02a0.
+
+### [x] FINDING-002 — ActivityIndicator 색상 통일 (FIXED)
+`#FF69B4` → `BRAND_PINK` (`#f472b6`). `lib/constants.ts`의 단일 상수로 관리.
+
+### [x] FINDING-003 — 불러오기 버튼 sky-400 → pink-400 (FIXED)
+### [x] FINDING-004 — 편집 링크 sky-400 → pink-400 (FIXED)
+### [x] FINDING-005 — 상세 화면 필드 라벨 스타일 통일 (FIXED)
