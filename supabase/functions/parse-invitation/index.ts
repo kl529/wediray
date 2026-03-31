@@ -54,16 +54,25 @@ serve(async (req) => {
     const titleStr = ogTitleMatch ? ogTitleMatch[1] : '';
     const titleNames = titleStr.match(/([가-힣]{2,5})\s*[♡♥❤]\s*([가-힣]{2,5})/);
 
+    // Try to find full name (surname + given name) by searching for a 1-char Korean
+    // prefix before the short name extracted from og:title.
+    function findFullName(shortName: string): RegExp | null {
+      if (!shortName) return null;
+      // If og:title already has a 3-4 char name, use it directly
+      if (shortName.length >= 3) return new RegExp(`(${shortName})`);
+      // Otherwise look for surname + shortName (e.g. "이" + "승욱" → "이승욱")
+      return new RegExp(`([가-힣]${shortName})(?=[^가-힣]|$)`);
+    }
+
     const groomPatterns = [
-      // og:title first — most reliable
-      ...(titleNames ? [new RegExp(`(${titleNames[1]})`)] : []),
+      // Full name via surname+given lookup — most accurate
+      ...(titleNames ? [findFullName(titleNames[1])].filter(Boolean) as RegExp[] : []),
       /"groom"\s*:\s*"([^"]+)"/,
       /class="groom[^"]*"[^>]*>([가-힣]{2,5})/,
-      // fallback: 신랑 followed immediately by name (no 측/혼주/etc in between)
       /신랑\s{0,2}([가-힣]{2,4})(?!\s*측|\s*혼주)/,
     ];
     const bridePatterns = [
-      ...(titleNames ? [new RegExp(`(${titleNames[2]})`)] : []),
+      ...(titleNames ? [findFullName(titleNames[2])].filter(Boolean) as RegExp[] : []),
       /"bride"\s*:\s*"([^"]+)"/,
       /class="bride[^"]*"[^>]*>([가-힣]{2,5})/,
       /신부\s{0,2}([가-힣]{2,4})(?!\s*측|\s*혼주)/,
