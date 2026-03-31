@@ -33,7 +33,7 @@ function PhotoCard({
         <Image source={{ uri: photo.signedUrl }} className="w-full h-full" resizeMode="cover" />
       ) : (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color="#FF69B4" size="small" />
+          <ActivityIndicator color="#f472b6" size="small" />
         </View>
       )}
       <TouchableOpacity
@@ -153,7 +153,7 @@ export default function EventDetailScreen() {
   if (wLoading || !wedding) {
     return (
       <View className="flex-1 bg-black items-center justify-center">
-        <ActivityIndicator color="#FF69B4" />
+        <ActivityIndicator color="#f472b6" />
       </View>
     );
   }
@@ -266,7 +266,7 @@ export default function EventDetailScreen() {
                 className="w-28 h-28 rounded-2xl border border-dashed border-white/20 items-center justify-center"
               >
                 {addPhoto.isPending
-                  ? <ActivityIndicator color="#FF69B4" size="small" />
+                  ? <ActivityIndicator color="#f472b6" size="small" />
                   : <Text className="text-white/30 text-3xl">+</Text>}
               </TouchableOpacity>
             )}

@@ -93,7 +93,7 @@ export default function HomeScreen() {
       {/* List */}
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color="#FF69B4" />
+          <ActivityIndicator color="#f472b6" />
         </View>
       ) : (
         <FlatList
@@ -114,7 +114,7 @@ export default function HomeScreen() {
       <TouchableOpacity
         onPress={() => router.push('/(app)/new')}
         className="absolute bottom-10 right-6 bg-pink-400 w-14 h-14 rounded-full items-center justify-center"
-        style={{ boxShadow: '0 0 12px 4px rgba(255,105,180,0.5)', elevation: 8 } as any}
+        style={{ boxShadow: '0 0 12px 4px rgba(244,114,182,0.5)', elevation: 8 } as any}
       >
         <Text className="text-black text-3xl font-light">+</Text>
       </TouchableOpacity>

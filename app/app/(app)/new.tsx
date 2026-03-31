@@ -115,7 +115,7 @@ export default function NewEventScreen() {
         </Text>
         <TouchableOpacity onPress={handleSave} disabled={mutation.isPending}>
           {mutation.isPending
-            ? <ActivityIndicator color="#FF69B4" size="small" />
+            ? <ActivityIndicator color="#f472b6" size="small" />
             : <Text className="text-pink-400 font-bold text-base">저장</Text>}
         </TouchableOpacity>
       </View>
