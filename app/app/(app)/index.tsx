@@ -1,18 +1,124 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import { supabase } from '../../lib/supabase';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useQuery } from '@tanstack/react-query';
+import { getWeddings, formatDateKR, isUpcoming, type Wedding } from '../../lib/db';
+
+const ATTENDANCE_LABEL: Record<string, string> = {
+  attending: '참석',
+  absent: '불참',
+  pending: '미정',
+};
+
+const ATTENDANCE_COLOR: Record<string, string> = {
+  attending: 'text-lime-400',
+  absent: 'text-white/40',
+  pending: 'text-sky-400',
+};
+
+function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => void }) {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-3 active:opacity-70"
+    >
+      <View className="flex-row items-center justify-between">
+        <Text className="text-white text-lg font-bold">
+          {wedding.groom} ♥ {wedding.bride}
+        </Text>
+        <Text className={`text-sm font-semibold ${ATTENDANCE_COLOR[wedding.attendance]}`}>
+          {ATTENDANCE_LABEL[wedding.attendance]}
+        </Text>
+      </View>
+      <Text className="text-white/50 text-sm mt-2">{formatDateKR(wedding.date)}</Text>
+      <Text className="text-white/30 text-xs mt-1">{wedding.venue}</Text>
+    </TouchableOpacity>
+  );
+}
+
+function EmptyState({ tab }: { tab: 'upcoming' | 'done' }) {
+  return (
+    <View className="items-center justify-center py-20 gap-2">
+      <Text className="text-4xl">{tab === 'upcoming' ? '💌' : '📖'}</Text>
+      <Text className="text-white/40 text-sm mt-2">
+        {tab === 'upcoming' ? '예정된 결혼식이 없어요' : '아직 기록이 없어요'}
+      </Text>
+    </View>
+  );
+}
 
 export default function HomeScreen() {
-  return (
-    <View className="flex-1 bg-black items-center justify-center gap-6">
-      <Text className="text-pink-400 text-3xl font-bold">결혼식 다이어리</Text>
-      <Text className="text-white/60 text-sm">아직 기록이 없어요</Text>
+  const router = useRouter();
+  const { data: weddings = [], isLoading } = useQuery({
+    queryKey: ['weddings'],
+    queryFn: getWeddings,
+  });
 
+  const upcoming = weddings.filter(isUpcoming);
+  const done = weddings.filter((w) => !isUpcoming(w));
+
+  const [tab, setTab] = useState<'upcoming' | 'done'>('upcoming');
+  const list = tab === 'upcoming' ? upcoming : done;
+
+  return (
+    <View className="flex-1 bg-black">
+      {/* Header */}
+      <View className="flex-row items-center justify-between px-6 pt-16 pb-4">
+        <Text className="text-pink-400 text-2xl font-bold tracking-widest">wediary</Text>
+        <TouchableOpacity onPress={() => router.push('/(app)/settings')}>
+          <Text className="text-white/40 text-sm">설정</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Tabs */}
+      <View className="flex-row mx-6 mb-4 bg-white/5 rounded-xl p-1">
+        <TouchableOpacity
+          onPress={() => setTab('upcoming')}
+          className={`flex-1 py-2 rounded-lg items-center ${tab === 'upcoming' ? 'bg-pink-400' : ''}`}
+        >
+          <Text className={`text-sm font-semibold ${tab === 'upcoming' ? 'text-black' : 'text-white/40'}`}>
+            예정 {upcoming.length > 0 ? `(${upcoming.length})` : ''}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setTab('done')}
+          className={`flex-1 py-2 rounded-lg items-center ${tab === 'done' ? 'bg-pink-400' : ''}`}
+        >
+          <Text className={`text-sm font-semibold ${tab === 'done' ? 'text-black' : 'text-white/40'}`}>
+            참석완료 {done.length > 0 ? `(${done.length})` : ''}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* List */}
+      {isLoading ? (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator color="#FF69B4" />
+        </View>
+      ) : (
+        <FlatList
+          data={list}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 100 }}
+          ListEmptyComponent={<EmptyState tab={tab} />}
+          renderItem={({ item }) => (
+            <WeddingCard
+              wedding={item}
+              onPress={() => router.push(`/(app)/${item.id}`)}
+            />
+          )}
+        />
+      )}
+
+      {/* FAB */}
       <TouchableOpacity
-        onPress={() => supabase.auth.signOut()}
-        className="mt-8 border border-white/20 rounded-xl px-6 py-3"
+        onPress={() => router.push('/(app)/new')}
+        className="absolute bottom-10 right-6 bg-pink-400 w-14 h-14 rounded-full items-center justify-center"
+        style={{ shadowColor: '#FF69B4', shadowOpacity: 0.5, shadowRadius: 12, elevation: 8 }}
       >
-        <Text className="text-white/40 text-sm">로그아웃</Text>
+        <Text className="text-black text-3xl font-light">+</Text>
       </TouchableOpacity>
     </View>
   );
 }
+

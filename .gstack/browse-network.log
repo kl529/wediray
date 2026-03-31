@@ -1,0 +1,7 @@
+[2026-03-31T05:36:33.804Z] GET http://localhost:8081/ → 200 (6ms, 1280B)
+[2026-03-31T05:36:33.815Z] GET http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable → pending (?ms, ?B)
+[2026-03-31T05:39:54.190Z] GET http://localhost:8081/ → 200 (5ms, 1280B)
+[2026-03-31T05:39:54.198Z] GET http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable → pending (?ms, ?B)
+[2026-03-31T05:40:12.793Z] GET http://localhost:8081/login → 200 (7ms, 1280B)
+[2026-03-31T05:40:12.802Z] GET http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable → 200 (97ms, 4647433B)
+[2026-03-31T05:40:51.833Z] GET https://jzaiyttrvwswmzrsqutt.supabase.co/auth/v1/authorize?provider=kakao&redirect_to=wediary%3A%2F%2Fauth%2Fcallback → pending (?ms, ?B)

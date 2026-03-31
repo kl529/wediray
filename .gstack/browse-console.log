@@ -1,0 +1,14 @@
+[2026-03-31T05:36:34.254Z] [error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+[2026-03-31T05:36:34.254Z] [error] Refused to execute script from 'http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable' because its MIME type ('application/json') is not executable, and strict MIME type checking is enabled.
+[2026-03-31T05:39:54.345Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-03-31T05:39:54.392Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-03-31T05:40:12.902Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-03-31T05:40:12.914Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-03-31T05:40:51.832Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-03-31T05:40:52.681Z] [error] Failed to load resource: the server responded with a status of 400 ()
