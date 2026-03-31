@@ -12,6 +12,17 @@ serve(async (req) => {
     const { url } = await req.json();
     if (!url) return new Response(JSON.stringify({ error: 'url required' }), { status: 400 });
 
+    let parsed: URL;
+    try { parsed = new URL(url); } catch {
+      return new Response(JSON.stringify({ error: 'invalid url' }), { status: 400 });
+    }
+    if (parsed.protocol !== 'https:') {
+      return new Response(JSON.stringify({ error: 'https only' }), { status: 400 });
+    }
+    if (/^(10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|127\.|169\.254\.|::1$|localhost)/.test(parsed.hostname)) {
+      return new Response(JSON.stringify({ error: 'private address not allowed' }), { status: 400 });
+    }
+
     const res = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; WediaryBot/1.0)' },
     });

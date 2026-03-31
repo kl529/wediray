@@ -127,14 +127,16 @@ export async function getPhotos(weddingId: string) {
 
 export async function uploadPhoto(weddingId: string, uri: string) {
   const { data: { user } } = await supabase.auth.getUser();
-  const filename = `${user!.id}/${weddingId}/${Date.now()}.jpg`;
+  const ext = uri.split('.').pop()?.toLowerCase() ?? 'jpg';
+  const contentType = ext === 'png' ? 'image/png' : 'image/jpeg';
+  const filename = `${user!.id}/${weddingId}/${Date.now()}.${ext}`;
 
   const response = await fetch(uri);
   const arrayBuffer = await response.arrayBuffer();
 
   const { error: uploadError } = await supabase.storage
     .from('wedding-photos')
-    .upload(filename, arrayBuffer, { contentType: 'image/jpeg' });
+    .upload(filename, arrayBuffer, { contentType });
   if (uploadError) throw uploadError;
 
   const { data, error } = await supabase
@@ -147,7 +149,8 @@ export async function uploadPhoto(weddingId: string, uri: string) {
 }
 
 export async function deletePhoto(id: string, storagePath: string) {
-  await supabase.storage.from('wedding-photos').remove([storagePath]);
+  const { error: storageError } = await supabase.storage.from('wedding-photos').remove([storagePath]);
+  if (storageError) throw storageError;
   const { error } = await supabase.from('photos').delete().eq('id', id);
   if (error) throw error;
 }
@@ -168,5 +171,5 @@ export function formatDateKR(date: string) {
 }
 
 export function isUpcoming(wedding: Wedding) {
-  return wedding.attendance === 'pending';
+  return wedding.date >= new Date().toISOString().slice(0, 10);
 }
