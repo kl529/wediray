@@ -54,9 +54,12 @@ export default function EventDetailScreen() {
     queryKey: ['memory', id],
     queryFn: () => getMemory(id),
   });
+  // refetchInterval: re-fetch photo list every 55 min so signed URLs
+  // (1-hour expiry) are refreshed before they silently break.
   const { data: photos = [] } = useQuery({
     queryKey: ['photos', id],
     queryFn: () => getPhotos(id),
+    refetchInterval: 55 * 60 * 1000,
   });
 
   const [memo, setMemo] = useState('');
@@ -72,16 +75,16 @@ export default function EventDetailScreen() {
     }
   }, [memory]);
 
-  // Load signed URLs for photos
+  // Load (or refresh) signed URLs whenever the photos list changes.
+  // photos refetches every 55 min (see query above), so URLs are renewed
+  // before the 1-hour Supabase signed URL expiry.
   useEffect(() => {
-    const newPhotos = photos.filter((p) => !photoUrls[p.id]);
-    if (newPhotos.length === 0) return;
+    if (photos.length === 0) return;
     Promise.all(
-      newPhotos.map((p) => getPhotoUrl(p.storage_path).then((url) => ({ id: p.id, url })))
+      photos.map((p) => getPhotoUrl(p.storage_path).then((url) => ({ id: p.id, url })))
     )
       .then((results) => {
-        const updates = Object.fromEntries(results.map(({ id, url }) => [id, url]));
-        setPhotoUrls((prev) => ({ ...prev, ...updates }));
+        setPhotoUrls(Object.fromEntries(results.map(({ id, url }) => [id, url])));
       })
       .catch((e: Error) => Alert.alert('사진 로딩 실패', e.message));
   }, [photos]);
