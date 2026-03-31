@@ -56,9 +56,10 @@ export async function createWedding(
   input: Pick<Wedding, 'groom' | 'bride' | 'date' | 'venue' | 'attendance'>
 ) {
   const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('로그인이 필요합니다.');
   const { data, error } = await supabase
     .from('weddings')
-    .insert({ ...input, user_id: user!.id })
+    .insert({ ...input, user_id: user.id })
     .select()
     .single();
   if (error) throw error;
@@ -101,10 +102,11 @@ export async function upsertMemory(
   input: { memo?: string; emotion_tags?: string[]; gift_amount?: number | null }
 ) {
   const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('로그인이 필요합니다.');
   const { data, error } = await supabase
     .from('memories')
     .upsert(
-      { ...input, wedding_id: weddingId, user_id: user!.id },
+      { ...input, wedding_id: weddingId, user_id: user.id },
       { onConflict: 'wedding_id' }
     )
     .select()
@@ -127,9 +129,10 @@ export async function getPhotos(weddingId: string) {
 
 export async function uploadPhoto(weddingId: string, uri: string) {
   const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('로그인이 필요합니다.');
   const ext = uri.split('.').pop()?.toLowerCase() ?? 'jpg';
   const contentType = ext === 'png' ? 'image/png' : 'image/jpeg';
-  const filename = `${user!.id}/${weddingId}/${Date.now()}.${ext}`;
+  const filename = `${user.id}/${weddingId}/${Date.now()}.${ext}`;
 
   const response = await fetch(uri);
   const arrayBuffer = await response.arrayBuffer();
@@ -141,7 +144,7 @@ export async function uploadPhoto(weddingId: string, uri: string) {
 
   const { data, error } = await supabase
     .from('photos')
-    .insert({ wedding_id: weddingId, user_id: user!.id, storage_path: filename })
+    .insert({ wedding_id: weddingId, user_id: user.id, storage_path: filename })
     .select()
     .single();
   if (error) throw error;
