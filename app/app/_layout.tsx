@@ -15,7 +15,7 @@ export default function RootLayout() {
 
       if (session && inAuthGroup) {
         router.replace('/(app)');
-      } else if (!session && !inAuthGroup) {
+      } else if (!session && !inAuthGroup && !__DEV__) {
         router.replace('/(auth)/login');
       }
     });

@@ -1,9 +1,11 @@
 import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useState } from 'react';
+import { useRouter } from 'expo-router';
 import { supabase } from '../../lib/supabase';
 
 export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function handleKakaoLogin() {
     setLoading(true);
@@ -35,6 +37,15 @@ export default function LoginScreen() {
           <Text className="text-black font-semibold text-base">카카오로 시작하기</Text>
         )}
       </TouchableOpacity>
+
+      {__DEV__ && (
+        <TouchableOpacity
+          onPress={() => router.replace('/(app)')}
+          className="mt-4"
+        >
+          <Text className="text-white/30 text-xs">개발용: 로그인 없이 계속</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
