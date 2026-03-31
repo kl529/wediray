@@ -29,6 +29,7 @@ export default function NewEventScreen() {
   const [attendance, setAttendance] = useState<Attendance>('pending');
   const [inviteUrl, setInviteUrl] = useState('');
   const [parsing, setParsing] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const { data: existing } = useQuery({
     queryKey: ['wedding', id],
@@ -56,7 +57,10 @@ export default function NewEventScreen() {
       if (isEdit) qc.invalidateQueries({ queryKey: ['wedding', id] });
       router.back();
     },
-    onError: (e: Error) => Alert.alert('저장 실패', e.message),
+    onError: (e: Error) => {
+      setFormError(`저장 실패: ${e.message}`);
+      Alert.alert('저장 실패', e.message);
+    },
   });
 
   async function handleParse() {
@@ -79,11 +83,14 @@ export default function NewEventScreen() {
   }
 
   function handleSave() {
+    setFormError('');
     if (!groom.trim() || !bride.trim() || !date.trim() || !venue.trim()) {
+      setFormError('모든 항목을 채워주세요.');
       Alert.alert('입력 확인', '모든 항목을 채워주세요.');
       return;
     }
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      setFormError('날짜는 YYYY-MM-DD 형식으로 입력해주세요. 예: 2026-05-24');
       Alert.alert('날짜 형식', 'YYYY-MM-DD 형식으로 입력해주세요.\n예: 2026-05-24');
       return;
     }
@@ -111,6 +118,13 @@ export default function NewEventScreen() {
       </View>
 
       <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 60 }}>
+        {/* Inline error banner */}
+        {formError ? (
+          <View className="bg-red-500/20 border border-red-500/40 rounded-xl px-4 py-3 mb-4">
+            <Text className="text-red-400 text-sm">{formError}</Text>
+          </View>
+        ) : null}
+
         {/* Invitation URL (Phase 4) */}
         <View className="mb-6">
           <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">청첩장 링크로 자동 입력</Text>
