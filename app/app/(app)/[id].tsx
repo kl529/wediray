@@ -170,7 +170,7 @@ export default function EventDetailScreen() {
         </TouchableOpacity>
         <View className="flex-row gap-4">
           <TouchableOpacity onPress={() => router.push(`/(app)/new?id=${id}`)}>
-            <Text className="text-sky-400 text-sm">편집</Text>
+            <Text className="text-pink-400 text-sm">편집</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleDeleteWedding}>
             <Text className="text-white/30 text-sm">삭제</Text>
