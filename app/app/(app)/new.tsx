@@ -9,6 +9,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createWedding, updateWedding, getWedding, type Attendance,
 } from '../../lib/db';
+import { BRAND_PINK } from '../../lib/constants';
 import { supabase } from '../../lib/supabase';
 
 const ATTENDANCE_OPTIONS: { value: Attendance; label: string }[] = [
@@ -115,7 +116,7 @@ export default function NewEventScreen() {
         </Text>
         <TouchableOpacity onPress={handleSave} disabled={mutation.isPending}>
           {mutation.isPending
-            ? <ActivityIndicator color="#f472b6" size="small" />
+            ? <ActivityIndicator color={BRAND_PINK} size="small" />
             : <Text className="text-pink-400 font-bold text-base">저장</Text>}
         </TouchableOpacity>
       </View>

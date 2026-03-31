@@ -11,14 +11,9 @@ import {
   uploadPhoto, deletePhoto, deleteWedding, deleteWeddingPhotos,
   getPhotoUrl, formatDateKR, type Photo,
 } from '../../lib/db';
+import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_PILL_BG } from '../../lib/constants';
 
 const EMOTION_TAGS = ['행복해 😊', '감동받았어 🥹', '설렜어 💕', '즐거웠어 🎉', '뭉클했어 💧', '배고팠어 🍽️'];
-const ATTENDANCE_LABEL: Record<string, string> = { attending: '참석', absent: '불참', pending: '미정' };
-const ATTENDANCE_COLOR: Record<string, string> = {
-  attending: 'bg-lime-400',
-  absent: 'bg-white/20',
-  pending: 'bg-sky-400',
-};
 
 function PhotoCard({
   photo,
@@ -33,7 +28,7 @@ function PhotoCard({
         <Image source={{ uri: photo.signedUrl }} className="w-full h-full" resizeMode="cover" />
       ) : (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color="#f472b6" size="small" />
+          <ActivityIndicator color={BRAND_PINK} size="small" />
         </View>
       )}
       <TouchableOpacity
@@ -153,7 +148,7 @@ export default function EventDetailScreen() {
   if (wLoading || !wedding) {
     return (
       <View className="flex-1 bg-black items-center justify-center">
-        <ActivityIndicator color="#f472b6" />
+        <ActivityIndicator color={BRAND_PINK} />
       </View>
     );
   }
@@ -186,7 +181,7 @@ export default function EventDetailScreen() {
           </Text>
           <Text className="text-white/50 text-base mb-1">{formatDateKR(wedding.date)}</Text>
           <Text className="text-white/30 text-sm mb-3">{wedding.venue}</Text>
-          <View className={`self-start px-3 py-1 rounded-full ${ATTENDANCE_COLOR[wedding.attendance]}`}>
+          <View className={`self-start px-3 py-1 rounded-full ${ATTENDANCE_PILL_BG[wedding.attendance]}`}>
             <Text className="text-black text-xs font-bold">{ATTENDANCE_LABEL[wedding.attendance]}</Text>
           </View>
         </View>
@@ -266,7 +261,7 @@ export default function EventDetailScreen() {
                 className="w-28 h-28 rounded-2xl border border-dashed border-white/20 items-center justify-center"
               >
                 {addPhoto.isPending
-                  ? <ActivityIndicator color="#f472b6" size="small" />
+                  ? <ActivityIndicator color={BRAND_PINK} size="small" />
                   : <Text className="text-white/30 text-3xl">+</Text>}
               </TouchableOpacity>
             )}

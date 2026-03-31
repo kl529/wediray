@@ -3,18 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react
 import { useRouter } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { getWeddings, formatDateKR, isUpcoming, type Wedding } from '../../lib/db';
-
-const ATTENDANCE_LABEL: Record<string, string> = {
-  attending: '참석',
-  absent: '불참',
-  pending: '미정',
-};
-
-const ATTENDANCE_COLOR: Record<string, string> = {
-  attending: 'text-lime-400',
-  absent: 'text-white/40',
-  pending: 'text-sky-400',
-};
+import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_TEXT_COLOR } from '../../lib/constants';
 
 function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => void }) {
   return (
@@ -26,7 +15,7 @@ function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => vo
         <Text className="text-white text-lg font-bold">
           {wedding.groom} ♥ {wedding.bride}
         </Text>
-        <Text className={`text-sm font-semibold ${ATTENDANCE_COLOR[wedding.attendance]}`}>
+        <Text className={`text-sm font-semibold ${ATTENDANCE_TEXT_COLOR[wedding.attendance]}`}>
           {ATTENDANCE_LABEL[wedding.attendance]}
         </Text>
       </View>
@@ -93,7 +82,7 @@ export default function HomeScreen() {
       {/* List */}
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color="#f472b6" />
+          <ActivityIndicator color={BRAND_PINK} />
         </View>
       ) : (
         <FlatList
@@ -114,7 +103,7 @@ export default function HomeScreen() {
       <TouchableOpacity
         onPress={() => router.push('/(app)/new')}
         className="absolute bottom-10 right-6 bg-pink-400 w-14 h-14 rounded-full items-center justify-center"
-        style={{ boxShadow: '0 0 12px 4px rgba(244,114,182,0.5)', elevation: 8 } as any}
+        style={{ boxShadow: `0 0 12px 4px rgba(244,114,182,0.5)`, elevation: 8 } as any}
       >
         <Text className="text-black text-3xl font-light">+</Text>
       </TouchableOpacity>
