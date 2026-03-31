@@ -18,6 +18,21 @@
 - `isUpcoming`: 오늘/미래 = true, 과거 = false (fake timer 사용)
 **Commit:** 437b2c0
 
+## [x] Phase 5-03 — App Store Prep (완료 2026-03-31)
+
+### [x] PIPA 개인정보처리방침
+- 앱 내 화면: `app/app/(app)/privacy.tsx` (설정에서 접근)
+- 호스팅용 HTML: `docs/privacy-policy.html`
+- **배포 필요:** HTML을 웹에 올리고 App Store Connect에 URL 입력
+
+### [x] EAS 빌드 구성
+- `app/eas.json` — development / preview / production 프로필
+- `app/app.json` — 번들 ID (`com.lyvakim.wediary`), 권한, 다크모드, splashScreen
+- **남은 작업:** `eas build:configure` 실행하여 `projectId` 자동 입력
+
+### [x] 앱스토어 메타데이터
+- `docs/app-store-metadata.md` — 설명, 키워드, 스크린샷 가이드, 빌드 명령어
+
 ---
 
 ## Design findings (from /design-review, 2026-03-31) — 모두 완료
