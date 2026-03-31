@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Web: set body background to match app background */
+@media screen {
+  html, body {
+    background-color: #000;
+  }
+}
