@@ -144,7 +144,7 @@ export default function NewEventScreen() {
             <TouchableOpacity
               onPress={handleParse}
               disabled={parsing || !inviteUrl.trim()}
-              className="bg-sky-400 rounded-xl px-4 items-center justify-center"
+              className="bg-pink-400 rounded-xl px-4 items-center justify-center"
             >
               {parsing
                 ? <ActivityIndicator color="#000" size="small" />
