@@ -108,13 +108,13 @@ export default function NewEventScreen() {
     >
       {/* Header */}
       <View className="flex-row items-center justify-between px-6 pt-16 pb-4">
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={() => router.back()} className="py-2">
           <Text className="text-white/50 text-base">취소</Text>
         </TouchableOpacity>
         <Text className="text-white font-bold text-base">
           {isEdit ? '결혼식 수정' : '새 결혼식'}
         </Text>
-        <TouchableOpacity onPress={handleSave} disabled={mutation.isPending}>
+        <TouchableOpacity onPress={handleSave} disabled={mutation.isPending} className="py-2">
           {mutation.isPending
             ? <ActivityIndicator color={BRAND_PINK} size="small" />
             : <Text className="text-pink-400 font-bold text-base">저장</Text>}
