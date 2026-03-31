@@ -8,12 +8,17 @@ export default function AuthCallback() {
   const params = useLocalSearchParams();
 
   useEffect(() => {
-    // Supabase handles session from URL params automatically via onAuthStateChange
-    // This screen just shows a loader while the session is being established
-    const timer = setTimeout(() => {
-      router.replace('/(app)');
-    }, 2000);
-    return () => clearTimeout(timer);
+    const checkAndRedirect = async () => {
+      // Give Supabase a moment to process the OAuth callback URL
+      await new Promise(resolve => setTimeout(resolve, 500));
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        router.replace('/(app)');
+      } else {
+        router.replace('/(auth)/login');
+      }
+    };
+    checkAndRedirect();
   }, []);
 
   return (
