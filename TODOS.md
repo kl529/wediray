@@ -5,8 +5,8 @@
 **Why:** 상세 화면을 1시간 이상 열어두면 사진이 조용히 깨짐 (catch{} 때문에 에러도 안 뜸).
 **Pros:** 사용자가 장시간 화면 열어두는 경우 사진 항상 정상 표시.
 **Cons:** 타이머 로직 추가 or RQ staleTime 조정 필요.
-**Context:** [id].tsx:70-90. photoUrls는 raw state. Promise.all 리팩토링 후 URL 갱신 로직도 같이 처리하면 좋음. React Query의 staleTime/refetchInterval로 자동 갱신하거나, 만료 직전 타이머로 재요청하는 방식.
-**Depends on:** Promise.all 리팩토링 (이슈 4) 먼저.
+**Context:** [id].tsx. photoUrls는 raw state. Promise.all 리팩토링 완료됨 — 이제 URL 갱신 로직 추가 가능. React Query의 staleTime/refetchInterval로 자동 갱신하거나, 만료 직전 타이머로 재요청하는 방식.
+**Depends on:** ~~Promise.all 리팩토링~~ (완료 2026-03-31).
 
 ## [ ] memories 테이블 wedding_id UNIQUE 제약 확인
 **What:** Supabase memories 테이블에 wedding_id UNIQUE 제약이 실제로 있는지 확인.
