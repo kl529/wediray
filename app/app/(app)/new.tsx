@@ -11,6 +11,7 @@ import {
 } from '../../lib/db';
 import { BRAND_PINK } from '../../lib/constants';
 import { supabase } from '../../lib/supabase';
+import { pickAndOcr, parseOcrText } from '../../lib/ocr';
 
 const ATTENDANCE_OPTIONS: { value: Attendance; label: string }[] = [
   { value: 'attending', label: '참석' },
@@ -32,6 +33,7 @@ export default function NewEventScreen() {
   const [attendance, setAttendance] = useState<Attendance>('pending');
   const [inviteUrl, setInviteUrl] = useState('');
   const [parsing, setParsing] = useState(false);
+  const [scanning, setScanning] = useState(false);
   const [formError, setFormError] = useState('');
 
   const { data: existing } = useQuery({
@@ -71,6 +73,26 @@ export default function NewEventScreen() {
       Alert.alert('저장 실패', e.message);
     },
   });
+
+  async function handleScan(source: 'camera' | 'gallery') {
+    setScanning(true);
+    try {
+      const text = await pickAndOcr(source);
+      if (!text) return;
+      const parsed = parseOcrText(text);
+      if (parsed.groom) setGroom(parsed.groom);
+      if (parsed.bride) setBride(parsed.bride);
+      if (parsed.date) setDateObj(new Date(parsed.date + 'T00:00:00'));
+      if (parsed.venue) setVenue(parsed.venue);
+      if (!parsed.groom && !parsed.bride && !parsed.date && !parsed.venue) {
+        Alert.alert('인식 실패', '청첩장 텍스트를 찾지 못했습니다. 직접 입력해주세요.');
+      }
+    } catch {
+      Alert.alert('스캔 실패', '직접 입력해주세요.');
+    } finally {
+      setScanning(false);
+    }
+  }
 
   async function handleParse() {
     if (!inviteUrl.trim()) return;
@@ -129,14 +151,15 @@ export default function NewEventScreen() {
           </View>
         ) : null}
 
-        {/* Invitation URL (Phase 4) */}
+        {/* Invitation URL + OCR */}
         <View className="mb-6">
-          <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">청첩장 링크로 자동 입력</Text>
-          <View className="flex-row gap-2">
+          <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">자동 입력</Text>
+          {/* URL row */}
+          <View className="flex-row gap-2 mb-2">
             <TextInput
               value={inviteUrl}
               onChangeText={setInviteUrl}
-              placeholder="https://..."
+              placeholder="청첩장 링크 붙여넣기..."
               placeholderTextColor="#ffffff33"
               autoCapitalize="none"
               keyboardType="url"
@@ -150,6 +173,25 @@ export default function NewEventScreen() {
               {parsing
                 ? <ActivityIndicator color="#000" size="small" />
                 : <Text className="text-black font-bold text-sm">불러오기</Text>}
+            </TouchableOpacity>
+          </View>
+          {/* OCR row */}
+          <View className="flex-row gap-2">
+            <TouchableOpacity
+              onPress={() => Alert.alert('청첩장 스캔', '촬영 또는 갤러리에서 선택', [
+                { text: '카메라로 촬영', onPress: () => handleScan('camera') },
+                { text: '갤러리에서 선택', onPress: () => handleScan('gallery') },
+                { text: '취소', style: 'cancel' },
+              ])}
+              disabled={scanning}
+              className="flex-1 flex-row items-center justify-center gap-2 bg-white/5 border border-white/10 rounded-xl py-3"
+            >
+              {scanning
+                ? <ActivityIndicator color={BRAND_PINK} size="small" />
+                : <>
+                    <Text className="text-lg">📷</Text>
+                    <Text className="text-white/60 text-sm">청첩장 사진으로 스캔</Text>
+                  </>}
             </TouchableOpacity>
           </View>
         </View>

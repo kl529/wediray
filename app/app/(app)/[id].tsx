@@ -12,6 +12,7 @@ import {
   getPhotoUrl, formatDateKR, type Photo,
 } from '../../lib/db';
 import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_PILL_BG } from '../../lib/constants';
+import { addWeddingToCalendar } from '../../lib/calendar';
 
 const EMOTION_TAGS = ['행복해 😊', '감동받았어 🥹', '설렜어 💕', '즐거웠어 🎉', '뭉클했어 💧', '배고팠어 🍽️'];
 
@@ -184,8 +185,29 @@ export default function EventDetailScreen() {
           </Text>
           <Text className="text-white/50 text-base mb-1">{formatDateKR(wedding.date)}</Text>
           <Text className="text-white/30 text-sm mb-3">{wedding.venue}</Text>
-          <View className={`self-start px-3 py-1 rounded-full ${ATTENDANCE_PILL_BG[wedding.attendance]}`}>
-            <Text className="text-black text-xs font-bold">{ATTENDANCE_LABEL[wedding.attendance]}</Text>
+          <View className="flex-row items-center gap-3">
+            <View className={`self-start px-3 py-1 rounded-full ${ATTENDANCE_PILL_BG[wedding.attendance]}`}>
+              <Text className="text-black text-xs font-bold">{ATTENDANCE_LABEL[wedding.attendance]}</Text>
+            </View>
+            <TouchableOpacity
+              onPress={async () => {
+                try {
+                  await addWeddingToCalendar({
+                    groom: wedding.groom,
+                    bride: wedding.bride,
+                    date: wedding.date,
+                    venue: wedding.venue,
+                  });
+                  Alert.alert('캘린더에 추가됨 ✓');
+                } catch (e: any) {
+                  Alert.alert('추가 실패', e.message);
+                }
+              }}
+              className="flex-row items-center gap-1 px-3 py-1 rounded-full bg-white/10 border border-white/10"
+            >
+              <Text className="text-sm">📅</Text>
+              <Text className="text-white/60 text-xs">캘린더</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
