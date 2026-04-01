@@ -27,16 +27,16 @@ export async function addWeddingToCalendar(params: {
     calendarId = primary.id;
   }
 
-  // All-day event (time not stored in our DB)
   const [y, m, d] = params.date.split('-').map(Number);
   const startDate = new Date(y, m - 1, d, 0, 0, 0);
   const endDate = new Date(y, m - 1, d, 23, 59, 59);
 
+  // allDay: true causes java.lang.String cannot be cast to java.lang.boolean on Android
+  // Use 00:00–23:59 time range instead — both platforms display it as a full-day event
   await Calendar.createEventAsync(calendarId, {
     title: `${params.groom} ♥ ${params.bride} 결혼식`,
     startDate,
     endDate,
-    allDay: true,
     location: params.venue,
     alarms: [{ relativeOffset: -1440 }], // 하루 전 알림
   });
