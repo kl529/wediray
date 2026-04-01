@@ -16,9 +16,15 @@ export async function addWeddingToCalendar(params: {
     calendarId = defaultCal.id;
   } else {
     const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
-    const local = calendars.find((c) => c.accessLevel === 'owner');
-    if (!local) throw new Error('쓰기 가능한 캘린더를 찾을 수 없습니다.');
-    calendarId = local.id;
+    // allowsModifications is the reliable cross-version check on Android
+    const writable = calendars.filter((c) => c.allowsModifications);
+    // prefer primary/Google account over exchange/work calendars
+    const primary =
+      writable.find((c) => c.isPrimary) ??
+      writable.find((c) => c.source?.type === 'com.google') ??
+      writable[0];
+    if (!primary) throw new Error('쓰기 가능한 캘린더를 찾을 수 없습니다.');
+    calendarId = primary.id;
   }
 
   // All-day event (time not stored in our DB)
