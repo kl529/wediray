@@ -2,6 +2,19 @@
 
 ---
 
+## QA 발견 이슈 (2026-04-02, /qa by gstack)
+
+### [x] ISSUE-001: DEV 캘린더 테스트 버튼 설정화면 노출 — 수정됨 (commit: bd3e364)
+- `__DEV__` 조건으로 감싸 EAS 프로덕션 빌드에서 숨김
+- `app/app/(app)/settings.tsx`
+
+### [ ] ISSUE-002: 저장 실패 시 에러 배너가 스크롤 위에 숨겨짐 (Low)
+- `/new` 폼에서 에러 발생 시 ScrollView 최상단으로 스크롤 리셋 필요
+- `app/app/(app)/new.tsx` — ScrollView ref 추가 후 `scrollTo({ y: 0 })` 호출
+- 우선순위 낮음 (모바일에서는 키보드가 뷰를 올려줘서 덜 문제됨)
+
+---
+
 ## 세션 2026-04-02 작업 내역
 
 ### [x] parse-invitation Edge Function 버그 수정 (commit: 9ad278c, 185fa2e)

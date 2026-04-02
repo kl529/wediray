@@ -1,107 +1,21 @@
-[2026-03-31T07:54:10.111Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T07:54:10.153Z] [log] Running application "main" with appParams:
+[2026-04-02T03:40:34.900Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-02T03:40:34.941Z] [log] Running application "main" with appParams:
  {rootTag: #root, hydrate: undefined} 
 Development-level warnings: ON.
 Performance optimizations: OFF.
-[2026-03-31T07:54:10.300Z] [warning] "shadow*" style props are deprecated. Use "boxShadow".
-[2026-03-31T07:54:42.209Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
-[2026-03-31T07:55:50.257Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T07:55:50.269Z] [log] Running application "main" with appParams:
+[2026-04-02T03:40:39.977Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-02T03:40:40.010Z] [log] Running application "main" with appParams:
  {rootTag: #root, hydrate: undefined} 
 Development-level warnings: ON.
 Performance optimizations: OFF.
-[2026-03-31T07:55:50.390Z] [warning] "shadow*" style props are deprecated. Use "boxShadow".
-[2026-03-31T07:56:22.231Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T07:56:22.246Z] [log] Running application "main" with appParams:
+[2026-04-02T03:42:17.201Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-02T03:42:17.214Z] [log] Running application "main" with appParams:
  {rootTag: #root, hydrate: undefined} 
 Development-level warnings: ON.
 Performance optimizations: OFF.
-[2026-03-31T07:56:54.548Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T07:56:54.582Z] [log] Running application "main" with appParams:
+[2026-04-02T03:42:24.163Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-02T03:46:26.987Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-02T03:46:27.018Z] [log] Running application "main" with appParams:
  {rootTag: #root, hydrate: undefined} 
 Development-level warnings: ON.
 Performance optimizations: OFF.
-[2026-03-31T08:20:53.390Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:20:53.402Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:21:40.206Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:21:40.242Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:22:14.541Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
-[2026-03-31T08:23:08.535Z] [log] errors: []
-[2026-03-31T08:23:08.535Z] [log] URL: http://localhost:19006/new
-[2026-03-31T08:25:16.313Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:25:16.329Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:26:00.647Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:26:00.661Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:26:00.779Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
-[2026-03-31T08:29:02.228Z] [log] fiber key: __reactFiber$p4b6j4xhrx
-[2026-03-31T08:29:02.228Z] [log] input value: 김철수
-[2026-03-31T08:29:44.841Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:29:44.875Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:30:27.059Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:30:27.098Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:30:27.374Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:30:27.386Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:30:33.587Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:30:33.599Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:30:52.482Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
-[2026-03-31T08:31:59.673Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:31:59.707Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:31:59.837Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
-[2026-03-31T08:33:16.656Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:33:16.690Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:33:16.831Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
-[2026-03-31T08:33:59.182Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:33:59.196Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:34:38.059Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
-[2026-03-31T08:35:11.537Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:35:11.551Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:35:22.309Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:35:22.321Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:35:34.027Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-03-31T08:35:34.041Z] [log] Running application "main" with appParams:
- {rootTag: #root, hydrate: undefined} 
-Development-level warnings: ON.
-Performance optimizations: OFF.
-[2026-03-31T08:35:38.193Z] [warning] Disconnected from Metro (1006)
-To reconnect:
-- Ensure that Metro is running and available on the same network
-- Reload this app (will trigger further help if Metro cannot be connected to)
