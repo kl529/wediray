@@ -19,25 +19,22 @@
 ### [x] FINDING-006: KAKAO_YELLOW 상수화 — 수정됨 (commit: 997c4e5)
 - `app/lib/constants.ts` + `app/app/(auth)/login.tsx`
 
-### [ ] FINDING-002: 접근성(Accessibility) 전체 부재 — 미완료 (High)
-- 모든 화면에서 `accessibilityLabel`, `accessibilityRole` 누락
-- FAB (+): `accessibilityLabel="결혼식 추가"` 필요
-- 뒤로 버튼: `accessibilityLabel="뒤로"` 필요
-- 감정 태그 칩: `accessibilityState={{ selected }}` 필요
-- 파일: `index.tsx`, `settings.tsx`, `privacy.tsx`, `[id].tsx`, `new.tsx`
-- App Store 접근성 가이드라인 위반 가능성
+### [x] FINDING-002: 접근성(Accessibility) 전체 부재 — 수정됨 (commit: 0bbb8cf)
+- 5개 화면 전체 인터랙티브 요소에 accessibilityLabel/Role/State 추가
+- index(FAB·탭·설정버튼·카드), settings(뒤로·약관·로그아웃), privacy(뒤로)
+- [id](뒤로·편집·삭제·캘린더·사진·감정태그·저장), new(취소·저장·불러오기·스캔·참석여부)
 
-### [ ] DESIGN-TODO-001: 공유 ScreenHeader 컴포넌트 추출 (Medium)
-- 현재 헤더 패턴(`px-6 pt-16 pb-4` + 뒤로버튼 + 타이틀)이 4개 화면에 copy-paste됨
-- `settings.tsx:30`, `privacy.tsx:9`, `[id].tsx:166`, `new.tsx:132`
+### [x] DESIGN-TODO-001: 공유 ScreenHeader 컴포넌트 추출 — 수정됨 (commit: bf5bb08)
+- `app/components/ScreenHeader.tsx` 생성 (left/center/right 슬롯)
+- settings, privacy, [id], new 4개 화면 헤더 교체
 
-### [ ] DESIGN-TODO-002: border-radius 계층 명문화 (Medium)
-- 현재 암묵적: cards=`rounded-2xl`, inputs=`rounded-xl`, tab items=`rounded-lg`
-- constants.ts 또는 tailwind.config에 시맨틱 토큰 추가
+### [x] DESIGN-TODO-002: border-radius 계층 명문화 — 수정됨 (commit: 5e3bbbc)
+- `tailwind.config.js`에 card(16px)/input(12px)/tab(8px)/pill(9999px) 시맨틱 토큰 추가
 
-### [ ] DESIGN-TODO-003: 커스텀 폰트 도입 검토 (Polish)
-- 현재 시스템 폰트만 사용 — Y2K 다이어리 컨셉에 맞는 개성 없음
-- 후보: Fredoka, Space Grotesk, Gaegu(한국어)
+### [x] DESIGN-TODO-003: 커스텀 폰트 도입 — 수정됨 (commit: 73e6278)
+- `@expo-google-fonts/gaegu`, `@expo-google-fonts/fredoka` 설치
+- "wediary" 로고 → Fredoka_600SemiBold, "설정"/"개인정보처리방침" → Gaegu_700Bold
+- `_layout.tsx`에 useFonts + SplashScreen 연동
 
 ---
 
@@ -47,10 +44,9 @@
 - `__DEV__` 조건으로 감싸 EAS 프로덕션 빌드에서 숨김
 - `app/app/(app)/settings.tsx`
 
-### [ ] ISSUE-002: 저장 실패 시 에러 배너가 스크롤 위에 숨겨짐 (Low)
-- `/new` 폼에서 에러 발생 시 ScrollView 최상단으로 스크롤 리셋 필요
-- `app/app/(app)/new.tsx` — ScrollView ref 추가 후 `scrollTo({ y: 0 })` 호출
-- 우선순위 낮음 (모바일에서는 키보드가 뷰를 올려줘서 덜 문제됨)
+### [x] ISSUE-002: 저장 실패 시 에러 배너가 스크롤 위에 숨겨짐 — 수정됨 (commit: 1f2f818)
+- `app/app/(app)/new.tsx` — ScrollView ref 추가, 에러 시 scrollTo({ y: 0, animated: true }) 호출
+- handleSave 유효성 오류 + mutation onError 양쪽 처리
 
 ---
 
