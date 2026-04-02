@@ -34,6 +34,8 @@ function PhotoCard({
       )}
       <TouchableOpacity
         onPress={onDelete}
+        accessibilityRole="button"
+        accessibilityLabel="사진 삭제"
         className="absolute top-1 right-1 bg-black/60 w-6 h-6 rounded-full items-center justify-center"
       >
         <Text className="text-white text-xs">✕</Text>
@@ -164,14 +166,26 @@ export default function EventDetailScreen() {
     >
       {/* Header */}
       <View className="flex-row items-center justify-between px-6 pt-16 pb-4">
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          accessibilityRole="button"
+          accessibilityLabel="뒤로"
+        >
           <Text className="text-white/50 text-base">← 뒤로</Text>
         </TouchableOpacity>
         <View className="flex-row gap-4">
-          <TouchableOpacity onPress={() => router.push(`/(app)/new?id=${id}`)}>
+          <TouchableOpacity
+            onPress={() => router.push(`/(app)/new?id=${id}`)}
+            accessibilityRole="button"
+            accessibilityLabel="편집"
+          >
             <Text className="text-pink-400 text-sm">편집</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleDeleteWedding}>
+          <TouchableOpacity
+            onPress={handleDeleteWedding}
+            accessibilityRole="button"
+            accessibilityLabel="삭제"
+          >
             <Text className="text-white/30 text-sm">삭제</Text>
           </TouchableOpacity>
         </View>
@@ -203,6 +217,8 @@ export default function EventDetailScreen() {
                   Alert.alert('추가 실패', e.message);
                 }
               }}
+              accessibilityRole="button"
+              accessibilityLabel="캘린더에 추가"
               className="flex-row items-center gap-1 px-3 py-1 rounded-full bg-white/10 border border-white/10"
             >
               <Text className="text-sm">📅</Text>
@@ -238,6 +254,9 @@ export default function EventDetailScreen() {
               <TouchableOpacity
                 key={tag}
                 onPress={() => toggleTag(tag)}
+                accessibilityRole="checkbox"
+                accessibilityLabel={tag}
+                accessibilityState={{ checked: selectedTags.includes(tag) }}
                 className={`px-3 py-2 rounded-full border ${
                   selectedTags.includes(tag)
                     ? 'bg-pink-400 border-pink-400'
@@ -283,6 +302,8 @@ export default function EventDetailScreen() {
               <TouchableOpacity
                 onPress={() => addPhoto.mutate()}
                 disabled={addPhoto.isPending}
+                accessibilityRole="button"
+                accessibilityLabel="사진 추가"
                 className="w-28 h-28 rounded-2xl border border-dashed border-white/20 items-center justify-center"
               >
                 {addPhoto.isPending
@@ -297,6 +318,8 @@ export default function EventDetailScreen() {
         <TouchableOpacity
           onPress={() => saveMemory.mutate()}
           disabled={saveMemory.isPending}
+          accessibilityRole="button"
+          accessibilityLabel="기억 저장"
           className="bg-pink-400 rounded-xl py-4 items-center"
         >
           {saveMemory.isPending

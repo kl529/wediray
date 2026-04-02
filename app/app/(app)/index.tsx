@@ -9,6 +9,8 @@ function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => vo
   return (
     <TouchableOpacity
       onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={`${wedding.groom} ♥ ${wedding.bride}, ${formatDateKR(wedding.date)}, ${ATTENDANCE_LABEL[wedding.attendance]}`}
       className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-3 active:opacity-70"
     >
       <View className="flex-row items-center justify-between">
@@ -57,7 +59,11 @@ export default function HomeScreen() {
       {/* Header */}
       <View className="flex-row items-center justify-between px-6 pt-16 pb-4">
         <Text className="text-pink-400 text-2xl font-bold tracking-widest">wediary</Text>
-        <TouchableOpacity onPress={() => router.push('/(app)/settings')}>
+        <TouchableOpacity
+          onPress={() => router.push('/(app)/settings')}
+          accessibilityRole="button"
+          accessibilityLabel="설정"
+        >
           <Text className="text-white/40 text-sm">설정</Text>
         </TouchableOpacity>
       </View>
@@ -66,6 +72,9 @@ export default function HomeScreen() {
       <View className="flex-row mx-6 mb-4 bg-white/5 rounded-xl p-1">
         <TouchableOpacity
           onPress={() => setTab('upcoming')}
+          accessibilityRole="tab"
+          accessibilityLabel={`예정${upcoming.length > 0 ? ` (${upcoming.length})` : ''}`}
+          accessibilityState={{ selected: tab === 'upcoming' }}
           className={`flex-1 py-2 rounded-lg items-center ${tab === 'upcoming' ? 'bg-pink-400' : ''}`}
         >
           <Text className={`text-sm font-semibold ${tab === 'upcoming' ? 'text-black' : 'text-white/40'}`}>
@@ -74,6 +83,9 @@ export default function HomeScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setTab('done')}
+          accessibilityRole="tab"
+          accessibilityLabel={`지난 결혼식${done.length > 0 ? ` (${done.length})` : ''}`}
+          accessibilityState={{ selected: tab === 'done' }}
           className={`flex-1 py-2 rounded-lg items-center ${tab === 'done' ? 'bg-pink-400' : ''}`}
         >
           <Text className={`text-sm font-semibold ${tab === 'done' ? 'text-black' : 'text-white/40'}`}>
@@ -105,6 +117,8 @@ export default function HomeScreen() {
       {/* FAB */}
       <TouchableOpacity
         onPress={() => router.push('/(app)/new')}
+        accessibilityRole="button"
+        accessibilityLabel="결혼식 추가"
         className="absolute bottom-10 right-6 bg-pink-400 w-14 h-14 rounded-full items-center justify-center"
         style={{ boxShadow: `0 0 12px 4px rgba(244,114,182,0.5)`, elevation: 8 } as any}
       >

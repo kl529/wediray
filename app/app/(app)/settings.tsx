@@ -28,7 +28,12 @@ export default function SettingsScreen() {
   return (
     <View className="flex-1 bg-black">
       <View className="px-6 pt-16 pb-4">
-        <TouchableOpacity onPress={() => router.back()} className="py-2">
+        <TouchableOpacity
+          onPress={() => router.back()}
+          accessibilityRole="button"
+          accessibilityLabel="뒤로"
+          className="py-2"
+        >
           <Text className="text-white/50 text-base">← 뒤로</Text>
         </TouchableOpacity>
       </View>
@@ -43,6 +48,8 @@ export default function SettingsScreen() {
 
         <TouchableOpacity
           onPress={() => router.push('/privacy')}
+          accessibilityRole="button"
+          accessibilityLabel="개인정보처리방침"
           className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-4"
         >
           <Text className="text-white/60 text-sm">개인정보처리방침</Text>
@@ -73,6 +80,8 @@ export default function SettingsScreen() {
 
         <TouchableOpacity
           onPress={handleSignOut}
+          accessibilityRole="button"
+          accessibilityLabel="로그아웃"
           className="bg-white/5 border border-white/10 rounded-2xl p-4"
         >
           <Text className="text-red-400 text-sm font-semibold">로그아웃</Text>

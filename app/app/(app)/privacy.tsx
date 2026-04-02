@@ -7,7 +7,12 @@ export default function PrivacyScreen() {
   return (
     <View className="flex-1 bg-black">
       <View className="px-6 pt-16 pb-4">
-        <TouchableOpacity onPress={() => router.back()} className="py-2">
+        <TouchableOpacity
+          onPress={() => router.back()}
+          accessibilityRole="button"
+          accessibilityLabel="뒤로"
+          className="py-2"
+        >
           <Text className="text-white/50 text-base">← 뒤로</Text>
         </TouchableOpacity>
       </View>

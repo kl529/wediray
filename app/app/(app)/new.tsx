@@ -130,13 +130,24 @@ export default function NewEventScreen() {
     >
       {/* Header */}
       <View className="flex-row items-center justify-between px-6 pt-16 pb-4">
-        <TouchableOpacity onPress={() => router.back()} className="py-2">
+        <TouchableOpacity
+          onPress={() => router.back()}
+          accessibilityRole="button"
+          accessibilityLabel="취소"
+          className="py-2"
+        >
           <Text className="text-white/50 text-base">취소</Text>
         </TouchableOpacity>
         <Text className="text-white font-bold text-base">
           {isEdit ? '결혼식 수정' : '새 결혼식'}
         </Text>
-        <TouchableOpacity onPress={handleSave} disabled={mutation.isPending} className="py-2">
+        <TouchableOpacity
+          onPress={handleSave}
+          disabled={mutation.isPending}
+          accessibilityRole="button"
+          accessibilityLabel="저장"
+          className="py-2"
+        >
           {mutation.isPending
             ? <ActivityIndicator color={BRAND_PINK} size="small" />
             : <Text className="text-pink-400 font-bold text-base">저장</Text>}
@@ -168,6 +179,8 @@ export default function NewEventScreen() {
             <TouchableOpacity
               onPress={handleParse}
               disabled={parsing || !inviteUrl.trim()}
+              accessibilityRole="button"
+              accessibilityLabel="불러오기"
               className="bg-pink-400 rounded-xl px-4 items-center justify-center"
             >
               {parsing
@@ -184,6 +197,8 @@ export default function NewEventScreen() {
                 { text: '취소', style: 'cancel' },
               ])}
               disabled={scanning}
+              accessibilityRole="button"
+              accessibilityLabel="청첩장 사진으로 스캔"
               className="flex-1 flex-row items-center justify-center gap-2 bg-white/5 border border-white/10 rounded-xl py-3"
             >
               {scanning
@@ -274,6 +289,9 @@ export default function NewEventScreen() {
               <TouchableOpacity
                 key={opt.value}
                 onPress={() => setAttendance(opt.value)}
+                accessibilityRole="radio"
+                accessibilityLabel={opt.label}
+                accessibilityState={{ selected: attendance === opt.value }}
                 className={`flex-1 py-3 rounded-xl items-center border ${
                   attendance === opt.value
                     ? 'bg-pink-400 border-pink-400'
