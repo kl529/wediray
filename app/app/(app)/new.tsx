@@ -153,7 +153,7 @@ export default function NewEventScreen() {
 
         {/* Invitation URL + OCR */}
         <View className="mb-6">
-          <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">자동 입력</Text>
+          <Text className="text-white/40 text-xs mb-2">자동 입력</Text>
           {/* URL row */}
           <View className="flex-row gap-2 mb-2">
             <TextInput
@@ -200,7 +200,7 @@ export default function NewEventScreen() {
 
         {/* Groom */}
         <View className="mb-4">
-          <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">신랑</Text>
+          <Text className="text-white/40 text-xs mb-2">신랑</Text>
           <TextInput
             value={groom}
             onChangeText={setGroom}
@@ -212,7 +212,7 @@ export default function NewEventScreen() {
 
         {/* Bride */}
         <View className="mb-4">
-          <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">신부</Text>
+          <Text className="text-white/40 text-xs mb-2">신부</Text>
           <TextInput
             value={bride}
             onChangeText={setBride}
@@ -224,7 +224,7 @@ export default function NewEventScreen() {
 
         {/* Date */}
         <View className="mb-4">
-          <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">날짜</Text>
+          <Text className="text-white/40 text-xs mb-2">날짜</Text>
           {Platform.OS === 'ios' ? (
             <DateTimePicker
               value={dateObj}
@@ -259,7 +259,7 @@ export default function NewEventScreen() {
 
         {/* Venue */}
         <View className="mb-6">
-          <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">장소</Text>
+          <Text className="text-white/40 text-xs mb-2">장소</Text>
           <TextInput
             value={venue}
             onChangeText={setVenue}
@@ -271,7 +271,7 @@ export default function NewEventScreen() {
 
         {/* Attendance */}
         <View>
-          <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">참석 여부</Text>
+          <Text className="text-white/40 text-xs mb-2">참석 여부</Text>
           <View className="flex-row gap-2">
             {ATTENDANCE_OPTIONS.map((opt) => (
               <TouchableOpacity
