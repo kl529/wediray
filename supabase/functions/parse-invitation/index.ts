@@ -19,7 +19,8 @@ serve(async (req) => {
     if (parsed.protocol !== 'https:') {
       return new Response(JSON.stringify({ error: 'https only' }), { status: 400 });
     }
-    if (/^(10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|127\.|169\.254\.|::1$|localhost)/.test(parsed.hostname)) {
+    const PRIVATE_IP = /^(10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|127\.|169\.254\.|::1$|localhost)/;
+    if (PRIVATE_IP.test(parsed.hostname)) {
       return new Response(JSON.stringify({ error: 'private address not allowed' }), { status: 400 });
     }
 
@@ -33,7 +34,7 @@ serve(async (req) => {
       const inner = finalParsed.searchParams.get('url')!;
       try {
         const innerParsed = new URL(inner);
-        if (innerParsed.protocol === 'https:') {
+        if (innerParsed.protocol === 'https:' && !PRIVATE_IP.test(innerParsed.hostname)) {
           res = await fetch(inner, {
             headers: { 'User-Agent': 'Mozilla/5.0 (compatible; WediaryBot/1.0)' },
           });
@@ -46,11 +47,9 @@ serve(async (req) => {
 
     // Extract names from common Korean wedding invitation patterns
     // og:title pattern covers "신랑 ♡ 신부 결혼 합니다" style (barunsoncard, etc.)
-    const ogTitleMatch = html.match(/og:title[^>]*content="([^"]+)"/);
-    if (!ogTitleMatch) {
-      // also try reversed attribute order
+    const ogTitleMatch =
+      html.match(/og:title[^>]*content="([^"]+)"/) ??
       html.match(/content="([^"]+)"[^>]*og:title/);
-    }
     const titleStr = ogTitleMatch ? ogTitleMatch[1] : '';
     const titleNames = titleStr.match(/([가-힣]{2,5})\s*[♡♥❤]\s*([가-힣]{2,5})/);
 

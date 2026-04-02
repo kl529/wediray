@@ -23,8 +23,19 @@ export async function addWeddingToCalendar(params: {
       writable.find((c) => c.isPrimary) ??
       writable.find((c) => c.source?.type === 'com.google') ??
       writable[0];
-    if (!primary) throw new Error('쓰기 가능한 캘린더를 찾을 수 없습니다.');
-    calendarId = primary.id;
+    if (primary) {
+      calendarId = primary.id;
+    } else {
+      // 에뮬레이터나 Google 계정 없는 기기: 로컬 캘린더 생성 (Android only)
+      calendarId = await Calendar.createCalendarAsync({
+        title: 'Wediary',
+        color: '#f472b6',
+        entityType: Calendar.EntityTypes.EVENT,
+        name: 'wediary',
+        ownerAccount: 'personal',
+        accessLevel: Calendar.CalendarAccessLevel.OWNER,
+      });
+    }
   }
 
   const [y, m, d] = params.date.split('-').map(Number);

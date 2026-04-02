@@ -28,7 +28,7 @@
 - Android ClassCastException 수정: `allDay: true` 제거 → 00:00~23:59 시간 범위 사용
 - `NSCalendarsUsageDescription`, `READ_CALENDAR`, `WRITE_CALENDAR` 권한 추가
 
-### [ ] Android 에뮬레이터 세팅 (미완료 — 다음 세션에서 계속)
+### [x] Android 에뮬레이터 세팅 (완료 2026-04-02)
 **현재 상태:**
 - Android Studio 설치 완료: `/Applications/Android Studio.app`
 - Android SDK 위치: `~/Library/Android/sdk`
@@ -36,26 +36,20 @@
 - OpenJDK 17: `/opt/homebrew/opt/openjdk@17`
 - system-image 다운로드 중 (백그라운드 작업 `b3rrgwjp2` — `system-images;android-35;google_apis;arm64-v8a`)
 
-**다음 세션에서 할 일:**
-1. system-image 설치 완료 확인:
-   ```bash
-   ls ~/Library/Android/sdk/system-images/android-35/
-   ```
-2. AVD 생성:
-   ```bash
-   export JAVA_HOME=/opt/homebrew/opt/openjdk@17
-   export ANDROID_HOME=$HOME/Library/Android/sdk
-   export PATH=$JAVA_HOME/bin:$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools
-   avdmanager create avd -n wediary_test -k "system-images;android-35;google_apis;arm64-v8a" -d pixel_8
-   ```
-3. 에뮬레이터 실행:
-   ```bash
-   emulator -avd wediary_test &
-   ```
-4. 앱 빌드:
-   ```bash
-   cd app && npm run android
-   ```
+**완료된 작업:**
+- system-image `android-35;google_apis;arm64-v8a` 설치
+- AVD `wediary_test` 생성 (Pixel 7 / API 35)
+- `npx expo run:android`로 네이티브 빌드 완료
+- `com.lyvakim.wediary` 에뮬레이터에 설치 및 실행 확인
+
+**다음 실행 방법:**
+```bash
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools
+emulator -avd wediary_test -no-audio &
+# 부팅 후
+cd app && npx expo run:android
+```
 
 ---
 
