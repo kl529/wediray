@@ -21,7 +21,7 @@ export default function PrivacyScreen() {
       />
 
       <ScrollView contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 60 }}>
-        <Text className="text-pink-400 text-2xl font-bold tracking-widest mb-6">개인정보처리방침</Text>
+        <Text className="text-pink-400 text-2xl font-gaegu-bold tracking-widest mb-6">개인정보처리방침</Text>
 
         <Text className="text-white/40 text-xs mb-8">시행일: 2026년 3월 31일</Text>
 

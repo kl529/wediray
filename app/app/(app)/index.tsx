@@ -58,7 +58,7 @@ export default function HomeScreen() {
     <View className="flex-1 bg-black">
       {/* Header */}
       <View className="flex-row items-center justify-between px-6 pt-16 pb-4">
-        <Text className="text-pink-400 text-2xl font-bold tracking-widest">wediary</Text>
+        <Text className="text-pink-400 text-2xl font-fredoka-semibold tracking-widest">wediary</Text>
         <TouchableOpacity
           onPress={() => router.push('/(app)/settings')}
           accessibilityRole="button"

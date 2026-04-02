@@ -13,6 +13,13 @@ module.exports = {
         lime: { 400: '#CCFF00', 500: '#AAEE00' },
         sky: { 400: '#00CFFF', 500: '#00AADD' },
       },
+      fontFamily: {
+        // Y2K 컨셉 폰트
+        fredoka: ['Fredoka_400Regular'],          // 브랜드 로고 "wediary" (라틴 영문)
+        'fredoka-semibold': ['Fredoka_600SemiBold'],
+        gaegu: ['Gaegu_400Regular'],              // 한국어 다이어리 감성 타이틀
+        'gaegu-bold': ['Gaegu_700Bold'],
+      },
       borderRadius: {
         // 시맨틱 radius 계층 — rounded-{token} 으로 사용
         // card:  결혼식 목록 카드, 설정 메뉴 행, 사진 썸네일 (rounded-2xl = 16px)

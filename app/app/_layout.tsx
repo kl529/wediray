@@ -2,12 +2,28 @@ import '../global.css';
 import { useEffect, useRef } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { supabase } from '../lib/supabase';
+import { useFonts, Gaegu_400Regular, Gaegu_700Bold } from '@expo-google-fonts/gaegu';
+import { Fredoka_400Regular, Fredoka_600SemiBold } from '@expo-google-fonts/fredoka';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const router = useRouter();
   const segments = useSegments();
   const segmentsRef = useRef(segments);
   segmentsRef.current = segments;
+
+  const [fontsLoaded] = useFonts({
+    Fredoka_400Regular,
+    Fredoka_600SemiBold,
+    Gaegu_400Regular,
+    Gaegu_700Bold,
+  });
+
+  useEffect(() => {
+    if (fontsLoaded) SplashScreen.hideAsync();
+  }, [fontsLoaded]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -22,6 +38,8 @@ export default function RootLayout() {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  if (!fontsLoaded) return null;
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
