@@ -3,6 +3,9 @@ import type { Attendance } from './db';
 // Brand color — single source of truth for Tailwind pink-400
 export const BRAND_PINK = '#f472b6';
 
+// Kakao brand color — mandated by Kakao design guidelines
+export const KAKAO_YELLOW = '#FEE500';
+
 // Attendance labels
 export const ATTENDANCE_LABEL: Record<Attendance, string> = {
   attending: '참석',

@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { supabase } from '../../lib/supabase';
+import { KAKAO_YELLOW } from '../../lib/constants';
 
 export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
@@ -29,7 +30,8 @@ export default function LoginScreen() {
       <TouchableOpacity
         onPress={handleKakaoLogin}
         disabled={loading}
-        className="bg-[#FEE500] rounded-xl px-8 py-4 flex-row items-center gap-3 w-72 justify-center"
+        style={{ backgroundColor: KAKAO_YELLOW }}
+        className="rounded-xl px-8 py-4 flex-row items-center gap-3 w-72 justify-center"
       >
         {loading ? (
           <ActivityIndicator color="#000" />
