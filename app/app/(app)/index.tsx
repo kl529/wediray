@@ -32,6 +32,9 @@ function EmptyState({ tab }: { tab: 'upcoming' | 'done' }) {
       <Text className="text-white/40 text-sm mt-2">
         {tab === 'upcoming' ? '예정된 결혼식이 없어요' : '아직 기록이 없어요'}
       </Text>
+      <Text className="text-white/20 text-xs mt-1">
+        오른쪽 아래 + 버튼으로 추가해보세요
+      </Text>
     </View>
   );
 }
