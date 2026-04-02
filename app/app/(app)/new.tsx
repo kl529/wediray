@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
   ScrollView, ActivityIndicator, Alert, KeyboardAvoidingView, Platform,
@@ -36,6 +36,7 @@ export default function NewEventScreen() {
   const [parsing, setParsing] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [formError, setFormError] = useState('');
+  const scrollRef = useRef<ScrollView>(null);
 
   const { data: existing } = useQuery({
     queryKey: ['wedding', id],
@@ -71,6 +72,7 @@ export default function NewEventScreen() {
     },
     onError: (e: Error) => {
       setFormError(`저장 실패: ${e.message}`);
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
       Alert.alert('저장 실패', e.message);
     },
   });
@@ -118,6 +120,7 @@ export default function NewEventScreen() {
     setFormError('');
     if (!groom.trim() || !bride.trim() || !venue.trim()) {
       setFormError('모든 항목을 채워주세요.');
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
       Alert.alert('입력 확인', '모든 항목을 채워주세요.');
       return;
     }
@@ -160,7 +163,7 @@ export default function NewEventScreen() {
         }
       />
 
-      <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 60 }}>
+      <ScrollView ref={scrollRef} contentContainerStyle={{ padding: 24, paddingBottom: 60 }}>
         {/* Inline error banner */}
         {formError ? (
           <View className="bg-red-500/20 border border-red-500/40 rounded-xl px-4 py-3 mb-4">
