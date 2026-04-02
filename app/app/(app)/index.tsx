@@ -105,7 +105,7 @@ export default function HomeScreen() {
         className="absolute bottom-10 right-6 bg-pink-400 w-14 h-14 rounded-full items-center justify-center"
         style={{ boxShadow: `0 0 12px 4px rgba(244,114,182,0.5)`, elevation: 8 } as any}
       >
-        <Text className="text-black text-3xl font-light">+</Text>
+        <Text className="text-black text-3xl font-bold">+</Text>
       </TouchableOpacity>
     </View>
   );
