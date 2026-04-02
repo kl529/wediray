@@ -188,10 +188,7 @@ export default function NewEventScreen() {
             >
               {scanning
                 ? <ActivityIndicator color={BRAND_PINK} size="small" />
-                : <>
-                    <Text className="text-lg">📷</Text>
-                    <Text className="text-white/60 text-sm">청첩장 사진으로 스캔</Text>
-                  </>}
+                : <Text className="text-white/60 text-sm">청첩장 사진으로 스캔</Text>}
             </TouchableOpacity>
           </View>
         </View>
