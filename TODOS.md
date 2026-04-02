@@ -2,6 +2,45 @@
 
 ---
 
+## Design Review 발견 이슈 (2026-04-02, /design-review by gstack)
+
+### [x] FINDING-001: 빈 상태에 FAB 안내 텍스트 추가 — 수정됨 (commit: 08d8039)
+- `app/app/(app)/index.tsx` — EmptyState에 "오른쪽 아래 + 버튼으로 추가해보세요" 안내 추가
+
+### [x] FINDING-003: FAB + 아이콘 font-light → font-bold — 수정됨 (commit: 171bf4e)
+- `app/app/(app)/index.tsx:108`
+
+### [x] FINDING-004: 한국어 섹션 레이블 uppercase tracking-widest 제거 — 수정됨 (commit: 315dd19)
+- `app/app/(app)/new.tsx` — 5개 레이블에서 uppercase tracking-widest 제거
+
+### [x] FINDING-005: 스캔 버튼 📷 이모지 제거 — 수정됨 (commit: 456130b)
+- `app/app/(app)/new.tsx:192`
+
+### [x] FINDING-006: KAKAO_YELLOW 상수화 — 수정됨 (commit: 997c4e5)
+- `app/lib/constants.ts` + `app/app/(auth)/login.tsx`
+
+### [ ] FINDING-002: 접근성(Accessibility) 전체 부재 — 미완료 (High)
+- 모든 화면에서 `accessibilityLabel`, `accessibilityRole` 누락
+- FAB (+): `accessibilityLabel="결혼식 추가"` 필요
+- 뒤로 버튼: `accessibilityLabel="뒤로"` 필요
+- 감정 태그 칩: `accessibilityState={{ selected }}` 필요
+- 파일: `index.tsx`, `settings.tsx`, `privacy.tsx`, `[id].tsx`, `new.tsx`
+- App Store 접근성 가이드라인 위반 가능성
+
+### [ ] DESIGN-TODO-001: 공유 ScreenHeader 컴포넌트 추출 (Medium)
+- 현재 헤더 패턴(`px-6 pt-16 pb-4` + 뒤로버튼 + 타이틀)이 4개 화면에 copy-paste됨
+- `settings.tsx:30`, `privacy.tsx:9`, `[id].tsx:166`, `new.tsx:132`
+
+### [ ] DESIGN-TODO-002: border-radius 계층 명문화 (Medium)
+- 현재 암묵적: cards=`rounded-2xl`, inputs=`rounded-xl`, tab items=`rounded-lg`
+- constants.ts 또는 tailwind.config에 시맨틱 토큰 추가
+
+### [ ] DESIGN-TODO-003: 커스텀 폰트 도입 검토 (Polish)
+- 현재 시스템 폰트만 사용 — Y2K 다이어리 컨셉에 맞는 개성 없음
+- 후보: Fredoka, Space Grotesk, Gaegu(한국어)
+
+---
+
 ## QA 발견 이슈 (2026-04-02, /qa by gstack)
 
 ### [x] ISSUE-001: DEV 캘린더 테스트 버튼 설정화면 노출 — 수정됨 (commit: bd3e364)
