@@ -49,25 +49,27 @@ export default function SettingsScreen() {
         </TouchableOpacity>
 
         {/* DEV ONLY — 캘린더 연동 테스트 */}
-        <TouchableOpacity
-          onPress={async () => {
-            try {
-              await addWeddingToCalendar({
-                groom: '김철수',
-                bride: '이영희',
-                date: '2026-06-15',
-                venue: '더플라자 호텔 그랜드볼룸',
-              });
-              Alert.alert('✅ 성공', '캘린더에 추가됐습니다. 기기 캘린더 앱을 확인하세요.');
-            } catch (e: any) {
-              Alert.alert('❌ 실패', e.message);
-            }
-          }}
-          className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-4"
-        >
-          <Text className="text-sky-400 text-sm font-semibold">📅 캘린더 연동 테스트 (DEV)</Text>
-          <Text className="text-white/30 text-xs mt-1">김철수 ♥ 이영희 · 2026-06-15</Text>
-        </TouchableOpacity>
+        {__DEV__ && (
+          <TouchableOpacity
+            onPress={async () => {
+              try {
+                await addWeddingToCalendar({
+                  groom: '김철수',
+                  bride: '이영희',
+                  date: '2026-06-15',
+                  venue: '더플라자 호텔 그랜드볼룸',
+                });
+                Alert.alert('✅ 성공', '캘린더에 추가됐습니다. 기기 캘린더 앱을 확인하세요.');
+              } catch (e: any) {
+                Alert.alert('❌ 실패', e.message);
+              }
+            }}
+            className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-4"
+          >
+            <Text className="text-sky-400 text-sm font-semibold">📅 캘린더 연동 테스트 (DEV)</Text>
+            <Text className="text-white/30 text-xs mt-1">김철수 ♥ 이영희 · 2026-06-15</Text>
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity
           onPress={handleSignOut}
