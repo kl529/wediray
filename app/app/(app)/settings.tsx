@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { ScreenHeader } from '../../components/ScreenHeader';
 import { supabase } from '../../lib/supabase';
 import { addWeddingToCalendar } from '../../lib/calendar';
 
@@ -27,16 +28,18 @@ export default function SettingsScreen() {
 
   return (
     <View className="flex-1 bg-black">
-      <View className="px-6 pt-16 pb-4">
-        <TouchableOpacity
-          onPress={() => router.back()}
-          accessibilityRole="button"
-          accessibilityLabel="뒤로"
-          className="py-2"
-        >
-          <Text className="text-white/50 text-base">← 뒤로</Text>
-        </TouchableOpacity>
-      </View>
+      <ScreenHeader
+        left={
+          <TouchableOpacity
+            onPress={() => router.back()}
+            accessibilityRole="button"
+            accessibilityLabel="뒤로"
+            className="py-2"
+          >
+            <Text className="text-white/50 text-base">← 뒤로</Text>
+          </TouchableOpacity>
+        }
+      />
 
       <View className="px-6 pt-4">
         <Text className="text-pink-400 text-2xl font-bold tracking-widest mb-8">설정</Text>

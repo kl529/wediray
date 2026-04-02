@@ -3,6 +3,7 @@ import {
   View, Text, TextInput, TouchableOpacity,
   ScrollView, ActivityIndicator, Alert, KeyboardAvoidingView, Platform,
 } from 'react-native';
+import { ScreenHeader } from '../../components/ScreenHeader';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -128,31 +129,36 @@ export default function NewEventScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       className="flex-1 bg-black"
     >
-      {/* Header */}
-      <View className="flex-row items-center justify-between px-6 pt-16 pb-4">
-        <TouchableOpacity
-          onPress={() => router.back()}
-          accessibilityRole="button"
-          accessibilityLabel="취소"
-          className="py-2"
-        >
-          <Text className="text-white/50 text-base">취소</Text>
-        </TouchableOpacity>
-        <Text className="text-white font-bold text-base">
-          {isEdit ? '결혼식 수정' : '새 결혼식'}
-        </Text>
-        <TouchableOpacity
-          onPress={handleSave}
-          disabled={mutation.isPending}
-          accessibilityRole="button"
-          accessibilityLabel="저장"
-          className="py-2"
-        >
-          {mutation.isPending
-            ? <ActivityIndicator color={BRAND_PINK} size="small" />
-            : <Text className="text-pink-400 font-bold text-base">저장</Text>}
-        </TouchableOpacity>
-      </View>
+      <ScreenHeader
+        left={
+          <TouchableOpacity
+            onPress={() => router.back()}
+            accessibilityRole="button"
+            accessibilityLabel="취소"
+            className="py-2"
+          >
+            <Text className="text-white/50 text-base">취소</Text>
+          </TouchableOpacity>
+        }
+        center={
+          <Text className="text-white font-bold text-base">
+            {isEdit ? '결혼식 수정' : '새 결혼식'}
+          </Text>
+        }
+        right={
+          <TouchableOpacity
+            onPress={handleSave}
+            disabled={mutation.isPending}
+            accessibilityRole="button"
+            accessibilityLabel="저장"
+            className="py-2"
+          >
+            {mutation.isPending
+              ? <ActivityIndicator color={BRAND_PINK} size="small" />
+              : <Text className="text-pink-400 font-bold text-base">저장</Text>}
+          </TouchableOpacity>
+        }
+      />
 
       <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 60 }}>
         {/* Inline error banner */}

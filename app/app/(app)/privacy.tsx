@@ -1,21 +1,24 @@
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { ScreenHeader } from '../../components/ScreenHeader';
 
 export default function PrivacyScreen() {
   const router = useRouter();
 
   return (
     <View className="flex-1 bg-black">
-      <View className="px-6 pt-16 pb-4">
-        <TouchableOpacity
-          onPress={() => router.back()}
-          accessibilityRole="button"
-          accessibilityLabel="뒤로"
-          className="py-2"
-        >
-          <Text className="text-white/50 text-base">← 뒤로</Text>
-        </TouchableOpacity>
-      </View>
+      <ScreenHeader
+        left={
+          <TouchableOpacity
+            onPress={() => router.back()}
+            accessibilityRole="button"
+            accessibilityLabel="뒤로"
+            className="py-2"
+          >
+            <Text className="text-white/50 text-base">← 뒤로</Text>
+          </TouchableOpacity>
+        }
+      />
 
       <ScrollView contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 60 }}>
         <Text className="text-pink-400 text-2xl font-bold tracking-widest mb-6">개인정보처리방침</Text>

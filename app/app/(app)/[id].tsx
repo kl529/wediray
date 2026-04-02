@@ -3,6 +3,7 @@ import {
   View, Text, TextInput, TouchableOpacity, ScrollView,
   Image, ActivityIndicator, Alert, KeyboardAvoidingView, Platform,
 } from 'react-native';
+import { ScreenHeader } from '../../components/ScreenHeader';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
@@ -164,32 +165,35 @@ export default function EventDetailScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       className="flex-1 bg-black"
     >
-      {/* Header */}
-      <View className="flex-row items-center justify-between px-6 pt-16 pb-4">
-        <TouchableOpacity
-          onPress={() => router.back()}
-          accessibilityRole="button"
-          accessibilityLabel="뒤로"
-        >
-          <Text className="text-white/50 text-base">← 뒤로</Text>
-        </TouchableOpacity>
-        <View className="flex-row gap-4">
+      <ScreenHeader
+        left={
           <TouchableOpacity
-            onPress={() => router.push(`/(app)/new?id=${id}`)}
+            onPress={() => router.back()}
             accessibilityRole="button"
-            accessibilityLabel="편집"
+            accessibilityLabel="뒤로"
           >
-            <Text className="text-pink-400 text-sm">편집</Text>
+            <Text className="text-white/50 text-base">← 뒤로</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleDeleteWedding}
-            accessibilityRole="button"
-            accessibilityLabel="삭제"
-          >
-            <Text className="text-white/30 text-sm">삭제</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        }
+        right={
+          <View className="flex-row gap-4">
+            <TouchableOpacity
+              onPress={() => router.push(`/(app)/new?id=${id}`)}
+              accessibilityRole="button"
+              accessibilityLabel="편집"
+            >
+              <Text className="text-pink-400 text-sm">편집</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleDeleteWedding}
+              accessibilityRole="button"
+              accessibilityLabel="삭제"
+            >
+              <Text className="text-white/30 text-sm">삭제</Text>
+            </TouchableOpacity>
+          </View>
+        }
+      />
 
       <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 60 }}>
         {/* Wedding Info */}
