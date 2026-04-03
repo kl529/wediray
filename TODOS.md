@@ -2,6 +2,36 @@
 
 ---
 
+## 세션 2026-04-03 작업 내역
+
+### [x] EAS Build 설정 완료
+- `app.json`에서 `runtimeVersion` 블록 제거 (`expo-updates` 미설치 상태에서 오류 발생)
+- EAS 프로젝트 생성: `eas init --force` → projectId `a9bf549f-ac7f-46d4-bbc9-063f96d7876f`
+- EAS 대시보드에 환경 변수 등록: `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+  (`.env`는 gitignore됨 — 클라우드 빌드에 포함되지 않으므로 EAS 대시보드 등록 필수)
+- `expo-web-browser` 플러그인 `app.json` plugins 배열에 추가
+- APK 빌드: `eas build --platform android --profile preview`
+
+### [x] Kakao OAuth 구현 (commit: login.tsx 수정)
+- `expo-web-browser` 설치, `WebBrowser.openAuthSessionAsync()` 사용
+- `skipBrowserRedirect: true` + `exchangeCodeForSession(result.url)` PKCE 플로우
+- `scopes: 'profile_nickname account_email'` — 카카오 동의항목에 없는 scope 요청 시 오류 발생
+- `redirectTo: 'wediary://callback'` — `(auth)` 그룹은 URL에서 투명하게 처리됨
+- Supabase URL Configuration에 `wediary://callback` 추가 (not `wediary://auth/callback`)
+- `_layout.tsx` auth redirect: `!__DEV__` 조건 복원 (에뮬레이터 테스트 후)
+
+### [x] Android 에뮬레이터 로컬 빌드 (Java 17)
+- Java 17 (`temurin@17`) 설치 — Java 11에서 Gradle 빌드 실패
+- `export JAVA_HOME=$(/usr/libexec/java_home -v 17)` 환경 설정
+- `npx expo run:android`로 에뮬레이터 `wediary_test`에 로컬 빌드 및 실행
+
+### [x] UI 일관성 수정
+- `new.tsx` "자동 입력" 섹션 레이블에 `uppercase tracking-widest` 추가
+- `new.tsx` 저장 실패/유효성 오류: Alert 중복 제거, 인라인 배너만 사용
+- `[id].tsx` 뒤로 버튼 `py-2` 추가 (터치 영역 확보)
+
+---
+
 ## Design Review 발견 이슈 (2026-04-02, /design-review by gstack)
 
 ### [x] FINDING-001: 빈 상태에 FAB 안내 텍스트 추가 — 수정됨 (commit: 08d8039)
