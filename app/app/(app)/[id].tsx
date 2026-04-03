@@ -4,6 +4,7 @@ import {
   Image, ActivityIndicator, Alert, KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { ConfirmModal } from '../../components/ConfirmModal';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
@@ -70,6 +71,7 @@ export default function EventDetailScreen() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [giftAmount, setGiftAmount] = useState('');
   const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     if (memory) {
@@ -126,24 +128,16 @@ export default function EventDetailScreen() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['photos', id] }),
   });
 
-  function handleDeleteWedding() {
-    Alert.alert('삭제', '이 결혼식을 삭제할까요?', [
-      { text: '취소', style: 'cancel' },
-      {
-        text: '삭제',
-        style: 'destructive',
-        onPress: async () => {
-          try {
-            await deleteWeddingPhotos(id);
-            await deleteWedding(id);
-            qc.invalidateQueries({ queryKey: ['weddings'] });
-            router.back();
-          } catch (e: any) {
-            Alert.alert('삭제 실패', e.message);
-          }
-        },
-      },
-    ]);
+  async function confirmDeleteWedding() {
+    setShowDeleteConfirm(false);
+    try {
+      await deleteWeddingPhotos(id);
+      await deleteWedding(id);
+      qc.invalidateQueries({ queryKey: ['weddings'] });
+      router.back();
+    } catch (e: any) {
+      Alert.alert('삭제 실패', e.message);
+    }
   }
 
   function toggleTag(tag: string) {
@@ -186,7 +180,7 @@ export default function EventDetailScreen() {
               <Text className="text-pink-400 text-sm">편집</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={handleDeleteWedding}
+              onPress={() => setShowDeleteConfirm(true)}
               accessibilityRole="button"
               accessibilityLabel="삭제"
             >
@@ -332,6 +326,16 @@ export default function EventDetailScreen() {
             : <Text className="text-black font-bold text-base">기억 저장</Text>}
         </TouchableOpacity>
       </ScrollView>
+
+      <ConfirmModal
+        visible={showDeleteConfirm}
+        title="삭제"
+        message="이 결혼식을 삭제할까요? 사진과 기억도 함께 삭제됩니다."
+        confirmLabel="삭제"
+        onConfirm={confirmDeleteWedding}
+        onCancel={() => setShowDeleteConfirm(false)}
+        destructive
+      />
     </KeyboardAvoidingView>
   );
 }
