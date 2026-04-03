@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { supabase } from '../../lib/supabase';
 import { KAKAO_YELLOW } from '../../lib/constants';
+import * as WebBrowser from 'expo-web-browser';
 
 export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
@@ -10,13 +11,17 @@ export default function LoginScreen() {
 
   async function handleKakaoLogin() {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options: {
         redirectTo: 'wediary://auth/callback',
+        skipBrowserRedirect: true,
       },
     });
-    if (error) console.error(error);
+    if (error) { console.error(error); setLoading(false); return; }
+    if (data?.url) {
+      await WebBrowser.openAuthSessionAsync(data.url, 'wediary://auth/callback');
+    }
     setLoading(false);
   }
 
@@ -40,14 +45,12 @@ export default function LoginScreen() {
         )}
       </TouchableOpacity>
 
-      {__DEV__ && (
-        <TouchableOpacity
-          onPress={() => router.replace('/(app)')}
-          className="mt-4"
-        >
-          <Text className="text-white/30 text-xs">개발용: 로그인 없이 계속</Text>
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        onPress={() => router.replace('/(app)')}
+        className="mt-4"
+      >
+        <Text className="text-white/30 text-xs">로그인 없이 계속 (테스트)</Text>
+      </TouchableOpacity>
     </View>
   );
 }
