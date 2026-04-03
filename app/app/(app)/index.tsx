@@ -66,7 +66,7 @@ export default function HomeScreen() {
           accessibilityRole="button"
           accessibilityLabel="설정"
         >
-          <Text className="text-white/40 text-sm">설정</Text>
+          <Text className="text-white/60 text-sm">설정</Text>
         </TouchableOpacity>
       </View>
 
