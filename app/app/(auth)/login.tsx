@@ -14,14 +14,14 @@ export default function LoginScreen() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options: {
-        redirectTo: 'wediary://auth/callback',
+        redirectTo: 'wediary://callback',
         skipBrowserRedirect: true,
         scopes: 'profile_nickname account_email',
       },
     });
     if (error) { console.error(error); setLoading(false); return; }
     if (data?.url) {
-      const result = await WebBrowser.openAuthSessionAsync(data.url, 'wediary://auth/callback');
+      const result = await WebBrowser.openAuthSessionAsync(data.url, 'wediary://callback');
       if (result.type === 'success' && result.url) {
         await supabase.auth.exchangeCodeForSession(result.url);
       }
