@@ -35,7 +35,9 @@ function EmptyState({ tab }: { tab: 'upcoming' | 'done' }) {
         {tab === 'upcoming' ? '예정된 결혼식이 없어요' : '아직 기록이 없어요'}
       </Text>
       <Text className="text-white/20 text-xs mt-1">
-        오른쪽 아래 + 버튼으로 추가해보세요
+        {tab === 'upcoming'
+          ? '오른쪽 아래 + 버튼으로 추가해보세요'
+          : '결혼식 카드에서 기억을 기록하면 여기에 나타나요'}
       </Text>
     </View>
   );
@@ -43,7 +45,7 @@ function EmptyState({ tab }: { tab: 'upcoming' | 'done' }) {
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { data: weddings = [], isLoading } = useQuery({
+  const { data: weddings = [], isLoading, isError } = useQuery({
     queryKey: ['weddings'],
     queryFn: getWeddings,
   });
@@ -98,6 +100,11 @@ export default function HomeScreen() {
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator color={BRAND_PINK} />
+        </View>
+      ) : isError ? (
+        <View className="flex-1 items-center justify-center px-8">
+          <Text className="text-4xl mb-3">😢</Text>
+          <Text className="text-white/50 text-sm text-center">목록을 불러오지 못했어요.{'\n'}잠시 후 다시 시도해주세요.</Text>
         </View>
       ) : (
         <FlatList

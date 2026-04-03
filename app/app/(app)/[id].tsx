@@ -279,7 +279,7 @@ export default function EventDetailScreen() {
               onChangeText={setGiftAmount}
               placeholder="0"
               placeholderTextColor="#ffffff33"
-              keyboardType="numeric"
+              keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
               className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-base"
             />
             <Text className="text-white/40 text-sm">원</Text>
