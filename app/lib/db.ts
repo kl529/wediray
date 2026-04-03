@@ -85,14 +85,21 @@ export async function updateWedding(
 
 export async function deleteWeddingPhotos(weddingId: string) {
   const photos = await getPhotos(weddingId);
-  if (photos.length === 0) return;
-  const { error } = await supabase.storage
-    .from('wedding-photos')
-    .remove(photos.map((p) => p.storage_path));
-  if (error) throw error;
+  if (photos.length > 0) {
+    const { error: storageError } = await supabase.storage
+      .from('wedding-photos')
+      .remove(photos.map((p) => p.storage_path));
+    if (storageError) throw storageError;
+  }
+  const { error: dbError } = await supabase
+    .from('photos')
+    .delete()
+    .eq('wedding_id', weddingId);
+  if (dbError) throw dbError;
 }
 
 export async function deleteWedding(id: string) {
+  await supabase.from('memories').delete().eq('wedding_id', id);
   const { error } = await supabase.from('weddings').delete().eq('id', id);
   if (error) throw error;
 }

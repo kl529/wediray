@@ -34,7 +34,7 @@ export default function NewEventScreen() {
   const [attendance, setAttendance] = useState<Attendance>('pending');
   const [inviteUrl, setInviteUrl] = useState('');
   const [parsing, setParsing] = useState(false);
-  const [scanning, setScanning] = useState(false);
+  const [scanning, setScanning] = useState<'camera' | 'gallery' | null>(null);
   const [formError, setFormError] = useState('');
   const scrollRef = useRef<ScrollView>(null);
 
@@ -77,7 +77,7 @@ export default function NewEventScreen() {
   });
 
   async function handleScan(source: 'camera' | 'gallery') {
-    setScanning(true);
+    setScanning(source);
     try {
       const text = await pickAndOcr(source);
       if (!text) return;
@@ -92,7 +92,7 @@ export default function NewEventScreen() {
     } catch {
       Alert.alert('스캔 실패', '직접 입력해주세요.');
     } finally {
-      setScanning(false);
+      setScanning(null);
     }
   }
 
@@ -198,19 +198,26 @@ export default function NewEventScreen() {
           {/* OCR row */}
           <View className="flex-row gap-2">
             <TouchableOpacity
-              onPress={() => Alert.alert('청첩장 스캔', '촬영 또는 갤러리에서 선택', [
-                { text: '카메라로 촬영', onPress: () => handleScan('camera') },
-                { text: '갤러리에서 선택', onPress: () => handleScan('gallery') },
-                { text: '취소', style: 'cancel' },
-              ])}
-              disabled={scanning}
+              onPress={() => handleScan('camera')}
+              disabled={scanning !== null}
               accessibilityRole="button"
-              accessibilityLabel="청첩장 사진으로 스캔"
-              className="flex-1 flex-row items-center justify-center gap-2 bg-white/5 border border-white/10 rounded-xl py-3"
+              accessibilityLabel="카메라로 촬영"
+              className="flex-1 items-center justify-center bg-white/5 border border-white/10 rounded-xl py-3"
             >
-              {scanning
+              {scanning === 'camera'
                 ? <ActivityIndicator color={BRAND_PINK} size="small" />
-                : <Text className="text-white/60 text-sm">청첩장 사진으로 스캔</Text>}
+                : <Text className="text-white/60 text-sm">카메라 촬영</Text>}
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleScan('gallery')}
+              disabled={scanning !== null}
+              accessibilityRole="button"
+              accessibilityLabel="갤러리에서 선택"
+              className="flex-1 items-center justify-center bg-white/5 border border-white/10 rounded-xl py-3"
+            >
+              {scanning === 'gallery'
+                ? <ActivityIndicator color={BRAND_PINK} size="small" />
+                : <Text className="text-white/60 text-sm">갤러리 선택</Text>}
             </TouchableOpacity>
           </View>
         </View>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import Constants from 'expo-constants';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { ConfirmModal } from '../../components/ConfirmModal';
 import { supabase } from '../../lib/supabase';
@@ -66,10 +67,14 @@ export default function SettingsScreen() {
           onPress={() => setShowLogout(true)}
           accessibilityRole="button"
           accessibilityLabel="로그아웃"
-          className="bg-white/5 border border-white/10 rounded-2xl p-4"
+          className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-4"
         >
           <Text className="text-red-400 text-sm font-semibold">로그아웃</Text>
         </TouchableOpacity>
+
+        {Constants.expoConfig?.version ? (
+          <Text className="text-white/20 text-xs text-center">v{Constants.expoConfig.version}</Text>
+        ) : null}
       </View>
 
       <ConfirmModal

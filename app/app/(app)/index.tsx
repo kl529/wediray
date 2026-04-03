@@ -51,7 +51,7 @@ export default function HomeScreen() {
   });
 
   const upcoming = weddings.filter(isUpcoming);
-  const done = weddings.filter((w) => !isUpcoming(w));
+  const done = weddings.filter((w) => !isUpcoming(w)).sort((a, b) => b.date.localeCompare(a.date));
 
   const [tab, setTab] = useState<'upcoming' | 'done'>('upcoming');
   const list = tab === 'upcoming' ? upcoming : done;
