@@ -45,12 +45,14 @@ export default function LoginScreen() {
         )}
       </TouchableOpacity>
 
-      <TouchableOpacity
-        onPress={() => router.replace('/(app)')}
-        className="mt-4"
-      >
-        <Text className="text-white/30 text-xs">로그인 없이 계속 (테스트)</Text>
-      </TouchableOpacity>
+      {__DEV__ && (
+        <TouchableOpacity
+          onPress={() => router.replace('/(app)')}
+          className="mt-4"
+        >
+          <Text className="text-white/30 text-xs">로그인 없이 계속 (테스트)</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
