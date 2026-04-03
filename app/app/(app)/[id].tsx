@@ -13,7 +13,7 @@ import {
   uploadPhoto, deletePhoto, deleteWedding, deleteWeddingPhotos,
   getPhotoUrl, formatDateKR, type Photo,
 } from '../../lib/db';
-import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_PILL_BG } from '../../lib/constants';
+import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_PILL_BG, ATTENDANCE_PILL_TEXT } from '../../lib/constants';
 import { addWeddingToCalendar } from '../../lib/calendar';
 
 const EMOTION_TAGS = ['행복해 😊', '감동받았어 🥹', '설렜어 💕', '즐거웠어 🎉', '뭉클했어 💧', '배고팠어 🍽️'];
@@ -200,7 +200,7 @@ export default function EventDetailScreen() {
           <Text className="text-white/30 text-sm mb-3">{wedding.venue}</Text>
           <View className="flex-row items-center gap-3">
             <View className={`self-start px-3 py-1 rounded-full ${ATTENDANCE_PILL_BG[wedding.attendance]}`}>
-              <Text className="text-black text-xs font-bold">{ATTENDANCE_LABEL[wedding.attendance]}</Text>
+              <Text className={`text-xs font-bold ${ATTENDANCE_PILL_TEXT[wedding.attendance]}`}>{ATTENDANCE_LABEL[wedding.attendance]}</Text>
             </View>
             <TouchableOpacity
               onPress={async () => {

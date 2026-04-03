@@ -23,6 +23,13 @@ export const ATTENDANCE_TEXT_COLOR: Record<Attendance, string> = {
 // Pill background color (used in detail screen badge)
 export const ATTENDANCE_PILL_BG: Record<Attendance, string> = {
   attending: 'bg-lime-400',
-  absent: 'bg-white/20',
+  absent: 'bg-white/10',
   pending: 'bg-sky-400',
+};
+
+// Pill text color (attending/pending use text-black on light bg; absent uses white on dark bg)
+export const ATTENDANCE_PILL_TEXT: Record<Attendance, string> = {
+  attending: 'text-black',
+  absent: 'text-white/50',
+  pending: 'text-black',
 };
