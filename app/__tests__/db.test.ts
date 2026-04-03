@@ -18,6 +18,18 @@ describe('formatDateKR', () => {
   it('handles December correctly', () => {
     expect(formatDateKR('2025-12-25')).toBe('2025년 12월 25일');
   });
+
+  it('February (shortest month)', () => {
+    expect(formatDateKR('2026-02-14')).toBe('2026년 2월 14일');
+  });
+
+  it('January 1st (year start boundary)', () => {
+    expect(formatDateKR('2026-01-01')).toBe('2026년 1월 1일');
+  });
+
+  it('December 31st (year end boundary)', () => {
+    expect(formatDateKR('2025-12-31')).toBe('2025년 12월 31일');
+  });
 });
 
 // ── isUpcoming ───────────────────────────────────────────────
@@ -59,5 +71,26 @@ describe('isUpcoming', () => {
 
   it('returns false for a date one year ago', () => {
     expect(isUpcoming(makeWedding('2025-03-31'))).toBe(false);
+  });
+
+  it('returns true for tomorrow', () => {
+    expect(isUpcoming(makeWedding('2026-04-01'))).toBe(true);
+  });
+
+  it('returns false for yesterday', () => {
+    expect(isUpcoming(makeWedding('2026-03-30'))).toBe(false);
+  });
+
+  it('returns true for year-end date when today is mid-year', () => {
+    expect(isUpcoming(makeWedding('2026-12-31'))).toBe(true);
+  });
+
+  it('returns true for next year', () => {
+    expect(isUpcoming(makeWedding('2027-01-01'))).toBe(true);
+  });
+
+  it('returns false when date is start of current year but today is later', () => {
+    // today = 2026-03-31, so 2026-01-01 is past
+    expect(isUpcoming(makeWedding('2026-01-01'))).toBe(false);
   });
 });

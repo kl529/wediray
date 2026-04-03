@@ -12,7 +12,7 @@ export function ConfirmModal({
 }: {
   visible: boolean;
   title: string;
-  message?: string;
+  message: string;
   confirmLabel?: string;
   cancelLabel?: string;
   onConfirm: () => void;
@@ -27,8 +27,7 @@ export function ConfirmModal({
       >
         <Pressable onPress={(e) => e.stopPropagation()} className="w-full max-w-sm bg-zinc-900 border border-white/10 rounded-3xl p-6">
           <Text className="text-white font-bold text-lg mb-1">{title}</Text>
-          {message && <Text className="text-white/50 text-sm mb-6">{message}</Text>}
-          {!message && <View className="mb-4" />}
+          <Text className="text-white/50 text-sm mb-6">{message}</Text>
           <View className="flex-row gap-3">
             <TouchableOpacity
               onPress={onCancel}

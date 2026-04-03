@@ -11,10 +11,16 @@ import * as ImagePicker from 'expo-image-picker';
 import {
   getWedding, getMemory, getPhotos, upsertMemory,
   uploadPhoto, deletePhoto, deleteWedding, deleteWeddingPhotos,
-  getPhotoUrl, formatDateKR, type Photo,
+  updateWedding, getPhotoUrl, formatDateKR, type Photo, type Attendance,
 } from '../../lib/db';
 import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_PILL_BG, ATTENDANCE_PILL_TEXT } from '../../lib/constants';
 import { addWeddingToCalendar } from '../../lib/calendar';
+
+const ATTENDANCE_OPTIONS: { value: Attendance; label: string }[] = [
+  { value: 'attending', label: '참석' },
+  { value: 'absent', label: '불참' },
+  { value: 'pending', label: '미정' },
+];
 
 const EMOTION_TAGS = ['행복해 😊', '감동받았어 🥹', '설렜어 💕', '즐거웠어 🎉', '뭉클했어 💧', '배고팠어 🍽️'];
 
@@ -72,6 +78,7 @@ export default function EventDetailScreen() {
   const [giftAmount, setGiftAmount] = useState('');
   const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [editingAttendance, setEditingAttendance] = useState(false);
 
   useEffect(() => {
     if (memory) {
@@ -109,12 +116,20 @@ export default function EventDetailScreen() {
     onError: (e: Error) => Alert.alert('저장 실패', e.message),
   });
 
+  const updateAttendance = useMutation({
+    mutationFn: (att: Attendance) => updateWedding(id, { attendance: att }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['wedding', id] });
+      setEditingAttendance(false);
+    },
+    onError: (e: Error) => Alert.alert('저장 실패', e.message),
+  });
+
   const addPhoto = useMutation({
-    mutationFn: async () => {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ['images'],
-        quality: 0.8,
-      });
+    mutationFn: async (source: 'library' | 'camera') => {
+      const result = source === 'camera'
+        ? await ImagePicker.launchCameraAsync({ mediaTypes: ['images'], quality: 0.8 })
+        : await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], quality: 0.8 });
       if (result.canceled) return;
       await uploadPhoto(id, result.assets[0].uri, result.assets[0].mimeType ?? undefined);
     },
@@ -140,6 +155,22 @@ export default function EventDetailScreen() {
     }
   }
 
+  const isDirty =
+    memo !== (memory?.memo ?? '') ||
+    giftAmount !== (memory?.gift_amount ? String(memory.gift_amount) : '') ||
+    JSON.stringify([...selectedTags].sort()) !== JSON.stringify([...(memory?.emotion_tags ?? [])].sort());
+
+  function handleBack() {
+    if (isDirty) {
+      Alert.alert('저장하지 않은 변경사항', '나가면 변경사항이 사라져요.', [
+        { text: '계속 편집', style: 'cancel' },
+        { text: '나가기', style: 'destructive', onPress: () => router.back() },
+      ]);
+    } else {
+      router.back();
+    }
+  }
+
   function toggleTag(tag: string) {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
@@ -162,13 +193,20 @@ export default function EventDetailScreen() {
       <ScreenHeader
         left={
           <TouchableOpacity
-            onPress={() => router.back()}
+            onPress={handleBack}
             accessibilityRole="button"
             accessibilityLabel="뒤로"
             className="py-2"
           >
             <Text className="text-white/50 text-base">← 뒤로</Text>
           </TouchableOpacity>
+        }
+        center={
+          wedding ? (
+            <Text className="text-white font-semibold text-sm" numberOfLines={1}>
+              {wedding.groom} ♥ {wedding.bride}
+            </Text>
+          ) : undefined
         }
         right={
           <View className="flex-row gap-4">
@@ -198,10 +236,44 @@ export default function EventDetailScreen() {
           </Text>
           <Text className="text-white/50 text-base mb-1">{formatDateKR(wedding.date)}</Text>
           <Text className="text-white/30 text-sm mb-3">{wedding.venue}</Text>
-          <View className="flex-row items-center gap-3">
-            <View className={`self-start px-3 py-1 rounded-full ${ATTENDANCE_PILL_BG[wedding.attendance]}`}>
-              <Text className={`text-xs font-bold ${ATTENDANCE_PILL_TEXT[wedding.attendance]}`}>{ATTENDANCE_LABEL[wedding.attendance]}</Text>
-            </View>
+          <View className="flex-row items-center gap-3 flex-wrap">
+            {editingAttendance ? (
+              <View className="flex-row gap-2">
+                {ATTENDANCE_OPTIONS.map((opt) => (
+                  <TouchableOpacity
+                    key={opt.value}
+                    onPress={() => updateAttendance.mutate(opt.value)}
+                    disabled={updateAttendance.isPending}
+                    accessibilityRole="radio"
+                    accessibilityLabel={opt.label}
+                    accessibilityState={{ selected: wedding.attendance === opt.value }}
+                    className={`px-3 py-1 rounded-full border ${
+                      wedding.attendance === opt.value
+                        ? `${ATTENDANCE_PILL_BG[opt.value]} border-transparent`
+                        : 'bg-white/5 border-white/10'
+                    }`}
+                  >
+                    <Text className={`text-xs font-bold ${
+                      wedding.attendance === opt.value ? ATTENDANCE_PILL_TEXT[opt.value] : 'text-white/50'
+                    }`}>{opt.label}</Text>
+                  </TouchableOpacity>
+                ))}
+                <TouchableOpacity onPress={() => setEditingAttendance(false)} className="px-2 py-1">
+                  <Text className="text-white/30 text-xs">닫기</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <TouchableOpacity
+                onPress={() => setEditingAttendance(true)}
+                accessibilityRole="button"
+                accessibilityLabel={`참석 여부: ${ATTENDANCE_LABEL[wedding.attendance]}. 탭하여 변경`}
+                className={`self-start px-3 py-1 rounded-full ${ATTENDANCE_PILL_BG[wedding.attendance]}`}
+              >
+                <Text className={`text-xs font-bold ${ATTENDANCE_PILL_TEXT[wedding.attendance]}`}>
+                  {ATTENDANCE_LABEL[wedding.attendance]} ✎
+                </Text>
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
               onPress={async () => {
                 try {
@@ -273,10 +345,29 @@ export default function EventDetailScreen() {
         {/* Gift Amount */}
         <View className="mb-6">
           <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">축의금</Text>
+          <View className="flex-row flex-wrap gap-2 mb-2">
+            {[50000, 100000, 150000, 200000].map((amount) => (
+              <TouchableOpacity
+                key={amount}
+                onPress={() => setGiftAmount(String(amount))}
+                accessibilityRole="button"
+                accessibilityLabel={`${amount.toLocaleString('ko-KR')}원`}
+                className={`px-3 py-1.5 rounded-full border ${
+                  giftAmount === String(amount)
+                    ? 'bg-pink-400 border-pink-400'
+                    : 'bg-white/5 border-white/10'
+                }`}
+              >
+                <Text className={`text-xs font-semibold ${giftAmount === String(amount) ? 'text-black' : 'text-white/50'}`}>
+                  {(amount / 10000).toLocaleString('ko-KR')}만
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
           <View className="flex-row items-center gap-2">
             <TextInput
               value={giftAmount}
-              onChangeText={setGiftAmount}
+              onChangeText={(v) => setGiftAmount(v.replace(/[^0-9]/g, ''))}
               placeholder="0"
               placeholderTextColor="#ffffff33"
               keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
@@ -284,6 +375,11 @@ export default function EventDetailScreen() {
             />
             <Text className="text-white/40 text-sm">원</Text>
           </View>
+          {giftAmount ? (
+            <Text className="text-white/30 text-xs mt-1">
+              {Number(giftAmount).toLocaleString('ko-KR')}원
+            </Text>
+          ) : null}
         </View>
 
         {/* Photos */}
@@ -299,7 +395,11 @@ export default function EventDetailScreen() {
             ))}
             {photos.length < 3 && (
               <TouchableOpacity
-                onPress={() => addPhoto.mutate()}
+                onPress={() => Alert.alert('사진 추가', '', [
+                  { text: '카메라로 촬영', onPress: () => addPhoto.mutate('camera') },
+                  { text: '갤러리에서 선택', onPress: () => addPhoto.mutate('library') },
+                  { text: '취소', style: 'cancel' },
+                ])}
                 disabled={addPhoto.isPending}
                 accessibilityRole="button"
                 accessibilityLabel="사진 추가"
