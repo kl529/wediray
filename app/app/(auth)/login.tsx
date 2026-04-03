@@ -51,7 +51,9 @@ export default function LoginScreen() {
 
       {__DEV__ && (
         <TouchableOpacity
-          onPress={() => router.replace('/(app)')}
+          onPress={async () => {
+            await supabase.auth.signInAnonymously();
+          }}
           className="mt-4"
         >
           <Text className="text-white/30 text-xs">로그인 없이 계속 (테스트)</Text>
