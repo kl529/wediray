@@ -73,7 +73,6 @@ export default function NewEventScreen() {
     onError: (e: Error) => {
       setFormError(`저장 실패: ${e.message}`);
       scrollRef.current?.scrollTo({ y: 0, animated: true });
-      Alert.alert('저장 실패', e.message);
     },
   });
 
@@ -121,7 +120,6 @@ export default function NewEventScreen() {
     if (!groom.trim() || !bride.trim() || !venue.trim()) {
       setFormError('모든 항목을 채워주세요.');
       scrollRef.current?.scrollTo({ y: 0, animated: true });
-      Alert.alert('입력 확인', '모든 항목을 채워주세요.');
       return;
     }
     mutation.mutate();
@@ -173,7 +171,7 @@ export default function NewEventScreen() {
 
         {/* Invitation URL + OCR */}
         <View className="mb-6">
-          <Text className="text-white/40 text-xs mb-2">자동 입력</Text>
+          <Text className="text-white/40 text-xs uppercase tracking-widest mb-2">자동 입력</Text>
           {/* URL row */}
           <View className="flex-row gap-2 mb-2">
             <TextInput

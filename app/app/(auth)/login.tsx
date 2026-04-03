@@ -28,7 +28,7 @@ export default function LoginScreen() {
   return (
     <View className="flex-1 bg-black items-center justify-center gap-8">
       <View className="items-center gap-2">
-        <Text className="text-pink-400 text-5xl font-bold tracking-widest">wediary</Text>
+        <Text className="text-pink-400 text-5xl font-fredoka-semibold tracking-widest">wediary</Text>
         <Text className="text-white/60 text-sm">결혼식 기억을 모아두는 다이어리</Text>
       </View>
 

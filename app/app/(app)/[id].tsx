@@ -171,6 +171,7 @@ export default function EventDetailScreen() {
             onPress={() => router.back()}
             accessibilityRole="button"
             accessibilityLabel="뒤로"
+            className="py-2"
           >
             <Text className="text-white/50 text-base">← 뒤로</Text>
           </TouchableOpacity>
