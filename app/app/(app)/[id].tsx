@@ -412,7 +412,7 @@ export default function EventDetailScreen() {
               >
                 {addPhoto.isPending
                   ? <ActivityIndicator color={BRAND_PINK} size="small" />
-                  : <Text className="text-white/30 text-3xl">+</Text>}
+                  : <Text className="text-pink-400 text-3xl font-bold">+</Text>}
               </TouchableOpacity>
             )}
           </View>
