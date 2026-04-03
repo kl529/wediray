@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { ConfirmModal } from '../../components/ConfirmModal';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useRouter, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
 import {
@@ -54,6 +54,7 @@ function PhotoCard({
 
 export default function EventDetailScreen() {
   const router = useRouter();
+  const navigation = useNavigation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const qc = useQueryClient();
 
@@ -163,15 +164,21 @@ export default function EventDetailScreen() {
     giftAmount !== (memory?.gift_amount ? String(memory.gift_amount) : '') ||
     JSON.stringify([...selectedTags].sort()) !== JSON.stringify([...(memory?.emotion_tags ?? [])].sort());
 
-  function handleBack() {
-    if (isDirty) {
+  // beforeRemove catches both the custom back button AND the native iOS swipe-back gesture.
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove' as any, (e: any) => {
+      if (!isDirty) return;
+      e.preventDefault();
       Alert.alert('저장하지 않은 변경사항', '나가면 변경사항이 사라져요.', [
         { text: '계속 편집', style: 'cancel' },
-        { text: '나가기', style: 'destructive', onPress: () => router.back() },
+        { text: '나가기', style: 'destructive', onPress: () => navigation.dispatch(e.data.action) },
       ]);
-    } else {
-      router.back();
-    }
+    });
+    return unsubscribe;
+  }, [navigation, isDirty]);
+
+  function handleBack() {
+    router.back();
   }
 
   function toggleTag(tag: string) {
