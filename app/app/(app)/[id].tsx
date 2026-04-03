@@ -234,7 +234,7 @@ export default function EventDetailScreen() {
       <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 60 }}>
         {/* Wedding Info */}
         <View className="mb-8">
-          <Text className="text-white text-3xl font-bold mb-1">
+          <Text className="text-white text-3xl font-gaegu-bold mb-1">
             {wedding.groom} ♥ {wedding.bride}
           </Text>
           <Text className="text-white/50 text-base mb-1">{formatDateKR(wedding.date)}</Text>

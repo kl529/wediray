@@ -14,7 +14,7 @@ function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => vo
       className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-3 active:opacity-70"
     >
       <View className="flex-row items-center justify-between">
-        <Text className="text-white text-lg font-bold">
+        <Text className="text-white text-lg font-gaegu-bold">
           {wedding.groom} ♥ {wedding.bride}
         </Text>
         <Text className={`text-sm font-semibold ${ATTENDANCE_TEXT_COLOR[wedding.attendance]}`}>
