@@ -91,7 +91,7 @@ wediary/
 
 ## 개발 노트
 
-- **dev 모드**: 로그인 없이 앱 접근 가능 (`__DEV__` 체크로 auth redirect 건너뜀). DB 쓰기 작업은 실제 로그인 필요.
+- **dev 모드**: 로그인 화면 하단 "로그인 없이 계속" 버튼으로 익명 로그인 가능 (`supabase.auth.signInAnonymously()`). DB 쓰기 포함 모든 기능이 동작하며, Supabase Dashboard → Authentication → Providers → Anonymous에서 익명 로그인이 활성화되어 있어야 함.
 - **web 에러 피드백**: `Alert.alert`이 web에서 제대로 안 뜨는 경우를 대비해 폼에 인라인 에러 배너 추가됨.
 - **OAuth deep link**: Expo Router의 `(auth)` 그룹은 URL에서 투명하게 처리됨. `callback.tsx`의 실제 딥링크는 `wediary://callback` (not `wediary://auth/callback`).
 - **OCR**: 네이티브 모듈(`@react-native-ml-kit/text-recognition`) 사용으로 `npx expo run:ios` 또는 EAS 빌드 필요. Expo Go 불가.

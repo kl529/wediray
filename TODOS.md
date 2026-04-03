@@ -28,6 +28,13 @@
 
 ## 완료 내역
 
+### 2026-04-04
+
+- [x] iOS 스와이프 백 제스처 isDirty 경고 누락 수정 — `navigation.addListener('beforeRemove')` 패턴으로 버튼 탭 + 네이티브 스와이프 제스처 모두 인터셉트 (`[id].tsx`)
+- [x] 불러오기 버튼 비활성 시각 피드백 — 입력 없을 때 `bg-pink-400/40` + `text-black/40` 적용 (`new.tsx`)
+- [x] 테스트 로그인 `signInAnonymously()` 교체 — `router.replace('/(app)')` 제거, 실제 Supabase 익명 세션 생성으로 DB 쓰기 가능 (`login.tsx`)
+- [x] 새 결혼식 추가 → 목록 표시 플로우 테스트 10개 추가 (`__tests__/wedding-create-list.test.ts`)
+
 ### 2026-04-03 (2차)
 
 - [x] H-02: 기억 수정 후 저장 없이 나가면 변경사항 유실 — isDirty 감지 + Alert
