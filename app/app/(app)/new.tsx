@@ -188,11 +188,11 @@ export default function NewEventScreen() {
               disabled={parsing || !inviteUrl.trim()}
               accessibilityRole="button"
               accessibilityLabel="불러오기"
-              className="bg-pink-400 rounded-xl px-4 items-center justify-center"
+              className={`rounded-xl px-4 items-center justify-center ${parsing || !inviteUrl.trim() ? 'bg-pink-400/40' : 'bg-pink-400'}`}
             >
               {parsing
                 ? <ActivityIndicator color="#000" size="small" />
-                : <Text className="text-black font-bold text-sm">불러오기</Text>}
+                : <Text className={`font-bold text-sm ${parsing || !inviteUrl.trim() ? 'text-black/40' : 'text-black'}`}>불러오기</Text>}
             </TouchableOpacity>
           </View>
           {/* OCR row */}
