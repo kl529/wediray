@@ -2,6 +2,60 @@
 
 ---
 
+## ERD·스펙·UX 검수 (2026-04-03, /design-review)
+
+### [x] H-01: 불참 배지 텍스트 대비율 수정 — 수정됨 (commit: 2f2d9a5)
+- `lib/constants.ts` — `ATTENDANCE_PILL_TEXT` 상수 추가, absent = text-white/50
+- `[id].tsx` — text-black 하드코딩 제거, ATTENDANCE_PILL_TEXT 사용
+
+### [x] M-01: iOS 축의금 number-pad 키보드 — 수정됨 (commit: f24539a)
+- `[id].tsx` — iOS에서 keyboardType = number-pad (소수점 방지)
+
+### [x] M-06: 지난 결혼식 빈 상태 도움말 — 수정됨 (commit: f24539a)
+- `index.tsx` — "결혼식 카드에서 기억을 기록하면 여기에 나타나요" 추가
+
+### [x] H-03: 홈 에러 상태 없음 — 수정됨 (commit: f24539a)
+- `index.tsx` — isError 처리 추가 (에러 시 안내 메시지 표시)
+
+### [ ] H-02: 기억 수정 후 저장 없이 나가면 변경사항 유실
+- `[id].tsx` — 변경 여부 감지 후 뒤로 버튼 시 경고 Alert, 또는 자동저장(debounce)
+- 우선순위: HIGH
+
+### [ ] M-02: 축의금 숫자 포맷팅 (100000 → 100,000)
+- `[id].tsx` — toLocaleString('ko-KR') 또는 포맷 함수 추가
+- 우선순위: MEDIUM
+
+### [ ] M-03: OCR 스캔 버튼을 카메라/갤러리 두 개로 분리
+- `new.tsx` — Alert 중간 단계 제거, 버튼 두 개 직접 노출
+- 우선순위: MEDIUM
+
+### [ ] M-04: 참석 여부 상세 화면에서 바로 변경 가능하도록
+- `[id].tsx` — 배지 탭 → 인라인 선택기 표시
+- 우선순위: MEDIUM
+
+### [ ] M-07: 결혼식 삭제 시 photos/memories DB 레코드 잔류 확인
+- DB에 ON DELETE CASCADE 미설정 시 orphan 레코드 남을 수 있음
+- Supabase 대시보드에서 CASCADE 확인 또는 앱에서 명시적 삭제 추가
+- 우선순위: MEDIUM
+
+### [ ] P-01: 설정 화면 앱 버전 표시
+- `settings.tsx` — Constants.expoConfig?.version 표시
+- 우선순위: POLISH
+
+### [ ] P-03: 상세 화면 헤더 중앙에 이름 표시 (스크롤 시 가려짐)
+- `[id].tsx` — ScreenHeader center에 "{groom} ♥ {bride}" 추가
+- 우선순위: POLISH
+
+### [ ] P-05: 사진 추가 시 카메라 직접 촬영 옵션
+- `[id].tsx` — launchCameraAsync 옵션 추가
+- 우선순위: POLISH
+
+### [ ] P-06: 지난 결혼식 탭 날짜 역순 정렬
+- `lib/db.ts` — getWeddings에서 탭별 정렬 지원 또는 앱 레벨 sort 추가
+- 우선순위: POLISH
+
+---
+
 ## 세션 2026-04-03 작업 내역
 
 ### [x] EAS Build 설정 완료
