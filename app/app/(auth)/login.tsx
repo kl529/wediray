@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { supabase } from '../../lib/supabase';
@@ -19,12 +19,12 @@ export default function LoginScreen() {
         scopes: 'profile_nickname account_email',
       },
     });
-    if (error) { console.error(error); setLoading(false); return; }
-    if (data?.url) {
-      const result = await WebBrowser.openAuthSessionAsync(data.url, 'wediary://callback');
-      if (result.type === 'success' && result.url) {
-        await supabase.auth.exchangeCodeForSession(result.url);
-      }
+    if (error) { Alert.alert('OAuth 에러', error.message); setLoading(false); return; }
+    if (!data?.url) { Alert.alert('URL 없음', 'data.url이 비어있음'); setLoading(false); return; }
+    const result = await WebBrowser.openAuthSessionAsync(data.url, 'wediary://callback');
+    Alert.alert('결과', `type: ${result.type}\n${'url' in result ? result.url : '(url 없음)'}`);
+    if (result.type === 'success' && result.url) {
+      await supabase.auth.exchangeCodeForSession(result.url);
     }
     setLoading(false);
   }
