@@ -79,6 +79,8 @@ export default function EventDetailScreen() {
   const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [editingAttendance, setEditingAttendance] = useState(false);
+  const [justSaved, setJustSaved] = useState(false);
+  const [calendarAdded, setCalendarAdded] = useState(false);
 
   useEffect(() => {
     if (memory) {
@@ -111,7 +113,8 @@ export default function EventDetailScreen() {
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['memory', id] });
-      Alert.alert('저장됨 ✓');
+      setJustSaved(true);
+      setTimeout(() => setJustSaved(false), 2000);
     },
     onError: (e: Error) => Alert.alert('저장 실패', e.message),
   });
@@ -283,17 +286,19 @@ export default function EventDetailScreen() {
                     date: wedding.date,
                     venue: wedding.venue,
                   });
-                  Alert.alert('캘린더에 추가됨 ✓');
+                  setCalendarAdded(true);
+                  setTimeout(() => setCalendarAdded(false), 2000);
                 } catch (e: any) {
                   Alert.alert('추가 실패', e.message);
                 }
               }}
               accessibilityRole="button"
               accessibilityLabel="캘린더에 추가"
-              className="flex-row items-center gap-1 px-3 py-1 rounded-full bg-white/10 border border-white/10"
+              className={`flex-row items-center gap-1 px-3 py-1 rounded-full border ${calendarAdded ? 'bg-lime-400/20 border-lime-400/30' : 'bg-white/10 border-white/10'}`}
             >
-              <Text className="text-sm">📅</Text>
-              <Text className="text-white/60 text-xs">캘린더</Text>
+              <Text className={`text-xs ${calendarAdded ? 'text-lime-400 font-semibold' : 'text-white/60'}`}>
+                {calendarAdded ? '추가됨 ✓' : '캘린더'}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -416,14 +421,14 @@ export default function EventDetailScreen() {
         {/* Save Memory */}
         <TouchableOpacity
           onPress={() => saveMemory.mutate()}
-          disabled={saveMemory.isPending}
+          disabled={saveMemory.isPending || justSaved}
           accessibilityRole="button"
           accessibilityLabel="기억 저장"
-          className="bg-pink-400 rounded-xl py-4 items-center"
+          className={`rounded-xl py-4 items-center ${justSaved ? 'bg-lime-400' : 'bg-pink-400'}`}
         >
           {saveMemory.isPending
             ? <ActivityIndicator color="#000" />
-            : <Text className="text-black font-bold text-base">기억 저장</Text>}
+            : <Text className="text-black font-bold text-base">{justSaved ? '저장됨 ✓' : '기억 저장'}</Text>}
         </TouchableOpacity>
       </ScrollView>
 
