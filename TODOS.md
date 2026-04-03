@@ -34,6 +34,13 @@
 - [x] 불러오기 버튼 비활성 시각 피드백 — 입력 없을 때 `bg-pink-400/40` + `text-black/40` 적용 (`new.tsx`)
 - [x] 테스트 로그인 `signInAnonymously()` 교체 — `router.replace('/(app)')` 제거, 실제 Supabase 익명 세션 생성으로 DB 쓰기 가능 (`login.tsx`)
 - [x] 새 결혼식 추가 → 목록 표시 플로우 테스트 10개 추가 (`__tests__/wedding-create-list.test.ts`)
+- [x] 한국어 라벨 `uppercase tracking-widest` 완전 제거 — FINDING-004 누락분: `[id].tsx` 5개, `new.tsx` 1개, `settings.tsx` 2개, `privacy.tsx` 제목
+- [x] 저장/캘린더 성공 Alert → 인라인 피드백 교체 — 버튼 2초간 lime "저장됨 ✓", 캘린더 칩 "추가됨 ✓" (`[id].tsx`)
+- [x] 사진 추가 `+` 버튼 가시성 개선 — `text-white/30` → `text-pink-400 font-bold` (`[id].tsx`)
+- [x] 개인정보처리방침 row `›` chevron 추가 (`settings.tsx`)
+- [x] 커플 이름 Gaegu 폰트 적용 — WeddingCard + 상세 히어로 `font-gaegu-bold` (`index.tsx`, `[id].tsx`)
+- [x] 홈 설정 버튼 가시성 개선 — `text-white/40` → `text-white/60` (`index.tsx`)
+- [x] 브랜드 일관성 회귀 테스트 9개 추가 (`__tests__/brand.test.ts`)
 
 ### 2026-04-03 (2차)
 
