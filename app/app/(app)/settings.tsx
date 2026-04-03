@@ -58,9 +58,10 @@ export default function SettingsScreen() {
           onPress={() => router.push('/privacy')}
           accessibilityRole="button"
           accessibilityLabel="개인정보처리방침"
-          className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-4"
+          className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-4 flex-row items-center justify-between"
         >
           <Text className="text-white/60 text-sm">개인정보처리방침</Text>
+          <Text className="text-white/30 text-base">›</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
