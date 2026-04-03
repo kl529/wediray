@@ -301,11 +301,11 @@ export default function EventDetailScreen() {
         <View className="h-px bg-white/10 mb-8" />
 
         {/* Memory Section */}
-        <Text className="text-white/40 text-xs uppercase tracking-widest mb-4">기억 기록</Text>
+        <Text className="text-white/40 text-xs mb-4">기억 기록</Text>
 
         {/* Memo */}
         <View className="mb-5">
-          <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">메모</Text>
+          <Text className="text-white/40 text-xs mb-2">메모</Text>
           <TextInput
             value={memo}
             onChangeText={setMemo}
@@ -319,7 +319,7 @@ export default function EventDetailScreen() {
 
         {/* Emotion Tags */}
         <View className="mb-5">
-          <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">감정</Text>
+          <Text className="text-white/40 text-xs mb-2">감정</Text>
           <View className="flex-row flex-wrap gap-2">
             {EMOTION_TAGS.map((tag) => (
               <TouchableOpacity
@@ -344,7 +344,7 @@ export default function EventDetailScreen() {
 
         {/* Gift Amount */}
         <View className="mb-6">
-          <Text className="text-white/40 text-xs mb-2 uppercase tracking-widest">축의금</Text>
+          <Text className="text-white/40 text-xs mb-2">축의금</Text>
           <View className="flex-row flex-wrap gap-2 mb-2">
             {[50000, 100000, 150000, 200000].map((amount) => (
               <TouchableOpacity
@@ -384,7 +384,7 @@ export default function EventDetailScreen() {
 
         {/* Photos */}
         <View className="mb-8">
-          <Text className="text-white/40 text-xs mb-3 uppercase tracking-widest">사진 (최대 3장)</Text>
+          <Text className="text-white/40 text-xs mb-3">사진 (최대 3장)</Text>
           <View className="flex-row flex-wrap gap-3">
             {photos.map((p) => (
               <PhotoCard
