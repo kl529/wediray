@@ -16,6 +16,7 @@ export default function LoginScreen() {
       options: {
         redirectTo: 'wediary://auth/callback',
         skipBrowserRedirect: true,
+        scopes: 'profile_nickname account_email',
       },
     });
     if (error) { console.error(error); setLoading(false); return; }
