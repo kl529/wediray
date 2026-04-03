@@ -222,7 +222,7 @@ export default function NewEventScreen() {
           <Text className="text-white/40 text-xs mb-2">신랑</Text>
           <TextInput
             value={groom}
-            onChangeText={setGroom}
+            onChangeText={(v) => { setGroom(v); if (formError) setFormError(''); }}
             placeholder="이름"
             placeholderTextColor="#ffffff33"
             className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-base"
@@ -234,7 +234,7 @@ export default function NewEventScreen() {
           <Text className="text-white/40 text-xs mb-2">신부</Text>
           <TextInput
             value={bride}
-            onChangeText={setBride}
+            onChangeText={(v) => { setBride(v); if (formError) setFormError(''); }}
             placeholder="이름"
             placeholderTextColor="#ffffff33"
             className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-base"
@@ -281,7 +281,7 @@ export default function NewEventScreen() {
           <Text className="text-white/40 text-xs mb-2">장소</Text>
           <TextInput
             value={venue}
-            onChangeText={setVenue}
+            onChangeText={(v) => { setVenue(v); if (formError) setFormError(''); }}
             placeholder="웨딩홀 이름"
             placeholderTextColor="#ffffff33"
             className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-base"
