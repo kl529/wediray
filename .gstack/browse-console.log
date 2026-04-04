@@ -671,3 +671,133 @@ Development-level warnings: ON.
 Performance optimizations: OFF.
 [2026-04-04T04:54:58.450Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
 [2026-04-04T04:55:06.779Z] [error] Failed to load resource: the server responded with a status of 401 ()
+[2026-04-04T04:55:29.718Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:55:29.731Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:55:50.122Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:55:50.132Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:55:51.257Z] [error] In HTML, %s cannot be a descendant of <%s>.
+This will cause a hydration error.%s <button> button 
+
+  ...
+    <View data={[...]} keyExtractor={function} ListEmptyComponent={<EmptyState>} renderItem={function renderProp} ...>
+      <div onTouchStart={function} onTouchEnd={function} onScroll={function handleScroll} onTouchMove={function} ...>
+        <View onLayout={function} collapsable={false} ref={function} style={[...]}>
+          <div dir={null} ref={function forwardRef} className="css-view-g..." style={{...}}>
+            <CellRenderer CellRendererComponent={undefined} ItemSeparatorComponent={undefined} ...>
+              <VirtualizedListCellContextProvider cellKey="c69b0c5a-f...">
+                <View style={null} onFocusCapture={function onCellFocusCapture} onLayout={function}>
+                  <div dir={null} ref={function forwardRef} className="css-view-g...">
+                    <WeddingCard wedding={{id:"c69b0c...", ...}} onPress={function onPress}>
+                      <CssInteropComponent onPress={function onPress} accessibilityRole="button" ...>
+                        <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                          <View accessibilityRole="button" accessibilityLabel="QA신랑 ♥ QA신..." ...>
+>                           <button
+>                             onKeyDown={function onKeyDown}
+>                             onClick={function onClick}
+>                             onContextMenu={function onContextMenu}
+>                             dir={null}
+>                             ref={function forwardRef}
+>                             aria-label="QA신랑 ♥ QA신부, 2026년 4월 4일 (토), 참석"
+>                             role="button"
+>                             className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cursor-1lo..."
+>                             style={{transitionDuration:"0s"}}
+>                             type="button"
+>                           >
+                              ...
+                                <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                                  <View accessibilityRole="button" accessibilityLabel="캘린더에 추가" ...>
+>                                   <button
+>                                     onKeyDown={function onKeyDown}
+>                                     onClick={function onClick}
+>                                     onContextMenu={function onContextMenu}
+>                                     dir={null}
+>                                     ref={function forwardRef}
+>                                     aria-label="캘린더에 추가"
+>                                     role="button"
+>                                     className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cu..."
+>                                     style={{transitionDuration:"0s"}}
+>                                     type="button"
+>                                   >
+            ...
+
+[2026-04-04T04:55:51.257Z] [error] <%s> cannot contain a nested %s.
+See this log for the ancestor stack trace. button <button>
+[2026-04-04T04:56:01.247Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:56:01.260Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:56:24.208Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:56:24.219Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:56:24.717Z] [error] In HTML, %s cannot be a descendant of <%s>.
+This will cause a hydration error.%s <button> button 
+
+  ...
+    <View data={[...]} keyExtractor={function} ListEmptyComponent={<EmptyState>} renderItem={function renderProp} ...>
+      <div onTouchStart={function} onTouchEnd={function} onScroll={function handleScroll} onTouchMove={function} ...>
+        <View onLayout={function} collapsable={false} ref={function} style={[...]}>
+          <div dir={null} ref={function forwardRef} className="css-view-g..." style={{...}}>
+            <CellRenderer CellRendererComponent={undefined} ItemSeparatorComponent={undefined} ...>
+              <VirtualizedListCellContextProvider cellKey="c69b0c5a-f...">
+                <View style={null} onFocusCapture={function onCellFocusCapture} onLayout={function}>
+                  <div dir={null} ref={function forwardRef} className="css-view-g...">
+                    <WeddingCard wedding={{id:"c69b0c...", ...}} onPress={function onPress}>
+                      <CssInteropComponent onPress={function onPress} accessibilityRole="button" ...>
+                        <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                          <View accessibilityRole="button" accessibilityLabel="QA신랑 ♥ QA신..." ...>
+>                           <button
+>                             onKeyDown={function onKeyDown}
+>                             onClick={function onClick}
+>                             onContextMenu={function onContextMenu}
+>                             dir={null}
+>                             ref={function forwardRef}
+>                             aria-label="QA신랑 ♥ QA신부, 2026년 4월 4일 (토), 참석"
+>                             role="button"
+>                             className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cursor-1lo..."
+>                             style={{transitionDuration:"0s"}}
+>                             type="button"
+>                           >
+                              ...
+                                <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                                  <View accessibilityRole="button" accessibilityLabel="캘린더에 추가" ...>
+>                                   <button
+>                                     onKeyDown={function onKeyDown}
+>                                     onClick={function onClick}
+>                                     onContextMenu={function onContextMenu}
+>                                     dir={null}
+>                                     ref={function forwardRef}
+>                                     aria-label="캘린더에 추가"
+>                                     role="button"
+>                                     className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cu..."
+>                                     style={{transitionDuration:"0s"}}
+>                                     type="button"
+>                                   >
+            ...
+
+[2026-04-04T04:56:24.717Z] [error] <%s> cannot contain a nested %s.
+See this log for the ancestor stack trace. button <button>
+[2026-04-04T04:57:02.645Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:57:02.657Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:57:15.286Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:57:15.297Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:58:35.784Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:58:35.796Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:58:56.339Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
