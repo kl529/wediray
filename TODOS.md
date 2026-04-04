@@ -6,7 +6,7 @@
 
 ### 🐛 린터 이상동작 (긴급)
 
-- [ ] **ESLint가 `ATTENDANCE_PILL_BG`, `ATTENDANCE_PILL_TEXT` import 자동 제거** — `index.tsx`에서 사용 중인 import인데 린터가 "unused"로 판단해서 제거함. NativeWind 템플릿 리터럴 내 동적 클래스명을 정적 분석이 인식 못하는 문제. `.eslintrc` 설정 확인 필요.
+- [x] **import 자동 제거** — ESLint가 아닌 VS Code "Organize Imports on Save" 기능이 원인. `.vscode/settings.json` 으로 `source.organizeImports: never`, `source.removeUnusedImports: never` 설정 완료. (참고: `index.tsx`는 UX 리팩터 후 `ATTENDANCE_BORDER`만 사용 중으로 이미 올바른 상태였음)
 
 ### 개인정보처리방침 실제 정보 설정
 

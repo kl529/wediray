@@ -10,7 +10,7 @@
 ## 테스트 시나리오
 
 표준 테스트 시나리오: `.gstack/test-scenarios.md`
-- QA 실행 시 이 파일의 SC-01~SC-10 시나리오를 순서대로 진행
+- QA 실행 시 이 파일의 SC-01~SC-14 시나리오를 순서대로 진행 (SC-13~14는 네이티브 전용)
 - 스크린샷: `.gstack/qa-reports/screenshots/` 에 저장
 - URL: `http://localhost:8081` (Expo web)
 
