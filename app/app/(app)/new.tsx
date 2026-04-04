@@ -8,7 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  createWedding, updateWedding, getWedding, type Attendance,
+  createWedding, updateWedding, getWedding, formatDateKR, type Attendance,
 } from '../../lib/db';
 import { BRAND_PINK } from '../../lib/constants';
 import { supabase } from '../../lib/supabase';
@@ -181,7 +181,7 @@ export default function NewEventScreen() {
               placeholderTextColor="#ffffff33"
               autoCapitalize="none"
               keyboardType="url"
-              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm"
+              className="flex-1 bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white text-sm"
             />
             <TouchableOpacity
               onPress={handleParse}
@@ -202,7 +202,7 @@ export default function NewEventScreen() {
               disabled={scanning !== null}
               accessibilityRole="button"
               accessibilityLabel="카메라로 촬영"
-              className="flex-1 items-center justify-center bg-white/5 border border-white/10 rounded-xl py-3"
+              className="flex-1 items-center justify-center bg-white/5 border border-white/20 rounded-xl py-3"
             >
               {scanning === 'camera'
                 ? <ActivityIndicator color={BRAND_PINK} size="small" />
@@ -213,7 +213,7 @@ export default function NewEventScreen() {
               disabled={scanning !== null}
               accessibilityRole="button"
               accessibilityLabel="갤러리에서 선택"
-              className="flex-1 items-center justify-center bg-white/5 border border-white/10 rounded-xl py-3"
+              className="flex-1 items-center justify-center bg-white/5 border border-white/20 rounded-xl py-3"
             >
               {scanning === 'gallery'
                 ? <ActivityIndicator color={BRAND_PINK} size="small" />
@@ -232,7 +232,7 @@ export default function NewEventScreen() {
             onChangeText={(v) => { setGroom(v); if (formError) setFormError(''); }}
             placeholder="이름"
             placeholderTextColor="#ffffff33"
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-base"
+            className="bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white text-base"
           />
         </View>
 
@@ -244,7 +244,7 @@ export default function NewEventScreen() {
             onChangeText={(v) => { setBride(v); if (formError) setFormError(''); }}
             placeholder="이름"
             placeholderTextColor="#ffffff33"
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-base"
+            className="bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white text-base"
           />
         </View>
 
@@ -264,9 +264,9 @@ export default function NewEventScreen() {
             <>
               <TouchableOpacity
                 onPress={() => setShowDatePicker(true)}
-                className="bg-white/5 border border-white/10 rounded-xl px-4 py-3"
+                className="bg-white/5 border border-white/20 rounded-xl px-4 py-3"
               >
-                <Text className="text-white text-base">{dateObjToString(dateObj)}</Text>
+                <Text className="text-white text-base">{formatDateKR(dateObjToString(dateObj))}</Text>
               </TouchableOpacity>
               {showDatePicker && (
                 <DateTimePicker
@@ -291,7 +291,7 @@ export default function NewEventScreen() {
             onChangeText={(v) => { setVenue(v); if (formError) setFormError(''); }}
             placeholder="웨딩홀 이름"
             placeholderTextColor="#ffffff33"
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-base"
+            className="bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white text-base"
           />
         </View>
 
@@ -309,7 +309,7 @@ export default function NewEventScreen() {
                 className={`flex-1 py-3 rounded-xl items-center border ${
                   attendance === opt.value
                     ? 'bg-pink-400 border-pink-400'
-                    : 'bg-white/5 border-white/10'
+                    : 'bg-white/5 border-white/20'
                 }`}
               >
                 <Text className={`font-semibold text-sm ${attendance === opt.value ? 'text-black' : 'text-white/50'}`}>
