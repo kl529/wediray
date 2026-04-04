@@ -17,21 +17,21 @@ export const ATTENDANCE_LABEL: Record<Attendance, string> = {
 export const ATTENDANCE_TEXT_COLOR: Record<Attendance, string> = {
   attending: 'text-lime-400',
   absent: 'text-white/40',
-  pending: 'text-sky-400',
+  pending: 'text-white/40',
 };
 
 // Pill background color (used in detail screen badge)
 export const ATTENDANCE_PILL_BG: Record<Attendance, string> = {
   attending: 'bg-lime-400',
   absent: 'bg-white/10',
-  pending: 'bg-sky-400',
+  pending: 'bg-white/15',
 };
 
-// Pill text color (attending/pending use text-black on light bg; absent uses white on dark bg)
+// Pill text color (attending uses text-black on lime bg; absent/pending use white on dark bg)
 export const ATTENDANCE_PILL_TEXT: Record<Attendance, string> = {
   attending: 'text-black',
   absent: 'text-white/50',
-  pending: 'text-black',
+  pending: 'text-white/50',
 };
 
 // Card border color (used in list cards to indicate attendance)
