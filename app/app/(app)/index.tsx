@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { getWeddings, formatDateKR, formatTimeKR, isUpcoming, type Wedding } from '../../lib/db';
-import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_PILL_BG, ATTENDANCE_PILL_TEXT } from '../../lib/constants';
+import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_BORDER } from '../../lib/constants';
 import { addWeddingToCalendar } from '../../lib/calendar';
 
 function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => void }) {
@@ -21,9 +21,8 @@ function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => vo
   return (
     <TouchableOpacity
       onPress={onPress}
-      accessibilityRole="button"
       accessibilityLabel={`${wedding.groom} ♥ ${wedding.bride}, ${formatDateKR(wedding.date)}, ${ATTENDANCE_LABEL[att]}`}
-      className="bg-white/10 border border-white/20 rounded-2xl p-4 mb-3 active:opacity-70"
+      className={`bg-white/10 border rounded-2xl p-4 mb-3 active:opacity-70 ${ATTENDANCE_BORDER[att]}`}
     >
       <View className="flex-row items-start justify-between">
         <View className="flex-1 mr-3">
@@ -32,17 +31,12 @@ function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => vo
           </Text>
           <View className="flex-row items-center gap-2 mt-1 flex-wrap">
             <Text className="text-white/50 text-sm">{formatDateKR(wedding.date)}</Text>
-            {wedding.time ? <Text className="text-white/40 text-xs">{formatTimeKR(wedding.time)}</Text> : null}
+            {wedding.time ? <Text className="text-white/50 text-sm">{formatTimeKR(wedding.time)}</Text> : null}
             {showDDay && <Text className="text-pink-400 text-xs font-semibold">{dDayLabel}</Text>}
           </View>
           {wedding.venue ? <Text className="text-white/30 text-xs mt-0.5">{wedding.venue}</Text> : null}
         </View>
-        <View className="items-end gap-2">
-          <View className={`px-2.5 py-1 rounded-full ${ATTENDANCE_PILL_BG[att]}`}>
-            <Text className={`text-xs font-bold ${ATTENDANCE_PILL_TEXT[att]}`}>
-              {ATTENDANCE_LABEL[att]}
-            </Text>
-          </View>
+        <View className="items-end">
           {upcoming && (
             <TouchableOpacity
               onPress={async () => {
