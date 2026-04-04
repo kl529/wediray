@@ -17,10 +17,10 @@
 - [ ] **SC-14: 캘린더 자동 추가** — 권한 요청 → 이벤트 등록 확인
 - [ ] **SC-13: OCR 갤러리 스캔** — 청첩장 이미지 인식 → 폼 자동 입력
 - [ ] **SC-12 심층: 실제 청첩장 URL 파싱** — 카카오/웨딩21/더카드 등 실제 URL로 검증
-- [ ] **결혼식 삭제** — photos + memories DB 레코드까지 삭제되는지 확인
-- [ ] **기억 수정 후 뒤로가기 경고 Alert** — `[id].tsx` beforeRemove 네이티브 스와이프 동작
-- [ ] **축의금 숫자 포맷팅** — 100000 입력 시 하단 "100,000원" 미리보기 확인
-- [ ] **상세 헤더 이름 스크롤 유지** — 스크롤 시에도 헤더 중앙 이름 표시 여부
+- [x] **결혼식 삭제** — memories → photos(storage+DB) → weddings 순 삭제 코드 확인 (PASS)
+- [x] **기억 수정 후 뒤로가기 경고 Alert** — beforeRemove 네이티브 스와이프 PASS. 커스텀 버튼 이중 confirm 버그 → bypassBeforeRemove ref로 수정
+- [x] **축의금 숫자 포맷팅** — toLocaleString('ko-KR') 사용 중, "100,000원" 미리보기 정상 (PASS)
+- [x] **상세 헤더 이름 스크롤 유지** — ScreenHeader가 ScrollView 밖에 고정됨 (PASS)
 
 ---
 

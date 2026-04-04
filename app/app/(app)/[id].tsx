@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard';
 import {
@@ -33,11 +33,13 @@ export default function EventDetailScreen() {
   const [memo, setMemo] = useState('');
   const [giftAmount, setGiftAmount] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showUnsavedConfirm, setShowUnsavedConfirm] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
   const [calendarAdded, setCalendarAdded] = useState(false);
   const [venueCopied, setVenueCopied] = useState(false);
   const [urlCopied, setUrlCopied] = useState(false);
   const [showAttendancePicker, setShowAttendancePicker] = useState(false);
+  const bypassBeforeRemove = useRef(false);
 
   const updateAttendance = useMutation({
     mutationFn: (value: Attendance) => updateWedding(id, { attendance: value }),
@@ -84,10 +86,11 @@ export default function EventDetailScreen() {
     memo !== (memory?.memo ?? '') ||
     giftAmount !== (memory?.gift_amount ? String(memory.gift_amount) : '');
 
-  // beforeRemove catches both the custom back button AND the native iOS swipe-back gesture.
+  // beforeRemove catches the native iOS swipe-back gesture.
+  // bypassBeforeRemove is set when ConfirmModal already confirmed — avoids double-prompt.
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove' as any, (e: any) => {
-      if (!isDirty) return;
+      if (!isDirty || bypassBeforeRemove.current) return;
       e.preventDefault();
       Alert.alert('저장하지 않은 변경사항', '나가면 변경사항이 사라져요.', [
         { text: '계속 편집', style: 'cancel' },
@@ -98,7 +101,11 @@ export default function EventDetailScreen() {
   }, [navigation, isDirty]);
 
   function handleBack() {
-    router.back();
+    if (isDirty) {
+      setShowUnsavedConfirm(true);
+    } else {
+      router.back();
+    }
   }
 
   if (wLoading) {
@@ -385,6 +392,15 @@ export default function EventDetailScreen() {
         confirmLabel="삭제"
         onConfirm={confirmDeleteWedding}
         onCancel={() => setShowDeleteConfirm(false)}
+        destructive
+      />
+      <ConfirmModal
+        visible={showUnsavedConfirm}
+        title="저장하지 않은 변경사항"
+        message="나가면 변경사항이 사라져요."
+        confirmLabel="나가기"
+        onConfirm={() => { bypassBeforeRemove.current = true; setShowUnsavedConfirm(false); router.back(); }}
+        onCancel={() => setShowUnsavedConfirm(false)}
         destructive
       />
     </KeyboardAvoidingView>
