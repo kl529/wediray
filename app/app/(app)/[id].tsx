@@ -135,9 +135,9 @@ export default function EventDetailScreen() {
             onPress={handleBack}
             accessibilityRole="button"
             accessibilityLabel="뒤로"
-            className="py-2"
+            className="py-2 px-1"
           >
-            <Text className="text-white/50 text-base">← 뒤로</Text>
+            <Text className="text-white/60 text-xl">←</Text>
           </TouchableOpacity>
         }
         center={
@@ -148,20 +148,20 @@ export default function EventDetailScreen() {
           ) : undefined
         }
         right={
-          <View className="flex-row gap-4">
+          <View className="flex-row gap-5">
             <TouchableOpacity
               onPress={() => router.push(`/(app)/new?id=${id}`)}
               accessibilityRole="button"
               accessibilityLabel="편집"
             >
-              <Text className="text-pink-400 text-sm">편집</Text>
+              <Text className="text-pink-400 text-lg">✏️</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setShowDeleteConfirm(true)}
               accessibilityRole="button"
               accessibilityLabel="삭제"
             >
-              <Text className="text-white/30 text-sm">삭제</Text>
+              <Text className="text-white/40 text-lg">🗑️</Text>
             </TouchableOpacity>
           </View>
         }
@@ -173,7 +173,18 @@ export default function EventDetailScreen() {
           <Text className="text-white text-3xl font-gaegu-bold mb-1">
             {wedding.groom} ♥ {wedding.bride}
           </Text>
-          <Text className="text-white/50 text-base mb-1">{formatDateKR(wedding.date)}</Text>
+          <View className="flex-row items-center gap-3 mb-1">
+            <Text className="text-white/50 text-base">{formatDateKR(wedding.date)}</Text>
+            {(() => {
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+              const wDate = new Date(wedding.date + 'T00:00:00');
+              const diff = Math.round((wDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+              if (diff === 0) return <Text className="text-pink-400 text-sm font-semibold">D-Day</Text>;
+              if (diff > 0) return <Text className="text-pink-400 text-sm font-semibold">D-{diff}</Text>;
+              return <Text className="text-white/30 text-sm">{-diff}일 전</Text>;
+            })()}
+          </View>
           <Text className="text-white/30 text-sm mb-3">{wedding.venue}</Text>
           <View className="flex-row items-center gap-3 flex-wrap">
             {editingAttendance ? (
