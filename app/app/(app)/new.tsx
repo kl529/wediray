@@ -110,6 +110,9 @@ export default function NewEventScreen() {
       if (data.bride) setBride(data.bride);
       if (data.date) setDateObj(new Date(data.date + 'T00:00:00'));
       if (data.venue) setVenue(data.venue);
+      if (!data.groom && !data.bride && !data.date && !data.venue) {
+        Alert.alert('파싱 실패', '정보를 찾지 못했습니다. 직접 입력해주세요.');
+      }
     } catch {
       Alert.alert('파싱 실패', '직접 입력해주세요.');
     } finally {
