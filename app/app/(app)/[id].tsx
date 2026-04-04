@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView,
-  Image, ActivityIndicator, Alert, KeyboardAvoidingView, Platform,
+  ActivityIndicator, Alert, KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { ConfirmModal } from '../../components/ConfirmModal';
 import { useRouter, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import * as ImagePicker from 'expo-image-picker';
 import {
-  getWedding, getMemory, getPhotos, upsertMemory,
-  uploadPhoto, deletePhoto, deleteWedding, deleteWeddingPhotos,
-  updateWedding, getPhotoUrl, formatDateKR, type Photo, type Attendance,
+  getWedding, getMemory, upsertMemory,
+  deleteWedding, updateWedding, formatDateKR, type Attendance,
 } from '../../lib/db';
 import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_PILL_BG, ATTENDANCE_PILL_TEXT } from '../../lib/constants';
 import { addWeddingToCalendar } from '../../lib/calendar';
@@ -24,33 +22,6 @@ const ATTENDANCE_OPTIONS: { value: Attendance; label: string }[] = [
 
 const EMOTION_TAGS = ['행복해 😊', '감동받았어 🥹', '설렜어 💕', '즐거웠어 🎉', '뭉클했어 💧', '배고팠어 🍽️'];
 
-function PhotoCard({
-  photo,
-  onDelete,
-}: {
-  photo: Photo & { signedUrl?: string };
-  onDelete: () => void;
-}) {
-  return (
-    <View className="relative w-28 h-28 rounded-2xl overflow-hidden bg-white/5 border border-white/10">
-      {photo.signedUrl ? (
-        <Image source={{ uri: photo.signedUrl }} className="w-full h-full" resizeMode="cover" />
-      ) : (
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color={BRAND_PINK} size="small" />
-        </View>
-      )}
-      <TouchableOpacity
-        onPress={onDelete}
-        accessibilityRole="button"
-        accessibilityLabel="사진 삭제"
-        className="absolute top-1 right-1 bg-black/60 w-6 h-6 rounded-full items-center justify-center"
-      >
-        <Text className="text-white text-xs">✕</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
 
 export default function EventDetailScreen() {
   const router = useRouter();
@@ -66,18 +37,9 @@ export default function EventDetailScreen() {
     queryKey: ['memory', id],
     queryFn: () => getMemory(id),
   });
-  // refetchInterval: re-fetch photo list every 55 min so signed URLs
-  // (1-hour expiry) are refreshed before they silently break.
-  const { data: photos = [] } = useQuery({
-    queryKey: ['photos', id],
-    queryFn: () => getPhotos(id),
-    refetchInterval: 55 * 60 * 1000,
-  });
-
   const [memo, setMemo] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [giftAmount, setGiftAmount] = useState('');
-  const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [editingAttendance, setEditingAttendance] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
@@ -90,20 +52,6 @@ export default function EventDetailScreen() {
       setGiftAmount(memory.gift_amount ? String(memory.gift_amount) : '');
     }
   }, [memory]);
-
-  // Load (or refresh) signed URLs whenever the photos list changes.
-  // photos refetches every 55 min (see query above), so URLs are renewed
-  // before the 1-hour Supabase signed URL expiry.
-  useEffect(() => {
-    if (photos.length === 0) return;
-    Promise.all(
-      photos.map((p) => getPhotoUrl(p.storage_path).then((url) => ({ id: p.id, url })))
-    )
-      .then((results) => {
-        setPhotoUrls(Object.fromEntries(results.map(({ id, url }) => [id, url])));
-      })
-      .catch((e: Error) => Alert.alert('사진 로딩 실패', e.message));
-  }, [photos]);
 
   const saveMemory = useMutation({
     mutationFn: () =>
@@ -129,28 +77,9 @@ export default function EventDetailScreen() {
     onError: (e: Error) => Alert.alert('저장 실패', e.message),
   });
 
-  const addPhoto = useMutation({
-    mutationFn: async (source: 'library' | 'camera') => {
-      const result = source === 'camera'
-        ? await ImagePicker.launchCameraAsync({ mediaTypes: ['images'], quality: 0.8 })
-        : await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], quality: 0.8 });
-      if (result.canceled) return;
-      await uploadPhoto(id, result.assets[0].uri, result.assets[0].mimeType ?? undefined);
-    },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['photos', id] }),
-    onError: (e: Error) => Alert.alert('업로드 실패', e.message),
-  });
-
-  const removePhoto = useMutation({
-    mutationFn: ({ photoId, storagePath }: { photoId: string; storagePath: string }) =>
-      deletePhoto(photoId, storagePath),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['photos', id] }),
-  });
-
   async function confirmDeleteWedding() {
     setShowDeleteConfirm(false);
     try {
-      await deleteWeddingPhotos(id);
       await deleteWedding(id);
       qc.invalidateQueries({ queryKey: ['weddings'] });
       router.back();
@@ -394,37 +323,6 @@ export default function EventDetailScreen() {
           ) : null}
         </View>
 
-        {/* Photos */}
-        <View className="mb-8">
-          <Text className="text-white/40 text-xs mb-3">사진 (최대 3장)</Text>
-          <View className="flex-row flex-wrap gap-3">
-            {photos.map((p) => (
-              <PhotoCard
-                key={p.id}
-                photo={{ ...p, signedUrl: photoUrls[p.id] }}
-                onDelete={() => removePhoto.mutate({ photoId: p.id, storagePath: p.storage_path })}
-              />
-            ))}
-            {photos.length < 3 && (
-              <TouchableOpacity
-                onPress={() => Alert.alert('사진 추가', '', [
-                  { text: '카메라로 촬영', onPress: () => addPhoto.mutate('camera') },
-                  { text: '갤러리에서 선택', onPress: () => addPhoto.mutate('library') },
-                  { text: '취소', style: 'cancel' },
-                ])}
-                disabled={addPhoto.isPending}
-                accessibilityRole="button"
-                accessibilityLabel="사진 추가"
-                className="w-28 h-28 rounded-2xl border border-white/25 items-center justify-center"
-              >
-                {addPhoto.isPending
-                  ? <ActivityIndicator color={BRAND_PINK} size="small" />
-                  : <Text className="text-pink-400 text-3xl font-bold">+</Text>}
-              </TouchableOpacity>
-            )}
-          </View>
-        </View>
-
         {/* Save Memory */}
         <TouchableOpacity
           onPress={() => saveMemory.mutate()}
@@ -442,7 +340,7 @@ export default function EventDetailScreen() {
       <ConfirmModal
         visible={showDeleteConfirm}
         title="삭제"
-        message="이 결혼식을 삭제할까요? 사진과 기억도 함께 삭제됩니다."
+        message="이 결혼식을 삭제할까요? 기억도 함께 삭제됩니다."
         confirmLabel="삭제"
         onConfirm={confirmDeleteWedding}
         onCancel={() => setShowDeleteConfirm(false)}
