@@ -117,11 +117,6 @@ export default function NewEventScreen() {
 
   function handleSave() {
     setFormError('');
-    if (!groom.trim() || !bride.trim() || !venue.trim()) {
-      setFormError('모든 항목을 채워주세요.');
-      scrollRef.current?.scrollTo({ y: 0, animated: true });
-      return;
-    }
     mutation.mutate();
   }
 
