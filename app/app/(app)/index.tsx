@@ -48,7 +48,11 @@ function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => vo
 function EmptyState({ tab }: { tab: 'upcoming' | 'done' }) {
   return (
     <View className="items-center justify-center py-20 gap-2">
-      <Text className="text-4xl">{tab === 'upcoming' ? '💌' : '📖'}</Text>
+      <Ionicons
+        name={tab === 'upcoming' ? 'mail-outline' : 'archive-outline'}
+        size={40}
+        color="rgba(255,255,255,0.2)"
+      />
       <Text className="text-white/40 text-sm mt-2">
         {tab === 'upcoming' ? '예정된 결혼식이 없어요' : '아직 기록이 없어요'}
       </Text>
@@ -123,7 +127,7 @@ export default function HomeScreen() {
         </View>
       ) : isError ? (
         <View className="flex-1 items-center justify-center px-8">
-          <Text className="text-4xl mb-3">😢</Text>
+          <Ionicons name="cloud-offline-outline" size={40} color="rgba(255,255,255,0.25)" style={{ marginBottom: 12 }} />
           <Text className="text-white/50 text-sm text-center">목록을 불러오지 못했어요.{'\n'}잠시 후 다시 시도해주세요.</Text>
           <TouchableOpacity onPress={() => refetch()} className="mt-5 px-5 py-2.5 bg-white/10 rounded-xl">
             <Text className="text-white/60 text-sm">다시 시도</Text>

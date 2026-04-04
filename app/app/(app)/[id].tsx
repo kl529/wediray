@@ -119,7 +119,7 @@ export default function EventDetailScreen() {
   if (wError || !wedding) {
     return (
       <View className="flex-1 bg-black items-center justify-center px-8">
-        <Text className="text-4xl mb-3">😢</Text>
+        <Ionicons name="cloud-offline-outline" size={40} color="rgba(255,255,255,0.25)" style={{ marginBottom: 12 }} />
         <Text className="text-white/50 text-sm text-center">결혼식 정보를 불러오지 못했어요.{'\n'}잠시 후 다시 시도해주세요.</Text>
         <TouchableOpacity onPress={() => router.back()} className="mt-6">
           <Text className="text-pink-400 text-sm">돌아가기</Text>
