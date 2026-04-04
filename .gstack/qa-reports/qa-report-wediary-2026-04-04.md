@@ -143,13 +143,34 @@
 
 ---
 
+## 2차 수정 (2026-04-04 세션 2)
+
+이번 세션에서 코드 전수조사 + 수정 완료. 수정 내역:
+
+| 파일 | 이슈 | 심각도 | 수정 내용 |
+|------|------|--------|-----------|
+| `login.tsx` | 카카오 로그인 에러 silent fail | P1 | `Alert.alert('로그인 실패', error.message)` 추가 |
+| `[id].tsx` | `beforeRemove` 웹 미작동 | P1 | `handleBack`에서 `isDirty` 체크 후 `ConfirmModal` 표시 |
+| `new.tsx` | `isDirty` 날짜/시간 미추적 | P2 | `dateObj`, `timeObj`, `showTime` 포함 |
+| `db.ts` | 결혼식 삭제 시 사진 파일 미삭제 | P2 | `deleteWeddingPhotos(id)` 호출 추가 |
+| `new.tsx` | 웹에서 카메라/갤러리 버튼 노출 | P2 | `Platform.OS !== 'web'` 가드 추가 |
+| `index.tsx` | 지난 결혼식 빈 상태 문구 오해 | P3 | "기억을 기록하면" → "지난 결혼식을 추가하면" |
+
+### 미수정 항목 (deferred)
+- **BUG-01**: URL 파싱 실패 Alert 미표시 (Supabase Edge Function 401 — 서버 이슈)
+- **BUG-02**: DB의 `"attended"` 값 앱 미인식 (데이터 정합성 이슈)
+- **DEV-01**: NativeWind 동적 클래스 import ESLint 자동 제거
+- **SC-03 Web**: DateTimePicker 웹 미지원 (React Native 제약)
+
+---
+
 ## 헬스 스코어
 
-| 카테고리 | 점수 (1차) | 점수 (2차, ISSUE-001 수정 후) |
-|---------|-----------|------------------------------|
-| Functional | 80 | 87 |
-| UX | 85 | 87 |
-| Console | 70 | 80 |
-| 전체 (추정) | **78/100** | **85/100** |
+| 카테고리 | 점수 (1차) | 점수 (2차, ISSUE-001) | 점수 (3차, 전수조사 후) |
+|---------|-----------|----------------------|------------------------|
+| Functional | 80 | 87 | 93 |
+| UX | 85 | 87 | 93 |
+| Console | 70 | 80 | 80 |
+| 전체 (추정) | **78/100** | **85/100** | **91/100** |
 
-**PR Summary:** ISSUE-001 (button nesting) fixed. 2 deferred bugs remain (BUG-01, BUG-02). SC-13/14 requires iOS runtime. Health score improved 78→85.
+**최종 요약:** P1 2개, P2 3개, P3 1개 수정 완료. deferred 4개 (서버/플랫폼 제약). SC-13/14 iOS 런타임 필요. Health score 85→91.

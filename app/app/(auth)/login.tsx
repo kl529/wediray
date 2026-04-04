@@ -19,7 +19,7 @@ export default function LoginScreen() {
         scopes: 'profile_nickname account_email',
       },
     });
-    if (error) { console.error(error); setLoading(false); return; }
+    if (error) { Alert.alert('로그인 실패', error.message); setLoading(false); return; }
     if (data?.url) {
       await WebBrowser.openAuthSessionAsync(data.url, 'wediary://callback');
     }

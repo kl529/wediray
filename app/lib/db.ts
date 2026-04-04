@@ -102,6 +102,7 @@ export async function deleteWeddingPhotos(weddingId: string) {
 
 export async function deleteWedding(id: string) {
   await supabase.from('memories').delete().eq('wedding_id', id);
+  await deleteWeddingPhotos(id);
   const { error } = await supabase.from('weddings').delete().eq('id', id);
   if (error) throw error;
 }
