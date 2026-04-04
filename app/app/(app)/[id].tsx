@@ -21,9 +21,6 @@ const ATTENDANCE_OPTIONS: { value: Attendance; label: string }[] = [
   { value: 'pending', label: '미정' },
 ];
 
-const EMOTION_TAGS = ['행복해 😊', '감동받았어 🥹', '설렜어 💕', '즐거웠어 🎉', '뭉클했어 💧', '배고팠어 🍽️'];
-
-
 export default function EventDetailScreen() {
   const router = useRouter();
   const navigation = useNavigation();
@@ -39,7 +36,6 @@ export default function EventDetailScreen() {
     queryFn: () => getMemory(id),
   });
   const [memo, setMemo] = useState('');
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [giftAmount, setGiftAmount] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [editingAttendance, setEditingAttendance] = useState(false);
@@ -49,7 +45,6 @@ export default function EventDetailScreen() {
   useEffect(() => {
     if (memory) {
       setMemo(memory.memo ?? '');
-      setSelectedTags(memory.emotion_tags ?? []);
       setGiftAmount(memory.gift_amount ? String(memory.gift_amount) : '');
     }
   }, [memory]);
@@ -58,7 +53,6 @@ export default function EventDetailScreen() {
     mutationFn: () =>
       upsertMemory(id, {
         memo: memo.trim() || undefined,
-        emotion_tags: selectedTags,
         gift_amount: giftAmount ? Number(giftAmount) : null,
       }),
     onSuccess: () => {
@@ -91,8 +85,7 @@ export default function EventDetailScreen() {
 
   const isDirty =
     memo !== (memory?.memo ?? '') ||
-    giftAmount !== (memory?.gift_amount ? String(memory.gift_amount) : '') ||
-    JSON.stringify([...selectedTags].sort()) !== JSON.stringify([...(memory?.emotion_tags ?? [])].sort());
+    giftAmount !== (memory?.gift_amount ? String(memory.gift_amount) : '');
 
   // beforeRemove catches both the custom back button AND the native iOS swipe-back gesture.
   useEffect(() => {
@@ -109,12 +102,6 @@ export default function EventDetailScreen() {
 
   function handleBack() {
     router.back();
-  }
-
-  function toggleTag(tag: string) {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
   }
 
   if (wLoading || !wedding) {
@@ -275,31 +262,6 @@ export default function EventDetailScreen() {
             className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm min-h-20"
             style={{ textAlignVertical: 'top' }}
           />
-        </View>
-
-        {/* Emotion Tags */}
-        <View className="mb-5">
-          <Text className="text-white/40 text-xs mb-2">감정</Text>
-          <View className="flex-row flex-wrap gap-2">
-            {EMOTION_TAGS.map((tag) => (
-              <TouchableOpacity
-                key={tag}
-                onPress={() => toggleTag(tag)}
-                accessibilityRole="checkbox"
-                accessibilityLabel={tag}
-                accessibilityState={{ checked: selectedTags.includes(tag) }}
-                className={`px-3 py-2 rounded-full border ${
-                  selectedTags.includes(tag)
-                    ? 'bg-pink-400 border-pink-400'
-                    : 'bg-white/10 border-white/20'
-                }`}
-              >
-                <Text className={`text-sm ${selectedTags.includes(tag) ? 'text-black font-semibold' : 'text-white/60'}`}>
-                  {tag}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
         </View>
 
         {/* Gift Amount */}
