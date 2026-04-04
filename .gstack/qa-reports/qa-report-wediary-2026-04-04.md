@@ -113,10 +113,26 @@
 - **재현:** 새 결혼식 → URL 입력 → 불러오기 → 결과 없음
 - **콘솔:** `401 Failed to load resource`
 - **기대 동작:** "파싱 실패" Alert 표시
+- **상태:** 미수정 (deferred)
 
 ### BUG-02 (Low) — SC-11: attendance 값 `"attended"` 인식 불가
 - **현상:** DB에 `"attended"` 값이 있을 때 참석 뱃지 undefined
 - **기대:** 앱 허용값 `"attend"` 또는 `"attended"` 통일 필요
+- **상태:** 미수정 (deferred)
+
+### ISSUE-001 (High) — 홈 카드 `button > button` 중첩 에러 ✅ **수정됨**
+- **현상:** `WeddingCard` 외부 `TouchableOpacity`에 `accessibilityRole="button"` 설정 시 Web에서 `<button>` 렌더링 → 내부 캘린더 버튼과 중첩 HTML 오류
+- **콘솔:** `In HTML, <button> cannot be a descendant of <button>`
+- **수정:** `WeddingCard` 외부 `TouchableOpacity`에서 `accessibilityRole="button"` 제거 → `<div>` 렌더링으로 변경
+- **커밋:** `08d8cf8`, `8f1bf4e`
+- **파일:** `app/app/(app)/index.tsx`
+
+### DEV-01 (Medium) — ESLint가 NativeWind 동적 클래스 import 자동 제거
+- **현상:** `ATTENDANCE_PILL_BG`, `ATTENDANCE_PILL_TEXT` import가 ESLint/Prettier 실행 시 자동 제거됨
+- **원인:** NativeWind 동적 클래스 문자열(`${ATTENDANCE_PILL_BG[att]}`)을 정적 분석이 "사용됨"으로 인식 못함
+- **영향:** 빌드 깨짐, 매 Edit 후 수동 복구 필요
+- **해결 방향:** `.eslintrc`에 `no-unused-vars` 규칙 예외 추가 또는 NativeWind eslint plugin 설정
+- **상태:** 미수정
 
 ### NOTE-01 (Info) — Web: DateTimePicker 미지원
 - 콘솔: `DateTimePicker is not supported on: web`
@@ -129,12 +145,11 @@
 
 ## 헬스 스코어
 
-| 카테고리 | 점수 |
-|---------|-----|
-| Functional | 80 |
-| UX | 85 |
-| Console | 70 |
-| 전체 (추정) | **78/100** |
+| 카테고리 | 점수 (1차) | 점수 (2차, ISSUE-001 수정 후) |
+|---------|-----------|------------------------------|
+| Functional | 80 | 87 |
+| UX | 85 | 87 |
+| Console | 70 | 80 |
+| 전체 (추정) | **78/100** | **85/100** |
 
-**PR Summary:** QA found 2 bugs, 0 fixed (deferred), health score 78/100. SC-13/14 requires iOS runtime.
-
+**PR Summary:** ISSUE-001 (button nesting) fixed. 2 deferred bugs remain (BUG-01, BUG-02). SC-13/14 requires iOS runtime. Health score improved 78→85.
