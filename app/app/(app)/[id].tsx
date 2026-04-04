@@ -301,7 +301,7 @@ export default function EventDetailScreen() {
               }}
               accessibilityRole="button"
               accessibilityLabel="캘린더에 추가"
-              className={`flex-row items-center gap-1 px-3 py-1 rounded-full border ${calendarAdded ? 'bg-lime-400/20 border-lime-400/30' : 'bg-white/10 border-white/10'}`}
+              className={`flex-row items-center gap-1 px-3 py-1 rounded-full border ${calendarAdded ? 'bg-lime-400/20 border-lime-400/30' : 'bg-white/10 border-white/30'}`}
             >
               <Text className={`text-xs ${calendarAdded ? 'text-lime-400 font-semibold' : 'text-white/60'}`}>
                 {calendarAdded ? '추가됨 ✓' : '캘린더'}
@@ -343,7 +343,7 @@ export default function EventDetailScreen() {
                 className={`px-3 py-2 rounded-full border ${
                   selectedTags.includes(tag)
                     ? 'bg-pink-400 border-pink-400'
-                    : 'bg-white/5 border-white/10'
+                    : 'bg-white/10 border-white/20'
                 }`}
               >
                 <Text className={`text-sm ${selectedTags.includes(tag) ? 'text-black font-semibold' : 'text-white/60'}`}>
@@ -367,7 +367,7 @@ export default function EventDetailScreen() {
                 className={`px-3 py-1.5 rounded-full border ${
                   giftAmount === String(amount)
                     ? 'bg-pink-400 border-pink-400'
-                    : 'bg-white/5 border-white/10'
+                    : 'bg-white/10 border-white/20'
                 }`}
               >
                 <Text className={`text-xs font-semibold ${giftAmount === String(amount) ? 'text-black' : 'text-white/50'}`}>
@@ -415,7 +415,7 @@ export default function EventDetailScreen() {
                 disabled={addPhoto.isPending}
                 accessibilityRole="button"
                 accessibilityLabel="사진 추가"
-                className="w-28 h-28 rounded-2xl border border-dashed border-white/20 items-center justify-center"
+                className="w-28 h-28 rounded-2xl border border-white/25 items-center justify-center"
               >
                 {addPhoto.isPending
                   ? <ActivityIndicator color={BRAND_PINK} size="small" />
