@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import Constants from 'expo-constants';
 import { ScreenHeader } from '../../components/ScreenHeader';
@@ -34,7 +35,7 @@ export default function SettingsScreen() {
             accessibilityLabel="뒤로"
             className="py-2"
           >
-            <Text className="text-white/50 text-base">← 뒤로</Text>
+            <Ionicons name="chevron-back" size={24} color="rgba(255,255,255,0.6)" />
           </TouchableOpacity>
         }
       />

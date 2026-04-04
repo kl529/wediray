@@ -1,4 +1,5 @@
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { ScreenHeader } from '../../components/ScreenHeader';
 
@@ -15,7 +16,7 @@ export default function PrivacyScreen() {
             accessibilityLabel="뒤로"
             className="py-2"
           >
-            <Text className="text-white/50 text-base">← 뒤로</Text>
+            <Ionicons name="chevron-back" size={24} color="rgba(255,255,255,0.6)" />
           </TouchableOpacity>
         }
       />
