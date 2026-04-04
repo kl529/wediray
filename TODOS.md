@@ -9,17 +9,17 @@
 Android 에뮬레이터 스크린샷 기반으로 발견한 문제들. 임팩트 순.
 
 #### 홈 화면
-- [ ] **D-01** `index.tsx` — WeddingCard 배경색 + border 추가 (현재 배경 #000과 거의 동일해 카드가 안 떠오름)
-- [ ] **D-02** `index.tsx` — 참석 여부 뱃지 (미정/참석/불참) 배경색 + border 추가 (현재 텍스트만 있음)
+- [x] **D-01** `index.tsx` — WeddingCard 배경색 + border 추가 (`bg-white/10 border-white/20`)
+- [x] **D-02** `index.tsx` — 참석 여부 뱃지 pill 스타일 적용 (ATTENDANCE_PILL_BG/TEXT 사용)
 
 #### 상세 화면
-- [ ] **D-03** `[id].tsx` — 캘린더 버튼 border 강조 (검정 배경에 아웃라인이 안 보임)
-- [ ] **D-04** `[id].tsx` — 감정 칩 + 축의금 퀵셀렉트 칩 선택/비선택 상태 대비 개선
-- [ ] **D-05** `[id].tsx` — 사진 추가 버튼 dashed border → solid border (미완성처럼 보임)
+- [x] **D-03** `[id].tsx` — 캘린더 버튼 border 강조 (`border-white/30`)
+- [x] **D-04** `[id].tsx` — 감정 칩 + 축의금 칩 비선택 대비 개선 (`bg-white/10 border-white/20`)
+- [x] **D-05** `[id].tsx` — 사진 추가 버튼 solid border (`border-white/25`)
 
 #### 새 결혼식 폼
-- [ ] **D-06** `new.tsx` — 입력 필드 border 추가 (검정 배경에 어두운 필드라 경계 없음)
-- [ ] **D-07** `new.tsx` — 날짜 표시 형식 `2026-04-04` → `2026년 4월 4일` (ISO 형식이 한국어 앱에 어색함)
+- [x] **D-06** `new.tsx` — 입력 필드 border 강화 (`border-white/20`)
+- [x] **D-07** `new.tsx` — 날짜 표시 형식 `2026년 4월 4일` 한국어 형식 적용
 
 ### 네이티브 앱 QA (iOS 시뮬레이터 or 실기기)
 
