@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView,
   ActivityIndicator, Alert, KeyboardAvoidingView, Platform,
@@ -137,7 +138,7 @@ export default function EventDetailScreen() {
             accessibilityLabel="뒤로"
             className="py-2 px-1"
           >
-            <Text className="text-white/60 text-xl">←</Text>
+            <Ionicons name="chevron-back" size={24} color="rgba(255,255,255,0.6)" />
           </TouchableOpacity>
         }
         center={
@@ -148,20 +149,20 @@ export default function EventDetailScreen() {
           ) : undefined
         }
         right={
-          <View className="flex-row gap-5">
+          <View className="flex-row gap-5 items-center">
             <TouchableOpacity
               onPress={() => router.push(`/(app)/new?id=${id}`)}
               accessibilityRole="button"
               accessibilityLabel="편집"
             >
-              <Text className="text-pink-400 text-lg">✏️</Text>
+              <Ionicons name="create-outline" size={22} color="#FF69B4" />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setShowDeleteConfirm(true)}
               accessibilityRole="button"
               accessibilityLabel="삭제"
             >
-              <Text className="text-white/40 text-lg">🗑️</Text>
+              <Ionicons name="trash-outline" size={22} color="rgba(255,255,255,0.35)" />
             </TouchableOpacity>
           </View>
         }
@@ -249,6 +250,13 @@ export default function EventDetailScreen() {
             </TouchableOpacity>
           </View>
         </View>
+
+        {wedding.invite_url ? (
+          <View className="mb-6 bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex-row items-center gap-2">
+            <Ionicons name="link-outline" size={16} color="rgba(255,255,255,0.4)" />
+            <Text className="text-white/50 text-xs flex-1" numberOfLines={1}>{wedding.invite_url}</Text>
+          </View>
+        ) : null}
 
         <View className="h-px bg-white/10 mb-8" />
 

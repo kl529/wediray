@@ -11,6 +11,7 @@ function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => vo
   const wDate = new Date(wedding.date + 'T00:00:00');
   const daysUntil = Math.round((wDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
   const showDDay = daysUntil >= 0 && daysUntil <= 60;
+  const dDayLabel = daysUntil === 0 ? 'D-Day' : `D-${daysUntil}`;
 
   return (
     <TouchableOpacity
@@ -19,31 +20,29 @@ function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => vo
       accessibilityLabel={`${wedding.groom} ♥ ${wedding.bride}, ${formatDateKR(wedding.date)}, ${ATTENDANCE_LABEL[wedding.attendance]}`}
       className="bg-white/10 border border-white/20 rounded-2xl p-4 mb-3 active:opacity-70"
     >
-      <View className="flex-row items-start justify-between">
+      <View className="flex-row items-center justify-between">
         <View className="flex-1 mr-3">
           <Text className="text-white text-lg font-gaegu-bold">
             {wedding.groom} ♥ {wedding.bride}
           </Text>
-          <Text className="text-white/50 text-sm mt-1">{formatDateKR(wedding.date)}</Text>
+          <View className="flex-row items-center gap-2 mt-1">
+            <Text className="text-white/50 text-sm">{formatDateKR(wedding.date)}</Text>
+            {showDDay && (
+              <Text className="text-pink-400 text-xs font-semibold">{dDayLabel}</Text>
+            )}
+          </View>
           {wedding.venue ? <Text className="text-white/30 text-xs mt-0.5">{wedding.venue}</Text> : null}
         </View>
-        <View className="items-end gap-2">
-          <View className={`px-2.5 py-1 rounded-full border ${
-            wedding.attendance === 'attending' ? 'bg-lime-400 border-transparent' :
-            wedding.attendance === 'absent'    ? 'bg-white/10 border-white/25' :
-                                                 'bg-sky-400 border-transparent'
+        <View className={`px-2.5 py-1 rounded-full border ${
+          wedding.attendance === 'attending' ? 'bg-lime-400 border-transparent' :
+          wedding.attendance === 'absent'    ? 'bg-white/10 border-white/25' :
+                                               'bg-sky-400 border-transparent'
+        }`}>
+          <Text className={`text-xs font-bold ${
+            wedding.attendance === 'absent' ? 'text-white/50' : 'text-black'
           }`}>
-            <Text className={`text-xs font-bold ${
-              wedding.attendance === 'absent' ? 'text-white/50' : 'text-black'
-            }`}>
-              {ATTENDANCE_LABEL[wedding.attendance]}
-            </Text>
-          </View>
-          {showDDay && (
-            <Text className="text-pink-400 text-xs font-semibold">
-              {daysUntil === 0 ? '오늘!' : `D-${daysUntil}`}
-            </Text>
-          )}
+            {ATTENDANCE_LABEL[wedding.attendance]}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>

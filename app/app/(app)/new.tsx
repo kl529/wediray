@@ -61,9 +61,10 @@ export default function NewEventScreen() {
   const mutation = useMutation({
     mutationFn: () => {
       const date = dateObjToString(dateObj);
+      const invite_url = inviteUrl.trim() || null;
       return isEdit
-        ? updateWedding(id!, { groom, bride, date, venue, attendance })
-        : createWedding({ groom, bride, date, venue, attendance });
+        ? updateWedding(id!, { groom, bride, date, venue, attendance, invite_url })
+        : createWedding({ groom, bride, date, venue, attendance, invite_url });
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['weddings'] });

@@ -10,6 +10,7 @@ export type Wedding = {
   date: string;
   venue: string;
   attendance: Attendance;
+  invite_url: string | null;
   created_at: string;
 };
 
@@ -56,7 +57,7 @@ export async function getWedding(id: string) {
 }
 
 export async function createWedding(
-  input: Pick<Wedding, 'groom' | 'bride' | 'date' | 'venue' | 'attendance'>
+  input: Pick<Wedding, 'groom' | 'bride' | 'date' | 'venue' | 'attendance' | 'invite_url'>
 ) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('로그인이 필요합니다.');
@@ -71,7 +72,7 @@ export async function createWedding(
 
 export async function updateWedding(
   id: string,
-  input: Partial<Pick<Wedding, 'groom' | 'bride' | 'date' | 'venue' | 'attendance'>>
+  input: Partial<Pick<Wedding, 'groom' | 'bride' | 'date' | 'venue' | 'attendance' | 'invite_url'>>
 ) {
   const { data, error } = await supabase
     .from('weddings')
