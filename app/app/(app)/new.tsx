@@ -3,6 +3,7 @@ import {
   View, Text, TextInput, TouchableOpacity,
   ScrollView, ActivityIndicator, Alert, KeyboardAvoidingView, Platform,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { ConfirmModal } from '../../components/ConfirmModal';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -81,7 +82,9 @@ export default function NewEventScreen() {
       bride !== (existing?.bride ?? '') ||
       venue !== (existing?.venue ?? '') ||
       inviteUrl !== (existing?.invite_url ?? '') ||
-      attendance !== (existing?.attendance ?? 'pending')
+      attendance !== (existing?.attendance ?? 'pending') ||
+      dateObjToString(dateObj) !== (existing?.date ?? '') ||
+      (showTime ? timeObjToString(timeObj) : null) !== (existing?.time ?? null)
     : groom.trim() !== '' || bride.trim() !== '' || venue.trim() !== '' || inviteUrl.trim() !== '';
 
   const mutation = useMutation({
@@ -255,31 +258,33 @@ export default function NewEventScreen() {
                 : <Text className={`font-bold text-sm ${parsing || !inviteUrl.trim() ? 'text-black/40' : 'text-black'}`}>불러오기</Text>}
             </TouchableOpacity>
           </View>
-          {/* OCR row */}
-          <View className="flex-row gap-2">
-            <TouchableOpacity
-              onPress={() => handleScan('camera')}
-              disabled={scanning !== null}
-              accessibilityRole="button"
-              accessibilityLabel="카메라로 촬영"
-              className="flex-1 items-center justify-center bg-white/5 border border-white/20 rounded-xl py-3"
-            >
-              {scanning === 'camera'
-                ? <ActivityIndicator color={BRAND_PINK} size="small" />
-                : <Text className="text-white/60 text-sm">카메라 촬영</Text>}
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleScan('gallery')}
-              disabled={scanning !== null}
-              accessibilityRole="button"
-              accessibilityLabel="갤러리에서 선택"
-              className="flex-1 items-center justify-center bg-white/5 border border-white/20 rounded-xl py-3"
-            >
-              {scanning === 'gallery'
-                ? <ActivityIndicator color={BRAND_PINK} size="small" />
-                : <Text className="text-white/60 text-sm">갤러리 선택</Text>}
-            </TouchableOpacity>
-          </View>
+          {/* OCR row — native only */}
+          {Platform.OS !== 'web' && (
+            <View className="flex-row gap-2">
+              <TouchableOpacity
+                onPress={() => handleScan('camera')}
+                disabled={scanning !== null}
+                accessibilityRole="button"
+                accessibilityLabel="카메라로 촬영"
+                className="flex-1 items-center justify-center bg-white/5 border border-white/20 rounded-xl py-3"
+              >
+                {scanning === 'camera'
+                  ? <ActivityIndicator color={BRAND_PINK} size="small" />
+                  : <Text className="text-white/60 text-sm">카메라 촬영</Text>}
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleScan('gallery')}
+                disabled={scanning !== null}
+                accessibilityRole="button"
+                accessibilityLabel="갤러리에서 선택"
+                className="flex-1 items-center justify-center bg-white/5 border border-white/20 rounded-xl py-3"
+              >
+                {scanning === 'gallery'
+                  ? <ActivityIndicator color={BRAND_PINK} size="small" />
+                  : <Text className="text-white/60 text-sm">갤러리 선택</Text>}
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
 
         <View className="h-px bg-white/10 mb-6" />
@@ -351,10 +356,10 @@ export default function NewEventScreen() {
 
         {/* Time */}
         <View className="mb-4">
-          <Text className="text-white/40 text-xs mb-2">시간 (선택)</Text>
-          {showTime ? (
-            <View className="flex-row items-center gap-3">
-              {Platform.OS === 'ios' ? (
+          <Text className="text-white/40 text-xs mb-2">시간</Text>
+          <View className="flex-row items-center gap-2">
+            {Platform.OS === 'ios' ? (
+              showTime ? (
                 <DateTimePicker
                   value={timeObj}
                   mode="time"
@@ -364,35 +369,42 @@ export default function NewEventScreen() {
                   style={{ alignSelf: 'flex-start', marginLeft: -8 }}
                 />
               ) : (
-                <>
-                  <TouchableOpacity
-                    onPress={() => setShowTimePicker(true)}
-                    className="bg-white/5 border border-white/20 rounded-xl px-4 py-3"
-                  >
-                    <Text className="text-white text-base">{formatTimeKR(timeObjToString(timeObj))}</Text>
-                  </TouchableOpacity>
-                  {showTimePicker && (
-                    <DateTimePicker
-                      value={timeObj}
-                      mode="time"
-                      display="default"
-                      onChange={(_, d) => { setShowTimePicker(false); if (d) setTimeObj(d); }}
-                    />
-                  )}
-                </>
-              )}
-              <TouchableOpacity onPress={() => setShowTime(false)}>
-                <Text className="text-white/30 text-sm">제거</Text>
+                <TouchableOpacity
+                  onPress={() => setShowTime(true)}
+                  className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3"
+                >
+                  <Text className="text-white/30 text-base">시간 없음</Text>
+                </TouchableOpacity>
+              )
+            ) : (
+              <>
+                <TouchableOpacity
+                  onPress={() => { setShowTime(true); setShowTimePicker(true); }}
+                  className="flex-1 bg-white/5 border border-white/20 rounded-xl px-4 py-3"
+                >
+                  <Text className={`text-base ${showTime ? 'text-white' : 'text-white/30'}`}>
+                    {showTime ? formatTimeKR(timeObjToString(timeObj)) : '시간 없음'}
+                  </Text>
+                </TouchableOpacity>
+                {showTimePicker && (
+                  <DateTimePicker
+                    value={timeObj}
+                    mode="time"
+                    display="spinner"
+                    onChange={(_, d) => {
+                      setShowTimePicker(false);
+                      if (d) { setTimeObj(d); setShowTime(true); }
+                    }}
+                  />
+                )}
+              </>
+            )}
+            {showTime && (
+              <TouchableOpacity onPress={() => setShowTime(false)} className="p-1">
+                <Ionicons name="close-circle-outline" size={20} color="rgba(255,255,255,0.3)" />
               </TouchableOpacity>
-            </View>
-          ) : (
-            <TouchableOpacity
-              onPress={() => setShowTime(true)}
-              className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 items-center"
-            >
-              <Text className="text-white/30 text-sm">+ 시간 추가</Text>
-            </TouchableOpacity>
-          )}
+            )}
+          </View>
         </View>
 
         {/* Venue */}
@@ -437,7 +449,7 @@ export default function NewEventScreen() {
         visible={showCancelConfirm}
         title="입력 취소"
         message="입력한 내용이 저장되지 않아요. 취소하시겠어요?"
-        confirmLabel="취소"
+        confirmLabel="나가기"
         onConfirm={() => {
           setShowCancelConfirm(false);
           confirmedCancel.current = true;

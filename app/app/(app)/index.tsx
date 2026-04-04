@@ -3,8 +3,9 @@ import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, Alert } from
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getWeddings, formatDateKR, formatTimeKR, isUpcoming, type Wedding } from '../../lib/db';
-import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_BORDER } from '../../lib/constants';
+import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_BORDER, ATTENDANCE_PILL_BG, ATTENDANCE_PILL_TEXT } from '../../lib/constants';
 import { addWeddingToCalendar } from '../../lib/calendar';
 
 function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => void }) {
@@ -30,13 +31,16 @@ function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => vo
             {wedding.groom} ♥ {wedding.bride}
           </Text>
           <View className="flex-row items-center gap-2 mt-1 flex-wrap">
-            <Text className="text-white/50 text-sm">{formatDateKR(wedding.date)}</Text>
-            {wedding.time ? <Text className="text-white/50 text-sm">{formatTimeKR(wedding.time)}</Text> : null}
+            <Text className="text-white/80 text-sm">{formatDateKR(wedding.date)}</Text>
+            {wedding.time ? <Text className="text-white/80 text-sm">{formatTimeKR(wedding.time)}</Text> : null}
             {showDDay && <Text className="text-pink-400 text-xs font-semibold">{dDayLabel}</Text>}
           </View>
-          {wedding.venue ? <Text className="text-white/30 text-xs mt-0.5">{wedding.venue}</Text> : null}
+          {wedding.venue ? <Text className="text-white/40 text-xs mt-0.5">{wedding.venue}</Text> : null}
         </View>
-        <View className="items-end">
+        <View className="items-end gap-2">
+          <View className={`px-2 py-0.5 rounded-full ${ATTENDANCE_PILL_BG[att]}`}>
+            <Text className={`text-xs font-bold ${ATTENDANCE_PILL_TEXT[att]}`}>{ATTENDANCE_LABEL[att]}</Text>
+          </View>
           {upcoming && (
             <TouchableOpacity
               onPress={async () => {
@@ -81,7 +85,7 @@ function EmptyState({ tab }: { tab: 'upcoming' | 'done' }) {
       <Text className="text-white/20 text-xs mt-1">
         {tab === 'upcoming'
           ? '오른쪽 아래 + 버튼으로 추가해보세요'
-          : '결혼식 카드에서 기억을 기록하면 여기에 나타나요'}
+          : '지난 결혼식을 추가하면 여기에 나타나요'}
       </Text>
     </View>
   );
@@ -89,6 +93,7 @@ function EmptyState({ tab }: { tab: 'upcoming' | 'done' }) {
 
 export default function HomeScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { data: weddings = [], isLoading, isError, refetch } = useQuery({
     queryKey: ['weddings'],
     queryFn: getWeddings,
@@ -158,7 +163,7 @@ export default function HomeScreen() {
         <FlatList
           data={list}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 100 }}
+          contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: insets.bottom + 88 }}
           ListEmptyComponent={<EmptyState tab={tab} />}
           renderItem={({ item }) => (
             <WeddingCard
@@ -174,8 +179,8 @@ export default function HomeScreen() {
         onPress={() => router.push('/(app)/new')}
         accessibilityRole="button"
         accessibilityLabel="결혼식 추가"
-        className="absolute bottom-10 right-6 bg-pink-400 w-14 h-14 rounded-full items-center justify-center"
-        style={{ boxShadow: `0 0 12px 4px rgba(244,114,182,0.5)`, elevation: 8 } as any}
+        className="absolute right-6 bg-pink-400 w-14 h-14 rounded-full items-center justify-center"
+        style={{ bottom: insets.bottom + 16, boxShadow: `0 0 12px 4px rgba(244,114,182,0.5)`, elevation: 8 } as any}
       >
         <Text className="text-black text-3xl font-bold">+</Text>
       </TouchableOpacity>

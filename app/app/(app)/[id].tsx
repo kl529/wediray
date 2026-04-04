@@ -209,11 +209,11 @@ export default function EventDetailScreen() {
                 }}
                 accessibilityRole="button"
                 accessibilityLabel="장소 복사"
-                className="px-2 py-0.5"
+                className="px-2 py-1"
               >
-                <Text className={`text-xs ${venueCopied ? 'text-lime-400' : 'text-white/30'}`}>
-                  {venueCopied ? '복사됨 ✓' : '복사'}
-                </Text>
+                {venueCopied
+                  ? <Text className="text-lime-400 text-xs">복사됨 ✓</Text>
+                  : <Ionicons name="copy-outline" size={14} color="rgba(255,255,255,0.35)" />}
               </TouchableOpacity>
             </View>
           ) : null}
