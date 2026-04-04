@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react
 import { useRouter } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { getWeddings, formatDateKR, isUpcoming, type Wedding } from '../../lib/db';
-import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_PILL_BG, ATTENDANCE_PILL_TEXT } from '../../lib/constants';
+import { BRAND_PINK, ATTENDANCE_LABEL } from '../../lib/constants';
 
 function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => void }) {
   const today = new Date();
@@ -29,11 +29,13 @@ function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => vo
         </View>
         <View className="items-end gap-2">
           <View className={`px-2.5 py-1 rounded-full border ${
-            wedding.attendance === 'absent'
-              ? 'bg-white/10 border-white/25'
-              : `${ATTENDANCE_PILL_BG[wedding.attendance]} border-transparent`
+            wedding.attendance === 'attending' ? 'bg-lime-400 border-transparent' :
+            wedding.attendance === 'absent'    ? 'bg-white/10 border-white/25' :
+                                                 'bg-sky-400 border-transparent'
           }`}>
-            <Text className={`text-xs font-bold ${ATTENDANCE_PILL_TEXT[wedding.attendance]}`}>
+            <Text className={`text-xs font-bold ${
+              wedding.attendance === 'absent' ? 'text-white/50' : 'text-black'
+            }`}>
               {ATTENDANCE_LABEL[wedding.attendance]}
             </Text>
           </View>
