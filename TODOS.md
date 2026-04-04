@@ -47,6 +47,14 @@ Android 에뮬레이터 스크린샷 기반으로 발견한 문제들. 임팩트
 
 ### 2026-04-04
 
+- [x] 사진 저장 기능 제거 — `[id].tsx`에서 PhotoCard, photos query, ImagePicker, 사진 관련 DB 함수 전부 제거
+- [x] 상세 화면 헤더 아이콘화 — 뒤로(chevron-back), 편집(create-outline), 삭제(trash-outline) Ionicons으로 교체 (`[id].tsx`)
+- [x] D-Day 카운트다운 — 홈 목록 카드(D-N 뱃지) + 상세 화면 히어로 섹션(D-Day/D-N/N일 전) 표시 (`index.tsx`, `[id].tsx`)
+- [x] invite_url DB 컬럼 추가 + 상세 화면 링크 표시 — `weddings` 테이블 `invite_url TEXT` 마이그레이션, 상세에서 link-outline 아이콘과 함께 표시 (`db.ts`, `[id].tsx`, migration)
+- [x] 새 결혼식 저장 필수값 검증 제거 — handleSave에서 validation 로직 삭제 (`new.tsx`)
+- [x] 홈 목록 카드 정렬 개선 — D-Day와 날짜 inline 배치, 참석 뱃지 오른쪽 단독 배치 (`index.tsx`)
+- [x] 참석 뱃지 NativeWind 정적 분석 호환 — 동적 클래스 템플릿 → explicit ternary chain으로 교체 (`index.tsx`)
+- [x] UI 디자인 D-01~D-07 전체 완료 — 카드 배경/border, 뱃지 스타일, 캘린더 버튼 border, 입력 border, Android 날짜 한국어 형식
 - [x] iOS 스와이프 백 제스처 isDirty 경고 누락 수정 — `navigation.addListener('beforeRemove')` 패턴으로 버튼 탭 + 네이티브 스와이프 제스처 모두 인터셉트 (`[id].tsx`)
 - [x] 불러오기 버튼 비활성 시각 피드백 — 입력 없을 때 `bg-pink-400/40` + `text-black/40` 적용 (`new.tsx`)
 - [x] 테스트 로그인 `signInAnonymously()` 교체 — `router.replace('/(app)')` 제거, 실제 Supabase 익명 세션 생성으로 DB 쓰기 가능 (`login.tsx`)
