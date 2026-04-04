@@ -1,0 +1,11 @@
+Bug ID,Title,Severity,Component,Test Case ID,Status,Reported Date,Reported By,Description,Steps to Reproduce,Expected Result,Actual Result,Resolution,Resolved Date
+BUG-01,URL 파싱 실패 시 Alert 미표시,P2,new.tsx / Edge Function,TC-E2E-012,Deferred,2026-04-04,Claude,Supabase Edge Function 401 응답 시 앱에서 에러 Alert 미표시,"1. 새 결혼식 폼 진입
+2. 실존하지 않는 청첩장 URL 입력
+3. '불러오기' 탭","파싱 실패 Alert('파싱 실패') 표시","Alert 미표시. 조용히 실패. 서버 401 응답",서버 Edge Function 이슈로 deferred — 401 원인 파악 후 수정,
+BUG-02,DB의 attended 값 앱 미인식,P3,db.ts,TC-E2E-005,Deferred,2026-04-04,Claude,DB에 'attended' 값 저장된 경우 앱이 인식 못함. 앱 허용값은 'attend',"1. Supabase Dashboard에서 weddings 테이블에 attendance='attended' 직접 입력
+2. 앱에서 해당 결혼식 상세 진입","참석 뱃지 '참석완료' 표시","참석 뱃지 undefined",데이터 정합성 이슈 — migration 또는 앱 허용값 통일 필요,
+BUG-03,formatDateKR 요일 suffix 테스트 불일치,P3,db.ts,,(unit test),Open,2026-04-04,Claude,formatDateKR()가 요일을 포함해 반환 — 예: '2025년 12월 31일 (수)' vs 기대값 '2025년 12월 31일',"npx jest __tests__/db.test.ts","'2025년 12월 31일' 반환","'2025년 12월 31일 (수)' 반환 (요일 포함)",테스트 기대값 수정 또는 함수에서 요일 제거,
+DEV-01,NativeWind 동적 클래스 import ESLint 자동 제거,P3,index.tsx,,,Open,2026-04-04,Claude,ATTENDANCE_PILL_BG 등 NativeWind 동적 클래스 상수가 ESLint/Prettier에 의해 자동 제거됨,"1. index.tsx 편집 후 저장 (Organize Imports on Save 활성)
+2. ATTENDANCE_PILL_BG import 자동 제거됨","import 유지","import 제거 → 빌드 실패",".vscode/settings.json에 organizeImports: never 추가 완료 — VSCode 재시작 필요,2026-04-04
+ISSUE-001,WeddingCard button > button HTML 중첩,P1,index.tsx,TC-E2E-001,Fixed,2026-04-04,Claude,WeddingCard 외부 TouchableOpacity에 accessibilityRole=button 설정 시 Web에서 button>button HTML 오류,"1. Web에서 홈 화면 접속
+2. 개발자 도구 콘솔 확인","<button> 중첩 HTML 에러 없음","In HTML: <button> cannot be a descendant of <button>",accessibilityRole=button 제거 (commit: 08d8cf8),2026-04-04

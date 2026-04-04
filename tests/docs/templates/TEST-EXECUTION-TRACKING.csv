@@ -1,0 +1,44 @@
+Test Case ID,Category,Priority,Test Name,Platform,Status,Result,Bug ID,Execution Date,Executed By,Notes
+TC-E2E-001,E2E,P1,홈 화면 정상 로드,Web,Executed,PASS,,2026-04-04,Claude,SC-01 완료
+TC-E2E-001,E2E,P1,홈 화면 정상 로드,iOS,Not Started,,,,,"
+TC-E2E-001,E2E,P1,홈 화면 정상 로드,Android,Not Started,,,,,
+TC-E2E-002,E2E,P2,탭 전환,Web,Executed,PASS,,2026-04-04,Claude,SC-02 완료
+TC-E2E-002,E2E,P2,탭 전환,iOS,Not Started,,,,,
+TC-E2E-002,E2E,P2,탭 전환,Android,Not Started,,,,,
+TC-E2E-003,E2E,P1,새 결혼식 폼 렌더링 및 유효성 검사,Web,Executed,PASS,,2026-04-04,Claude,SC-03 완료 — 빈저장/dirty/URL 검증 통과
+TC-E2E-003,E2E,P1,새 결혼식 폼 렌더링 및 유효성 검사,iOS,Not Started,,,,,
+TC-E2E-003,E2E,P1,새 결혼식 폼 렌더링 및 유효성 검사,Android,Not Started,,,,,
+TC-E2E-004,E2E,P0,결혼식 저장 E2E,Web,Executed,PASS,,2026-04-04,Claude,SC-04 완료
+TC-E2E-004,E2E,P0,결혼식 저장 E2E,iOS,Not Started,,,,,
+TC-E2E-004,E2E,P0,결혼식 저장 E2E,Android,Not Started,,,,,
+TC-E2E-005,E2E,P1,상세 화면 렌더링,Web,Executed,PASS,,2026-04-04,Claude,SC-05 완료
+TC-E2E-005,E2E,P1,상세 화면 렌더링,iOS,Not Started,,,,,
+TC-E2E-005,E2E,P1,상세 화면 렌더링,Android,Not Started,,,,,
+TC-E2E-006,E2E,P1,추억 저장 (메모/축의금),Web,Executed,PASS,,2026-04-04,Claude,SC-06 완료
+TC-E2E-006,E2E,P1,추억 저장 (메모/축의금),iOS,Not Started,,,,,
+TC-E2E-006,E2E,P1,추억 저장 (메모/축의금),Android,Not Started,,,,,
+TC-E2E-007,E2E,P2,설정 화면,Web,Executed,PASS,,2026-04-04,Claude,SC-07 완료
+TC-E2E-007,E2E,P2,설정 화면,iOS,Not Started,,,,,
+TC-E2E-007,E2E,P2,설정 화면,Android,Not Started,,,,,
+TC-E2E-008,E2E,P2,로그아웃 확인 모달,Web,Executed,PASS,,2026-04-04,Claude,SC-08 완료 — 취소 동작 확인
+TC-E2E-008,E2E,P2,로그아웃 확인 모달,iOS,Not Started,,,,,
+TC-E2E-008,E2E,P2,로그아웃 확인 모달,Android,Not Started,,,,,
+TC-E2E-009,E2E,P3,개인정보처리방침,Web,Executed,PASS,,2026-04-04,Claude,SC-09 완료
+TC-E2E-009,E2E,P3,개인정보처리방침,iOS,Not Started,,,,,
+TC-E2E-009,E2E,P3,개인정보처리방침,Android,Not Started,,,,,
+TC-E2E-010,E2E,P1,로그인 화면,Web,Executed,PASS,,2026-04-04,Claude,SC-10 완료
+TC-E2E-010,E2E,P1,로그인 화면,iOS,Not Started,,,,,카카오 로그인 실제 플로우
+TC-E2E-010,E2E,P1,로그인 화면,Android,Not Started,,,,,
+TC-E2E-011,E2E,P2,지난 결혼식 수정 플로우,Web,Executed,PASS,,2026-04-04,Claude,SC-11 완료 — invite_url pre-populate 확인
+TC-E2E-011,E2E,P2,지난 결혼식 수정 플로우,iOS,Not Started,,,,,
+TC-E2E-011,E2E,P2,지난 결혼식 수정 플로우,Android,Not Started,,,,,
+TC-E2E-012,E2E,P1,청첩장 URL 파싱,Web,Executed,PARTIAL,BUG-01,2026-04-04,Claude,파싱 성공 동작 확인. Alert 미표시 버그 deferred
+TC-E2E-012,E2E,P1,청첩장 URL 파싱,iOS,Not Started,,,,,
+TC-E2E-012,E2E,P1,청첩장 URL 파싱,Android,Not Started,,,,,
+TC-E2E-013,E2E,P2,OCR 갤러리 스캔,iOS,Not Started,,,,,네이티브 전용 — 시뮬레이터 필요
+TC-E2E-013,E2E,P2,OCR 갤러리 스캔,Android,Not Started,,,,,네이티브 전용 — 에뮬레이터 필요
+TC-E2E-014,E2E,P2,캘린더 자동 추가,iOS,Not Started,,,,,네이티브 전용 — 시뮬레이터 필요
+TC-E2E-014,E2E,P2,캘린더 자동 추가,Android,Not Started,,,,,네이티브 전용 — 에뮬레이터 필요
+TC-SEC-001,Security,P0,RLS 권한 격리,Web,Not Started,,,,,Supabase 직접 쿼리 테스트 필요
+TC-SEC-002,Security,P1,SSRF 보호 (Edge Function),Web,Not Started,,,,,Edge Function 배포 상태에서 테스트
+TC-SEC-003,Security,P0,인증 없는 직접 접근 차단,Web,Executed,PASS,,2026-04-04,Claude,_layout.tsx route guard 확인됨
