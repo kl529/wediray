@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { getWeddings, formatDateKR, formatTimeKR, isUpcoming, type Wedding } from '../../lib/db';
-import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_PILL_BG, ATTENDANCE_PILL_TEXT, ATTENDANCE_BORDER } from '../../lib/constants';
+import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_BORDER } from '../../lib/constants';
 import { addWeddingToCalendar } from '../../lib/calendar';
 
 function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => void }) {
@@ -36,12 +36,7 @@ function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => vo
           </View>
           {wedding.venue ? <Text className="text-white/30 text-xs mt-0.5">{wedding.venue}</Text> : null}
         </View>
-        <View className="items-end gap-2">
-          <View className={`px-2.5 py-1 rounded-full ${ATTENDANCE_PILL_BG[att]}`}>
-            <Text className={`text-xs font-bold ${ATTENDANCE_PILL_TEXT[att]}`}>
-              {ATTENDANCE_LABEL[att]}
-            </Text>
-          </View>
+        <View className="items-end">
           {upcoming && (
             <TouchableOpacity
               onPress={async () => {

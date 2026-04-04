@@ -33,3 +33,10 @@ export const ATTENDANCE_PILL_TEXT: Record<Attendance, string> = {
   absent: 'text-white/50',
   pending: 'text-black',
 };
+
+// Card border color (used in list cards to indicate attendance)
+export const ATTENDANCE_BORDER: Record<Attendance, string> = {
+  attending: 'border-lime-400/60',
+  absent: 'border-red-500/40',
+  pending: 'border-white/15',
+};

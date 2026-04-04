@@ -4,6 +4,7 @@ import {
   ScrollView, ActivityIndicator, Alert, KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { ConfirmModal } from '../../components/ConfirmModal';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -40,6 +41,8 @@ export default function NewEventScreen() {
   const [parsing, setParsing] = useState(false);
   const [scanning, setScanning] = useState<'camera' | 'gallery' | null>(null);
   const [formError, setFormError] = useState('');
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const confirmedCancel = useRef(false);
   const scrollRef = useRef<ScrollView>(null);
 
   const { data: existing } = useQuery({
@@ -103,7 +106,7 @@ export default function NewEventScreen() {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove' as any, (e: any) => {
-      if (!isDirty || mutation.isPending) return;
+      if (!isDirty || mutation.isPending || confirmedCancel.current) return;
       e.preventDefault();
       Alert.alert('저장하지 않은 변경사항', '나가면 입력한 내용이 사라져요.', [
         { text: '계속 편집', style: 'cancel' },
@@ -112,6 +115,14 @@ export default function NewEventScreen() {
     });
     return unsubscribe;
   }, [navigation, isDirty, mutation.isPending]);
+
+  function handleCancel() {
+    if (isDirty) {
+      setShowCancelConfirm(true);
+    } else {
+      router.back();
+    }
+  }
 
   async function handleScan(source: 'camera' | 'gallery') {
     setScanning(source);
@@ -160,12 +171,16 @@ export default function NewEventScreen() {
     }
   }
 
+  const [nameError, setNameError] = useState(false);
+
   function handleSave() {
     if (!groom.trim() && !bride.trim()) {
+      setNameError(true);
       setFormError('신랑 또는 신부 이름을 입력해주세요.');
       scrollRef.current?.scrollTo({ y: 0, animated: true });
       return;
     }
+    setNameError(false);
     setFormError('');
     mutation.mutate();
   }
@@ -178,7 +193,7 @@ export default function NewEventScreen() {
       <ScreenHeader
         left={
           <TouchableOpacity
-            onPress={() => router.back()}
+            onPress={handleCancel}
             accessibilityRole="button"
             accessibilityLabel="취소"
             className="py-2"
@@ -271,25 +286,31 @@ export default function NewEventScreen() {
 
         {/* Groom */}
         <View className="mb-4">
-          <Text className="text-white/40 text-xs mb-2">신랑</Text>
+          <View className="flex-row items-center mb-2">
+            <Text className="text-white/40 text-xs">신랑</Text>
+            <Text className="text-red-400 text-xs ml-0.5">*</Text>
+          </View>
           <TextInput
             value={groom}
-            onChangeText={(v) => { setGroom(v); if (formError) setFormError(''); }}
+            onChangeText={(v) => { setGroom(v); if (nameError) setNameError(false); if (formError) setFormError(''); }}
             placeholder="이름"
             placeholderTextColor="#ffffff33"
-            className="bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white text-base"
+            className={`bg-white/5 border rounded-xl px-4 py-3 text-white text-base ${nameError && !groom.trim() ? 'border-red-500' : 'border-white/20'}`}
           />
         </View>
 
         {/* Bride */}
         <View className="mb-4">
-          <Text className="text-white/40 text-xs mb-2">신부</Text>
+          <View className="flex-row items-center mb-2">
+            <Text className="text-white/40 text-xs">신부</Text>
+            <Text className="text-red-400 text-xs ml-0.5">*</Text>
+          </View>
           <TextInput
             value={bride}
-            onChangeText={(v) => { setBride(v); if (formError) setFormError(''); }}
+            onChangeText={(v) => { setBride(v); if (nameError) setNameError(false); if (formError) setFormError(''); }}
             placeholder="이름"
             placeholderTextColor="#ffffff33"
-            className="bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white text-base"
+            className={`bg-white/5 border rounded-xl px-4 py-3 text-white text-base ${nameError && !bride.trim() ? 'border-red-500' : 'border-white/20'}`}
           />
         </View>
 
@@ -411,6 +432,20 @@ export default function NewEventScreen() {
           </View>
         </View>
       </ScrollView>
+
+      <ConfirmModal
+        visible={showCancelConfirm}
+        title="입력 취소"
+        message="입력한 내용이 저장되지 않아요. 취소하시겠어요?"
+        confirmLabel="취소"
+        onConfirm={() => {
+          setShowCancelConfirm(false);
+          confirmedCancel.current = true;
+          router.back();
+        }}
+        onCancel={() => setShowCancelConfirm(false)}
+        destructive
+      />
     </KeyboardAvoidingView>
   );
 }

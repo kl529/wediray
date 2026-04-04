@@ -60,6 +60,14 @@ Android 에뮬레이터 스크린샷 기반으로 발견한 문제들. 임팩트
 
 ## 완료 내역
 
+### 2026-04-04 (UX 피드백 반영)
+
+- [x] `index.tsx` — 카드 목록에서 시간 표시 개선 (`text-white/40 text-xs` → `text-white/50 text-sm`, 날짜와 동일 스타일)
+- [x] `index.tsx` — 참석 칩 제거, 카드 border 색으로 참석 여부 표시 (참석=연두, 불참=빨강, 미정=기본) + `ATTENDANCE_BORDER` 상수 추가
+- [x] `index.tsx` — 설정 버튼: "설정" 텍스트 → `settings-outline` 아이콘
+- [x] `new.tsx` — 등록 취소 시 ConfirmModal 표시 (내용 있을 때), 스와이프 백은 기존 Alert 유지
+- [x] `new.tsx` — 신랑/신부 라벨에 `*` 필수 표시, 저장 시 빈 필드에 빨간 border 하이라이트
+
 ### 2026-04-04 (엣지케이스 & UX 전수조사)
 
 - [x] **P0** `[id].tsx` — 로딩 완료 후 wedding 없으면 무한 스피너 → `isError` 분리, 에러 화면 + 돌아가기 버튼
