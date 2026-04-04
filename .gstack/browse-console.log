@@ -1,6 +1,673 @@
-[2026-04-03T19:37:49.452Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[2026-04-03T19:37:49.488Z] [log] Running application "main" with appParams:
+[2026-04-04T03:19:43.825Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T03:19:43.860Z] [log] Running application "main" with appParams:
  {rootTag: #root, hydrate: undefined} 
 Development-level warnings: ON.
 Performance optimizations: OFF.
-[2026-04-03T19:37:58.762Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T03:20:37.316Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T03:22:44.255Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T03:22:44.267Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T03:23:37.945Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T03:23:37.974Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T03:23:47.464Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T03:23:47.475Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T03:43:17.855Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T03:43:17.883Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T03:43:43.870Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T03:46:45.314Z] [log] cancel found: false undefined
+[2026-04-04T03:47:42.968Z] [log] DIV css-view-g5y9jx r-transitionProperty-1i6 {"x":473,"y":375,"w":161,"h":46}
+[2026-04-04T03:47:42.968Z] [log] DIV css-text-146c3p1 text-white/60 font-semi {"x":541,"y":388,"w":24,"h":20}
+[2026-04-04T03:47:54.624Z] [log] el at 553,398: DIV 취소
+[2026-04-04T03:48:29.818Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T03:48:29.830Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T03:48:39.654Z] [log] logout btn: 로그아웃
+[2026-04-04T03:49:16.584Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T03:49:26.852Z] [log] date inputs: 0
+[2026-04-04T03:49:41.857Z] [log] total inputs: 4
+[2026-04-04T03:49:41.857Z] [log] 0 url 청첩장 링크 붙여넣기... 
+[2026-04-04T03:49:41.857Z] [log] 1 text 이름 SC11신랑
+[2026-04-04T03:49:41.857Z] [log] 2 text 이름 SC11신부
+[2026-04-04T03:49:41.857Z] [log] 3 text 웨딩홀 이름 SC11홀
+[2026-04-04T03:49:54.442Z] [warning] DateTimePicker is not supported on: web
+[2026-04-04T03:50:25.379Z] [log] auth key: sb-jzaiyttrvwswmzrsqutt-auth-token
+[2026-04-04T03:50:25.379Z] [log] access_token: eyJhbGciOiJFUzI1NiIsImtpZCI6ImEzNGIyN2JmLThiYzMtND
+[2026-04-04T03:50:32.875Z] [log] eyJhbGciOiJFUzI1NiIsImtpZCI6ImEzNGIyN2JmLThiYzMtNDgyZi1iYTZhLTkzOGYyZDg1YmFjMSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2p6YWl5dHRydndzd216cnNxdXR0LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIwMGE1MDQ0NS01ODUzLTQzYWItYmZjMS1hMzNmMmNiNTMyNGYiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzc1Mjc4MTM2LCJpYXQiOjE3NzUyNzQ1MzYsImVtYWlsIjoiIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnt9LCJ1c2VyX21ldGFkYXRhIjp7fSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJhbm9ueW1vdXMiLCJ0aW1lc3RhbXAiOjE3NzUyNzQ1MzZ9XSwic2Vzc2lvbl9pZCI6ImNkMTE0YTk4LTEwM2EtNDQxOC05ZGExLWI5NzU2MDk0ZTI2ZCIsImlzX2Fub255bW91cyI6dHJ1ZX0.pijR2uojoWXzBd11iiLKIOCnoCjXgH8d_0VzPdM2R_BQFMSQX250cKj6oyIBqpQZtY3Sw2SmAuy91G4GhSQzow
+[2026-04-04T03:50:44.200Z] [error] Failed to load resource: the server responded with a status of 400 ()
+[2026-04-04T03:50:44.201Z] [log] weddings: {"code":"42703","details":null,"hint":null,"message":"column weddings.groom_name does not exist"}
+[2026-04-04T03:50:54.082Z] [log] keys: id,user_id,groom,bride,date,venue,attendance,created_at,invite_url
+[2026-04-04T03:50:54.082Z] [log] first: {"id":"5676cfd9-e2ad-4e5d-b6b9-617121950d57","user_id":"00a50445-5853-43ab-bfc1-a33f2cb5324f","groom":"SC11신랑","bride":"SC11신부","date":"2026-04-04","venue":"SC11홀","attendance":"pending","created_at":"2026-04-04T03:50:10.016584+00:00","invite_url":null}
+[2026-04-04T03:51:04.310Z] [log] update status: 204
+[2026-04-04T03:51:13.272Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T03:51:13.283Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T03:51:50.626Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T03:52:38.619Z] [error] Failed to load resource: the server responded with a status of 401 ()
+[2026-04-04T03:53:28.634Z] [error] Failed to load resource: the server responded with a status of 401 ()
+[2026-04-04T03:58:54.670Z] [warning] Disconnected from Metro (1006)
+To reconnect:
+- Ensure that Metro is running and available on the same network
+- Reload this app (will trigger further help if Metro cannot be connected to)
+[2026-04-04T04:13:57.754Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:13:57.783Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:14:21.165Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T04:15:21.285Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:15:21.296Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:15:39.578Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:15:39.589Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:16:16.970Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:16:16.986Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:16:42.043Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T04:16:45.518Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:16:45.528Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:16:45.676Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T04:17:01.766Z] [error] Failed to load resource: the server responded with a status of 401 ()
+[2026-04-04T04:38:45.068Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:38:45.097Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:38:46.658Z] [error] In HTML, %s cannot be a descendant of <%s>.
+This will cause a hydration error.%s <button> button 
+
+  ...
+    <View data={[...]} keyExtractor={function} ListEmptyComponent={<EmptyState>} renderItem={function renderProp} ...>
+      <div onTouchStart={function} onTouchEnd={function} onScroll={function handleScroll} onTouchMove={function} ...>
+        <View onLayout={function} collapsable={false} ref={function} style={[...]}>
+          <div dir={null} ref={function forwardRef} className="css-view-g..." style={{...}}>
+            <CellRenderer CellRendererComponent={undefined} ItemSeparatorComponent={undefined} ...>
+              <VirtualizedListCellContextProvider cellKey="c69b0c5a-f...">
+                <View style={null} onFocusCapture={function onCellFocusCapture} onLayout={function}>
+                  <div dir={null} ref={function forwardRef} className="css-view-g...">
+                    <WeddingCard wedding={{id:"c69b0c...", ...}} onPress={function onPress}>
+                      <CssInteropComponent onPress={function onPress} accessibilityRole="button" ...>
+                        <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                          <View accessibilityRole="button" accessibilityLabel="QA신랑 ♥ QA신..." ...>
+>                           <button
+>                             onKeyDown={function onKeyDown}
+>                             onClick={function onClick}
+>                             onContextMenu={function onContextMenu}
+>                             dir={null}
+>                             ref={function forwardRef}
+>                             aria-label="QA신랑 ♥ QA신부, 2026년 4월 4일 (토), 참석"
+>                             role="button"
+>                             className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cursor-1lo..."
+>                             style={{transitionDuration:"0s"}}
+>                             type="button"
+>                           >
+                              ...
+                                <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                                  <View accessibilityRole="button" accessibilityLabel="캘린더에 추가" ...>
+>                                   <button
+>                                     onKeyDown={function onKeyDown}
+>                                     onClick={function onClick}
+>                                     onContextMenu={function onContextMenu}
+>                                     dir={null}
+>                                     ref={function forwardRef}
+>                                     aria-label="캘린더에 추가"
+>                                     role="button"
+>                                     className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cu..."
+>                                     style={{transitionDuration:"0s"}}
+>                                     type="button"
+>                                   >
+
+[2026-04-04T04:38:46.658Z] [error] <%s> cannot contain a nested %s.
+See this log for the ancestor stack trace. button <button>
+[2026-04-04T04:39:42.162Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:39:42.174Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:39:42.319Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T04:40:03.789Z] [error] The action 'GO_BACK' was not handled by any navigator.
+
+Is there any screen to go back to?
+
+This is a development-only warning and won't be shown in production.
+[2026-04-04T04:40:24.091Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:40:24.103Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:40:24.522Z] [error] In HTML, %s cannot be a descendant of <%s>.
+This will cause a hydration error.%s <button> button 
+
+  ...
+    <View data={[...]} keyExtractor={function} ListEmptyComponent={<EmptyState>} renderItem={function renderProp} ...>
+      <div onTouchStart={function} onTouchEnd={function} onScroll={function handleScroll} onTouchMove={function} ...>
+        <View onLayout={function} collapsable={false} ref={function} style={[...]}>
+          <div dir={null} ref={function forwardRef} className="css-view-g..." style={{...}}>
+            <CellRenderer CellRendererComponent={undefined} ItemSeparatorComponent={undefined} ...>
+              <VirtualizedListCellContextProvider cellKey="c69b0c5a-f...">
+                <View style={null} onFocusCapture={function onCellFocusCapture} onLayout={function}>
+                  <div dir={null} ref={function forwardRef} className="css-view-g...">
+                    <WeddingCard wedding={{id:"c69b0c...", ...}} onPress={function onPress}>
+                      <CssInteropComponent onPress={function onPress} accessibilityRole="button" ...>
+                        <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                          <View accessibilityRole="button" accessibilityLabel="QA신랑 ♥ QA신..." ...>
+>                           <button
+>                             onKeyDown={function onKeyDown}
+>                             onClick={function onClick}
+>                             onContextMenu={function onContextMenu}
+>                             dir={null}
+>                             ref={function forwardRef}
+>                             aria-label="QA신랑 ♥ QA신부, 2026년 4월 4일 (토), 참석"
+>                             role="button"
+>                             className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cursor-1lo..."
+>                             style={{transitionDuration:"0s"}}
+>                             type="button"
+>                           >
+                              ...
+                                <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                                  <View accessibilityRole="button" accessibilityLabel="캘린더에 추가" ...>
+>                                   <button
+>                                     onKeyDown={function onKeyDown}
+>                                     onClick={function onClick}
+>                                     onContextMenu={function onContextMenu}
+>                                     dir={null}
+>                                     ref={function forwardRef}
+>                                     aria-label="캘린더에 추가"
+>                                     role="button"
+>                                     className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cu..."
+>                                     style={{transitionDuration:"0s"}}
+>                                     type="button"
+>                                   >
+            ...
+
+[2026-04-04T04:40:24.522Z] [error] <%s> cannot contain a nested %s.
+See this log for the ancestor stack trace. button <button>
+[2026-04-04T04:40:58.024Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T04:42:05.452Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:42:05.484Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:42:11.701Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:42:11.729Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:42:12.716Z] [error] In HTML, %s cannot be a descendant of <%s>.
+This will cause a hydration error.%s <button> button 
+
+  ...
+    <View data={[...]} keyExtractor={function} ListEmptyComponent={<EmptyState>} renderItem={function renderProp} ...>
+      <div onTouchStart={function} onTouchEnd={function} onScroll={function handleScroll} onTouchMove={function} ...>
+        <View onLayout={function} collapsable={false} ref={function} style={[...]}>
+          <div dir={null} ref={function forwardRef} className="css-view-g..." style={{...}}>
+            <CellRenderer CellRendererComponent={undefined} ItemSeparatorComponent={undefined} ...>
+              <VirtualizedListCellContextProvider cellKey="c69b0c5a-f...">
+                <View style={null} onFocusCapture={function onCellFocusCapture} onLayout={function}>
+                  <div dir={null} ref={function forwardRef} className="css-view-g...">
+                    <WeddingCard wedding={{id:"c69b0c...", ...}} onPress={function onPress}>
+                      <CssInteropComponent onPress={function onPress} accessibilityRole="button" ...>
+                        <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                          <View accessibilityRole="button" accessibilityLabel="QA신랑 ♥ QA신..." ...>
+>                           <button
+>                             onKeyDown={function onKeyDown}
+>                             onClick={function onClick}
+>                             onContextMenu={function onContextMenu}
+>                             dir={null}
+>                             ref={function forwardRef}
+>                             aria-label="QA신랑 ♥ QA신부, 2026년 4월 4일 (토), 참석"
+>                             role="button"
+>                             className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cursor-1lo..."
+>                             style={{transitionDuration:"0s"}}
+>                             type="button"
+>                           >
+                              ...
+                                <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                                  <View accessibilityRole="button" accessibilityLabel="캘린더에 추가" ...>
+>                                   <button
+>                                     onKeyDown={function onKeyDown}
+>                                     onClick={function onClick}
+>                                     onContextMenu={function onContextMenu}
+>                                     dir={null}
+>                                     ref={function forwardRef}
+>                                     aria-label="캘린더에 추가"
+>                                     role="button"
+>                                     className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cu..."
+>                                     style={{transitionDuration:"0s"}}
+>                                     type="button"
+>                                   >
+            ...
+
+[2026-04-04T04:42:12.716Z] [error] <%s> cannot contain a nested %s.
+See this log for the ancestor stack trace. button <button>
+[2026-04-04T04:43:06.254Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T04:43:11.096Z] [error] %o
+
+%s
+
+%s
+ ReferenceError: Cannot access 'mutation' before initialization
+    at NewEventScreen (http://localhost:8081/app/(app)/new.bundle//&platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable&minify=false&modulesOnly=true&runModule=false&shallow=true:131:30)
+    at react-stack-bottom-frame (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:16641:20)
+    at renderWithHooks (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:6851:22)
+    at updateFunctionComponent (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:8544:19)
+    at beginWork (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:9130:18)
+    at runWithFiberInDEV (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:4623:70)
+    at performUnitOfWork (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11203:95)
+    at workLoopSync (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11096:40)
+    at renderRootSync (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11080:9)
+    at performWorkOnRoot (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:10844:44)
+    at performSyncWorkOnRoot (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11808:7)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11727:308)
+    at flushSyncWork$1 (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:10958:84)
+    at Object.scheduleRefresh (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:3591:9)
+    at http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:72406:23
+    at Set.forEach (<anonymous>)
+    at Object.performReactRefresh (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:72398:32)
+    at Object.performReactRefresh (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:72165:27)
+    at http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:429:21 The above error occurred in the <NewEventScreen> component. React will try to recreate this component tree from scratch using the error boundary you provided, LogBoxStateSubscription.
+[2026-04-04T04:44:08.142Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:44:08.171Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:44:09.057Z] [error] In HTML, %s cannot be a descendant of <%s>.
+This will cause a hydration error.%s <button> button 
+
+  ...
+    <View data={[...]} keyExtractor={function} ListEmptyComponent={<EmptyState>} renderItem={function renderProp} ...>
+      <div onTouchStart={function} onTouchEnd={function} onScroll={function handleScroll} onTouchMove={function} ...>
+        <View onLayout={function} collapsable={false} ref={function} style={[...]}>
+          <div dir={null} ref={function forwardRef} className="css-view-g..." style={{...}}>
+            <CellRenderer CellRendererComponent={undefined} ItemSeparatorComponent={undefined} ...>
+              <VirtualizedListCellContextProvider cellKey="c69b0c5a-f...">
+                <View style={null} onFocusCapture={function onCellFocusCapture} onLayout={function}>
+                  <div dir={null} ref={function forwardRef} className="css-view-g...">
+                    <WeddingCard wedding={{id:"c69b0c...", ...}} onPress={function onPress}>
+                      <CssInteropComponent onPress={function onPress} accessibilityRole="button" ...>
+                        <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                          <View accessibilityRole="button" accessibilityLabel="QA신랑 ♥ QA신..." ...>
+>                           <button
+>                             onKeyDown={function onKeyDown}
+>                             onClick={function onClick}
+>                             onContextMenu={function onContextMenu}
+>                             dir={null}
+>                             ref={function forwardRef}
+>                             aria-label="QA신랑 ♥ QA신부, 2026년 4월 4일 (토), 참석"
+>                             role="button"
+>                             className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cursor-1lo..."
+>                             style={{transitionDuration:"0s"}}
+>                             type="button"
+>                           >
+                              ...
+                                <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                                  <View accessibilityRole="button" accessibilityLabel="캘린더에 추가" ...>
+>                                   <button
+>                                     onKeyDown={function onKeyDown}
+>                                     onClick={function onClick}
+>                                     onContextMenu={function onContextMenu}
+>                                     dir={null}
+>                                     ref={function forwardRef}
+>                                     aria-label="캘린더에 추가"
+>                                     role="button"
+>                                     className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cu..."
+>                                     style={{transitionDuration:"0s"}}
+>                                     type="button"
+>                                   >
+            ...
+
+[2026-04-04T04:44:09.057Z] [error] <%s> cannot contain a nested %s.
+See this log for the ancestor stack trace. button <button>
+[2026-04-04T04:44:39.560Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:44:39.589Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:44:40.067Z] [error] In HTML, %s cannot be a descendant of <%s>.
+This will cause a hydration error.%s <button> button 
+
+  ...
+    <View data={[...]} keyExtractor={function} ListEmptyComponent={<EmptyState>} renderItem={function renderProp} ...>
+      <div onTouchStart={function} onTouchEnd={function} onScroll={function handleScroll} onTouchMove={function} ...>
+        <View onLayout={function} collapsable={false} ref={function} style={[...]}>
+          <div dir={null} ref={function forwardRef} className="css-view-g..." style={{...}}>
+            <CellRenderer CellRendererComponent={undefined} ItemSeparatorComponent={undefined} ...>
+              <VirtualizedListCellContextProvider cellKey="c69b0c5a-f...">
+                <View style={null} onFocusCapture={function onCellFocusCapture} onLayout={function}>
+                  <div dir={null} ref={function forwardRef} className="css-view-g...">
+                    <WeddingCard wedding={{id:"c69b0c...", ...}} onPress={function onPress}>
+                      <CssInteropComponent onPress={function onPress} accessibilityRole="button" ...>
+                        <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                          <View accessibilityRole="button" accessibilityLabel="QA신랑 ♥ QA신..." ...>
+>                           <button
+>                             onKeyDown={function onKeyDown}
+>                             onClick={function onClick}
+>                             onContextMenu={function onContextMenu}
+>                             dir={null}
+>                             ref={function forwardRef}
+>                             aria-label="QA신랑 ♥ QA신부, 2026년 4월 4일 (토), 참석"
+>                             role="button"
+>                             className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cursor-1lo..."
+>                             style={{transitionDuration:"0s"}}
+>                             type="button"
+>                           >
+                              ...
+                                <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                                  <View accessibilityRole="button" accessibilityLabel="캘린더에 추가" ...>
+>                                   <button
+>                                     onKeyDown={function onKeyDown}
+>                                     onClick={function onClick}
+>                                     onContextMenu={function onContextMenu}
+>                                     dir={null}
+>                                     ref={function forwardRef}
+>                                     aria-label="캘린더에 추가"
+>                                     role="button"
+>                                     className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cu..."
+>                                     style={{transitionDuration:"0s"}}
+>                                     type="button"
+>                                   >
+            ...
+
+[2026-04-04T04:44:40.067Z] [error] <%s> cannot contain a nested %s.
+See this log for the ancestor stack trace. button <button>
+[2026-04-04T04:45:44.134Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:45:44.163Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:45:44.849Z] [error] In HTML, %s cannot be a descendant of <%s>.
+This will cause a hydration error.%s <button> button 
+
+  ...
+    <View data={[...]} keyExtractor={function} ListEmptyComponent={<EmptyState>} renderItem={function renderProp} ...>
+      <div onTouchStart={function} onTouchEnd={function} onScroll={function handleScroll} onTouchMove={function} ...>
+        <View onLayout={function} collapsable={false} ref={function} style={[...]}>
+          <div dir={null} ref={function forwardRef} className="css-view-g..." style={{...}}>
+            <CellRenderer CellRendererComponent={undefined} ItemSeparatorComponent={undefined} ...>
+              <VirtualizedListCellContextProvider cellKey="c69b0c5a-f...">
+                <View style={null} onFocusCapture={function onCellFocusCapture} onLayout={function}>
+                  <div dir={null} ref={function forwardRef} className="css-view-g...">
+                    <WeddingCard wedding={{id:"c69b0c...", ...}} onPress={function onPress}>
+                      <CssInteropComponent onPress={function onPress} accessibilityRole="button" ...>
+                        <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                          <View accessibilityRole="button" accessibilityLabel="QA신랑 ♥ QA신..." ...>
+>                           <button
+>                             onKeyDown={function onKeyDown}
+>                             onClick={function onClick}
+>                             onContextMenu={function onContextMenu}
+>                             dir={null}
+>                             ref={function forwardRef}
+>                             aria-label="QA신랑 ♥ QA신부, 2026년 4월 4일 (토), 참석"
+>                             role="button"
+>                             className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cursor-1lo..."
+>                             style={{transitionDuration:"0s"}}
+>                             type="button"
+>                           >
+                              ...
+                                <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                                  <View accessibilityRole="button" accessibilityLabel="캘린더에 추가" ...>
+>                                   <button
+>                                     onKeyDown={function onKeyDown}
+>                                     onClick={function onClick}
+>                                     onContextMenu={function onContextMenu}
+>                                     dir={null}
+>                                     ref={function forwardRef}
+>                                     aria-label="캘린더에 추가"
+>                                     role="button"
+>                                     className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cu..."
+>                                     style={{transitionDuration:"0s"}}
+>                                     type="button"
+>                                   >
+            ...
+
+[2026-04-04T04:45:44.849Z] [error] <%s> cannot contain a nested %s.
+See this log for the ancestor stack trace. button <button>
+[2026-04-04T04:49:41.759Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:49:41.788Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:49:42.716Z] [error] In HTML, %s cannot be a descendant of <%s>.
+This will cause a hydration error.%s <button> button 
+
+  ...
+    <View data={[...]} keyExtractor={function} ListEmptyComponent={<EmptyState>} renderItem={function renderProp} ...>
+      <div onTouchStart={function} onTouchEnd={function} onScroll={function handleScroll} onTouchMove={function} ...>
+        <View onLayout={function} collapsable={false} ref={function} style={[...]}>
+          <div dir={null} ref={function forwardRef} className="css-view-g..." style={{...}}>
+            <CellRenderer CellRendererComponent={undefined} ItemSeparatorComponent={undefined} ...>
+              <VirtualizedListCellContextProvider cellKey="c69b0c5a-f...">
+                <View style={null} onFocusCapture={function onCellFocusCapture} onLayout={function}>
+                  <div dir={null} ref={function forwardRef} className="css-view-g...">
+                    <WeddingCard wedding={{id:"c69b0c...", ...}} onPress={function onPress}>
+                      <CssInteropComponent onPress={function onPress} accessibilityRole="button" ...>
+                        <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                          <View accessibilityRole="button" accessibilityLabel="QA신랑 ♥ QA신..." ...>
+>                           <button
+>                             onKeyDown={function onKeyDown}
+>                             onClick={function onClick}
+>                             onContextMenu={function onContextMenu}
+>                             dir={null}
+>                             ref={function forwardRef}
+>                             aria-label="QA신랑 ♥ QA신부, 2026년 4월 4일 (토), 참석"
+>                             role="button"
+>                             className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cursor-1lo..."
+>                             style={{transitionDuration:"0s"}}
+>                             type="button"
+>                           >
+                              ...
+                                <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                                  <View accessibilityRole="button" accessibilityLabel="캘린더에 추가" ...>
+>                                   <button
+>                                     onKeyDown={function onKeyDown}
+>                                     onClick={function onClick}
+>                                     onContextMenu={function onContextMenu}
+>                                     dir={null}
+>                                     ref={function forwardRef}
+>                                     aria-label="캘린더에 추가"
+>                                     role="button"
+>                                     className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cu..."
+>                                     style={{transitionDuration:"0s"}}
+>                                     type="button"
+>                                   >
+            ...
+
+[2026-04-04T04:49:42.716Z] [error] <%s> cannot contain a nested %s.
+See this log for the ancestor stack trace. button <button>
+[2026-04-04T04:50:18.552Z] [error] %o
+
+%s
+
+%s
+ ReferenceError: Cannot access 'mutation' before initialization
+    at NewEventScreen (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:126837:30)
+    at react-stack-bottom-frame (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:16641:20)
+    at renderWithHooks (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:6851:22)
+    at updateFunctionComponent (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:8544:19)
+    at beginWork (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:9130:18)
+    at runWithFiberInDEV (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:4623:70)
+    at performUnitOfWork (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11203:95)
+    at workLoopSync (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11096:40)
+    at renderRootSync (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11080:9)
+    at performWorkOnRoot (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:10844:44)
+    at performSyncWorkOnRoot (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11808:7)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11727:308)
+    at processRootScheduleInMicrotask (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11747:7)
+    at http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11819:154 The above error occurred in the <NewEventScreen(./(app)/new.tsx)> component. React will try to recreate this component tree from scratch using the error boundary you provided, LogBoxStateSubscription.
+[2026-04-04T04:50:24.555Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:50:24.565Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:50:24.716Z] [error] %o
+
+%s
+
+%s
+ ReferenceError: Cannot access 'mutation' before initialization
+    at NewEventScreen (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:126837:30)
+    at react-stack-bottom-frame (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:16641:20)
+    at renderWithHooks (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:6851:22)
+    at updateFunctionComponent (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:8544:19)
+    at beginWork (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:9130:18)
+    at runWithFiberInDEV (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:4623:70)
+    at performUnitOfWork (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11203:95)
+    at workLoopSync (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11096:40)
+    at renderRootSync (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11080:9)
+    at performWorkOnRoot (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:10844:44)
+    at performWorkOnRootViaSchedulerTask (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:11800:7)
+    at MessagePort.performWorkUntilDeadline (http://localhost:8081/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.routerRoot=app&unstable_transformProfile=hermes-stable:17448:48) The above error occurred in the <NewEventScreen(./(app)/new.tsx)> component. React will try to recreate this component tree from scratch using the error boundary you provided, LogBoxStateSubscription.
+[2026-04-04T04:50:58.989Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T04:51:08.907Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:51:08.940Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:51:09.131Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T04:51:37.519Z] [error] The action 'GO_BACK' was not handled by any navigator.
+
+Is there any screen to go back to?
+
+This is a development-only warning and won't be shown in production.
+[2026-04-04T04:51:51.550Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:51:51.562Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:51:51.988Z] [error] In HTML, %s cannot be a descendant of <%s>.
+This will cause a hydration error.%s <button> button 
+
+  ...
+    <View data={[...]} keyExtractor={function} ListEmptyComponent={<EmptyState>} renderItem={function renderProp} ...>
+      <div onTouchStart={function} onTouchEnd={function} onScroll={function handleScroll} onTouchMove={function} ...>
+        <View onLayout={function} collapsable={false} ref={function} style={[...]}>
+          <div dir={null} ref={function forwardRef} className="css-view-g..." style={{...}}>
+            <CellRenderer CellRendererComponent={undefined} ItemSeparatorComponent={undefined} ...>
+              <VirtualizedListCellContextProvider cellKey="c69b0c5a-f...">
+                <View style={null} onFocusCapture={function onCellFocusCapture} onLayout={function}>
+                  <div dir={null} ref={function forwardRef} className="css-view-g...">
+                    <WeddingCard wedding={{id:"c69b0c...", ...}} onPress={function onPress}>
+                      <CssInteropComponent onPress={function onPress} accessibilityRole="button" ...>
+                        <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                          <View accessibilityRole="button" accessibilityLabel="QA신랑 ♥ QA신..." ...>
+>                           <button
+>                             onKeyDown={function onKeyDown}
+>                             onClick={function onClick}
+>                             onContextMenu={function onContextMenu}
+>                             dir={null}
+>                             ref={function forwardRef}
+>                             aria-label="QA신랑 ♥ QA신부, 2026년 4월 4일 (토), 참석"
+>                             role="button"
+>                             className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cursor-1lo..."
+>                             style={{transitionDuration:"0s"}}
+>                             type="button"
+>                           >
+                              ...
+                                <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                                  <View accessibilityRole="button" accessibilityLabel="캘린더에 추가" ...>
+>                                   <button
+>                                     onKeyDown={function onKeyDown}
+>                                     onClick={function onClick}
+>                                     onContextMenu={function onContextMenu}
+>                                     dir={null}
+>                                     ref={function forwardRef}
+>                                     aria-label="캘린더에 추가"
+>                                     role="button"
+>                                     className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cu..."
+>                                     style={{transitionDuration:"0s"}}
+>                                     type="button"
+>                                   >
+            ...
+
+[2026-04-04T04:51:51.989Z] [error] <%s> cannot contain a nested %s.
+See this log for the ancestor stack trace. button <button>
+[2026-04-04T04:52:30.412Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T04:53:49.814Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:53:49.825Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:54:10.080Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:54:10.092Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:54:10.854Z] [error] In HTML, %s cannot be a descendant of <%s>.
+This will cause a hydration error.%s <button> button 
+
+  ...
+    <View data={[...]} keyExtractor={function} ListEmptyComponent={<EmptyState>} renderItem={function renderProp} ...>
+      <div onTouchStart={function} onTouchEnd={function} onScroll={function handleScroll} onTouchMove={function} ...>
+        <View onLayout={function} collapsable={false} ref={function} style={[...]}>
+          <div dir={null} ref={function forwardRef} className="css-view-g..." style={{...}}>
+            <CellRenderer CellRendererComponent={undefined} ItemSeparatorComponent={undefined} ...>
+              <VirtualizedListCellContextProvider cellKey="c69b0c5a-f...">
+                <View style={null} onFocusCapture={function onCellFocusCapture} onLayout={function}>
+                  <div dir={null} ref={function forwardRef} className="css-view-g...">
+                    <WeddingCard wedding={{id:"c69b0c...", ...}} onPress={function onPress}>
+                      <CssInteropComponent onPress={function onPress} accessibilityRole="button" ...>
+                        <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                          <View accessibilityRole="button" accessibilityLabel="QA신랑 ♥ QA신..." ...>
+>                           <button
+>                             onKeyDown={function onKeyDown}
+>                             onClick={function onClick}
+>                             onContextMenu={function onContextMenu}
+>                             dir={null}
+>                             ref={function forwardRef}
+>                             aria-label="QA신랑 ♥ QA신부, 2026년 4월 4일 (토), 참석"
+>                             role="button"
+>                             className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cursor-1lo..."
+>                             style={{transitionDuration:"0s"}}
+>                             type="button"
+>                           >
+                              ...
+                                <TouchableOpacity onPress={function onPress} accessibilityRole="button" ...>
+                                  <View accessibilityRole="button" accessibilityLabel="캘린더에 추가" ...>
+>                                   <button
+>                                     onKeyDown={function onKeyDown}
+>                                     onClick={function onClick}
+>                                     onContextMenu={function onContextMenu}
+>                                     dir={null}
+>                                     ref={function forwardRef}
+>                                     aria-label="캘린더에 추가"
+>                                     role="button"
+>                                     className="css-view-g5y9jx r-transitionProperty-1i6wzkk r-userSelect-lrvibr r-cu..."
+>                                     style={{transitionDuration:"0s"}}
+>                                     type="button"
+>                                   >
+            ...
+
+[2026-04-04T04:54:10.854Z] [error] <%s> cannot contain a nested %s.
+See this log for the ancestor stack trace. button <button>
+[2026-04-04T04:54:42.229Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T04:54:58.285Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-04-04T04:54:58.298Z] [log] Running application "main" with appParams:
+ {rootTag: #root, hydrate: undefined} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+[2026-04-04T04:54:58.450Z] [warning] props.pointerEvents is deprecated. Use style.pointerEvents
+[2026-04-04T04:55:06.779Z] [error] Failed to load resource: the server responded with a status of 401 ()

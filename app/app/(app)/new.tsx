@@ -81,18 +81,6 @@ export default function NewEventScreen() {
       attendance !== (existing?.attendance ?? 'pending')
     : groom.trim() !== '' || bride.trim() !== '' || venue.trim() !== '' || inviteUrl.trim() !== '';
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove' as any, (e: any) => {
-      if (!isDirty || mutation.isPending) return;
-      e.preventDefault();
-      Alert.alert('저장하지 않은 변경사항', '나가면 입력한 내용이 사라져요.', [
-        { text: '계속 편집', style: 'cancel' },
-        { text: '나가기', style: 'destructive', onPress: () => navigation.dispatch(e.data.action) },
-      ]);
-    });
-    return unsubscribe;
-  }, [navigation, isDirty, mutation.isPending]);
-
   const mutation = useMutation({
     mutationFn: () => {
       const date = dateObjToString(dateObj);
@@ -112,6 +100,18 @@ export default function NewEventScreen() {
       scrollRef.current?.scrollTo({ y: 0, animated: true });
     },
   });
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove' as any, (e: any) => {
+      if (!isDirty || mutation.isPending) return;
+      e.preventDefault();
+      Alert.alert('저장하지 않은 변경사항', '나가면 입력한 내용이 사라져요.', [
+        { text: '계속 편집', style: 'cancel' },
+        { text: '나가기', style: 'destructive', onPress: () => navigation.dispatch(e.data.action) },
+      ]);
+    });
+    return unsubscribe;
+  }, [navigation, isDirty, mutation.isPending]);
 
   async function handleScan(source: 'camera' | 'gallery') {
     setScanning(source);
