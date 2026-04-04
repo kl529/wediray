@@ -21,10 +21,7 @@ export default function LoginScreen() {
     });
     if (error) { console.error(error); setLoading(false); return; }
     if (data?.url) {
-      const result = await WebBrowser.openAuthSessionAsync(data.url, 'wediary://callback');
-      if (result.type === 'success' && result.url) {
-        await supabase.auth.exchangeCodeForSession(result.url);
-      }
+      await WebBrowser.openAuthSessionAsync(data.url, 'wediary://callback');
     }
     setLoading(false);
   }
