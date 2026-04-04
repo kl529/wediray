@@ -41,7 +41,7 @@ export default function SettingsScreen() {
       />
 
       <View className="px-6 pt-4">
-        <Text className="text-pink-400 text-2xl font-gaegu-bold mb-8">설정</Text>
+        <Text className="text-pink-400 text-2xl font-fredoka-semibold mb-8">설정</Text>
 
         <View className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-4">
           <Text className="text-white/40 text-xs mb-1">계정</Text>
