@@ -1,0 +1,27 @@
+{
+  "date": "2026-04-02",
+  "url": "http://localhost:8081",
+  "designScore": "C+",
+  "aiSlopScore": "B",
+  "categoryGrades": {
+    "hierarchy": "B",
+    "typography": "C",
+    "color": "B",
+    "spacing": "B",
+    "interaction": "C",
+    "responsive": "B",
+    "content": "C",
+    "aiSlop": "B",
+    "motion": "C",
+    "performance": "A"
+  },
+  "findings": [
+    { "id": "FINDING-001", "title": "Empty state missing CTA hint", "impact": "high", "category": "content", "status": "verified", "commit": "08d8039" },
+    { "id": "FINDING-002", "title": "Accessibility entirely absent", "impact": "high", "category": "interaction", "status": "deferred" },
+    { "id": "FINDING-003", "title": "FAB font-light on primary action", "impact": "medium", "category": "typography", "status": "verified", "commit": "171bf4e" },
+    { "id": "FINDING-004", "title": "Korean labels uppercase tracking-widest", "impact": "medium", "category": "typography", "status": "verified", "commit": "315dd19" },
+    { "id": "FINDING-005", "title": "Emoji scan button decoration", "impact": "medium", "category": "aiSlop", "status": "verified", "commit": "456130b" },
+    { "id": "FINDING-006", "title": "Kakao color undocumented", "impact": "polish", "category": "color", "status": "verified", "commit": "997c4e5" },
+    { "id": "FINDING-007", "title": "No font semantic scale", "impact": "polish", "category": "typography", "status": "deferred" }
+  ]
+}
