@@ -5,10 +5,10 @@ import {
 } from 'react-native';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useRouter, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  createWedding, updateWedding, getWedding, formatDateKR, type Attendance,
+  createWedding, updateWedding, getWedding, formatDateKR, formatTimeKR, type Attendance,
 } from '../../lib/db';
 import { BRAND_PINK } from '../../lib/constants';
 import { supabase } from '../../lib/supabase';
@@ -22,6 +22,7 @@ const ATTENDANCE_OPTIONS: { value: Attendance; label: string }[] = [
 
 export default function NewEventScreen() {
   const router = useRouter();
+  const navigation = useNavigation();
   const { id } = useLocalSearchParams<{ id?: string }>();
   const qc = useQueryClient();
   const isEdit = !!id;
@@ -30,6 +31,9 @@ export default function NewEventScreen() {
   const [bride, setBride] = useState('');
   const [dateObj, setDateObj] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTime, setShowTime] = useState(false);
+  const [timeObj, setTimeObj] = useState(() => { const d = new Date(); d.setHours(11, 0, 0, 0); return d; });
+  const [showTimePicker, setShowTimePicker] = useState(false);
   const [venue, setVenue] = useState('');
   const [attendance, setAttendance] = useState<Attendance>('pending');
   const [inviteUrl, setInviteUrl] = useState('');
@@ -48,6 +52,10 @@ export default function NewEventScreen() {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   }
 
+  function timeObjToString(d: Date) {
+    return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  }
+
   useEffect(() => {
     if (existing) {
       setGroom(existing.groom);
@@ -56,16 +64,43 @@ export default function NewEventScreen() {
       setVenue(existing.venue);
       setAttendance(existing.attendance);
       setInviteUrl(existing.invite_url || '');
+      if (existing.time) {
+        setShowTime(true);
+        const [h, m] = existing.time.split(':').map(Number);
+        const d = new Date(); d.setHours(h, m, 0, 0);
+        setTimeObj(d);
+      }
     }
   }, [existing]);
+
+  const isDirty = isEdit
+    ? groom !== (existing?.groom ?? '') ||
+      bride !== (existing?.bride ?? '') ||
+      venue !== (existing?.venue ?? '') ||
+      inviteUrl !== (existing?.invite_url ?? '') ||
+      attendance !== (existing?.attendance ?? 'pending')
+    : groom.trim() !== '' || bride.trim() !== '' || venue.trim() !== '' || inviteUrl.trim() !== '';
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove' as any, (e: any) => {
+      if (!isDirty || mutation.isPending) return;
+      e.preventDefault();
+      Alert.alert('저장하지 않은 변경사항', '나가면 입력한 내용이 사라져요.', [
+        { text: '계속 편집', style: 'cancel' },
+        { text: '나가기', style: 'destructive', onPress: () => navigation.dispatch(e.data.action) },
+      ]);
+    });
+    return unsubscribe;
+  }, [navigation, isDirty, mutation.isPending]);
 
   const mutation = useMutation({
     mutationFn: () => {
       const date = dateObjToString(dateObj);
+      const time = showTime ? timeObjToString(timeObj) : null;
       const invite_url = inviteUrl.trim() || null;
       return isEdit
-        ? updateWedding(id!, { groom, bride, date, venue, attendance, invite_url })
-        : createWedding({ groom, bride, date, venue, attendance, invite_url });
+        ? updateWedding(id!, { groom, bride, date, time, venue, attendance, invite_url })
+        : createWedding({ groom, bride, date, time, venue, attendance, invite_url });
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['weddings'] });
@@ -84,10 +119,10 @@ export default function NewEventScreen() {
       const text = await pickAndOcr(source);
       if (!text) return;
       const parsed = parseOcrText(text);
-      if (parsed.groom) setGroom(parsed.groom);
-      if (parsed.bride) setBride(parsed.bride);
+      if (parsed.groom && !groom.trim()) setGroom(parsed.groom);
+      if (parsed.bride && !bride.trim()) setBride(parsed.bride);
       if (parsed.date) setDateObj(new Date(parsed.date + 'T00:00:00'));
-      if (parsed.venue) setVenue(parsed.venue);
+      if (parsed.venue && !venue.trim()) setVenue(parsed.venue);
       if (!parsed.groom && !parsed.bride && !parsed.date && !parsed.venue) {
         Alert.alert('인식 실패', '청첩장 텍스트를 찾지 못했습니다. 직접 입력해주세요.');
       }
@@ -99,17 +134,22 @@ export default function NewEventScreen() {
   }
 
   async function handleParse() {
-    if (!inviteUrl.trim()) return;
+    const url = inviteUrl.trim();
+    if (!url) return;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      Alert.alert('올바르지 않은 URL', 'http:// 또는 https://로 시작하는 링크를 입력해주세요.');
+      return;
+    }
     setParsing(true);
     try {
       const { data, error } = await supabase.functions.invoke('parse-invitation', {
-        body: { url: inviteUrl.trim() },
+        body: { url },
       });
       if (error) throw error;
-      if (data.groom) setGroom(data.groom);
-      if (data.bride) setBride(data.bride);
+      if (data.groom && !groom.trim()) setGroom(data.groom);
+      if (data.bride && !bride.trim()) setBride(data.bride);
       if (data.date) setDateObj(new Date(data.date + 'T00:00:00'));
-      if (data.venue) setVenue(data.venue);
+      if (data.venue && !venue.trim()) setVenue(data.venue);
       if (!data.groom && !data.bride && !data.date && !data.venue) {
         Alert.alert('파싱 실패', '정보를 찾지 못했습니다. 직접 입력해주세요.');
       }
@@ -121,6 +161,11 @@ export default function NewEventScreen() {
   }
 
   function handleSave() {
+    if (!groom.trim() && !bride.trim()) {
+      setFormError('신랑 또는 신부 이름을 입력해주세요.');
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
+      return;
+    }
     setFormError('');
     mutation.mutate();
   }
@@ -280,6 +325,52 @@ export default function NewEventScreen() {
                 />
               )}
             </>
+          )}
+        </View>
+
+        {/* Time */}
+        <View className="mb-4">
+          <Text className="text-white/40 text-xs mb-2">시간 (선택)</Text>
+          {showTime ? (
+            <View className="flex-row items-center gap-3">
+              {Platform.OS === 'ios' ? (
+                <DateTimePicker
+                  value={timeObj}
+                  mode="time"
+                  display="compact"
+                  onChange={(_, d) => { if (d) setTimeObj(d); }}
+                  themeVariant="dark"
+                  style={{ alignSelf: 'flex-start', marginLeft: -8 }}
+                />
+              ) : (
+                <>
+                  <TouchableOpacity
+                    onPress={() => setShowTimePicker(true)}
+                    className="bg-white/5 border border-white/20 rounded-xl px-4 py-3"
+                  >
+                    <Text className="text-white text-base">{formatTimeKR(timeObjToString(timeObj))}</Text>
+                  </TouchableOpacity>
+                  {showTimePicker && (
+                    <DateTimePicker
+                      value={timeObj}
+                      mode="time"
+                      display="default"
+                      onChange={(_, d) => { setShowTimePicker(false); if (d) setTimeObj(d); }}
+                    />
+                  )}
+                </>
+              )}
+              <TouchableOpacity onPress={() => setShowTime(false)}>
+                <Text className="text-white/30 text-sm">제거</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity
+              onPress={() => setShowTime(true)}
+              className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 items-center"
+            >
+              <Text className="text-white/30 text-sm">+ 시간 추가</Text>
+            </TouchableOpacity>
           )}
         </View>
 

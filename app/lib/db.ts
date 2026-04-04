@@ -8,6 +8,7 @@ export type Wedding = {
   groom: string;
   bride: string;
   date: string;
+  time: string | null;
   venue: string;
   attendance: Attendance;
   invite_url: string | null;
@@ -57,7 +58,7 @@ export async function getWedding(id: string) {
 }
 
 export async function createWedding(
-  input: Pick<Wedding, 'groom' | 'bride' | 'date' | 'venue' | 'attendance' | 'invite_url'>
+  input: Pick<Wedding, 'groom' | 'bride' | 'date' | 'time' | 'venue' | 'attendance' | 'invite_url'>
 ) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('로그인이 필요합니다.');
@@ -72,7 +73,7 @@ export async function createWedding(
 
 export async function updateWedding(
   id: string,
-  input: Partial<Pick<Wedding, 'groom' | 'bride' | 'date' | 'venue' | 'attendance' | 'invite_url'>>
+  input: Partial<Pick<Wedding, 'groom' | 'bride' | 'date' | 'time' | 'venue' | 'attendance' | 'invite_url'>>
 ) {
   const { data, error } = await supabase
     .from('weddings')
@@ -188,9 +189,19 @@ export async function getPhotoUrl(storagePath: string) {
 
 // ── Helpers ──────────────────────────────────────────────
 
+const DAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'];
+
 export function formatDateKR(date: string) {
   const [y, m, d] = date.split('-');
-  return `${y}년 ${Number(m)}월 ${Number(d)}일`;
+  const dayIndex = new Date(`${y}-${m}-${d}T00:00:00`).getDay();
+  return `${y}년 ${Number(m)}월 ${Number(d)}일 (${DAY_NAMES[dayIndex]})`;
+}
+
+export function formatTimeKR(time: string) {
+  const [h, m] = time.split(':').map(Number);
+  const ampm = h < 12 ? '오전' : '오후';
+  const hour = h % 12 || 12;
+  return `${ampm} ${hour}:${String(m).padStart(2, '0')}`;
 }
 
 export function isUpcoming(wedding: Wedding) {

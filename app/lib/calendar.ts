@@ -6,6 +6,7 @@ export async function addWeddingToCalendar(params: {
   bride: string;
   date: string;   // YYYY-MM-DD
   venue: string;
+  time?: string | null;  // HH:MM
 }): Promise<void> {
   const { status } = await Calendar.requestCalendarPermissionsAsync();
   if (status !== 'granted') throw new Error('캘린더 접근 권한이 필요합니다.');
@@ -39,11 +40,20 @@ export async function addWeddingToCalendar(params: {
   }
 
   const [y, m, d] = params.date.split('-').map(Number);
-  const startDate = new Date(y, m - 1, d, 0, 0, 0);
-  const endDate = new Date(y, m - 1, d, 23, 59, 59);
+  let startDate: Date;
+  let endDate: Date;
 
-  // allDay: true causes java.lang.String cannot be cast to java.lang.boolean on Android
-  // Use 00:00–23:59 time range instead — both platforms display it as a full-day event
+  if (params.time) {
+    const [h, min] = params.time.split(':').map(Number);
+    startDate = new Date(y, m - 1, d, h, min, 0);
+    endDate = new Date(y, m - 1, d, h + 2, min, 0); // 결혼식 2시간 기준
+  } else {
+    // allDay: true causes java.lang.String cannot be cast to java.lang.boolean on Android
+    // Use 00:00–23:59 time range instead — both platforms display it as a full-day event
+    startDate = new Date(y, m - 1, d, 0, 0, 0);
+    endDate = new Date(y, m - 1, d, 23, 59, 59);
+  }
+
   await Calendar.createEventAsync(calendarId, {
     title: `${params.groom} ♥ ${params.bride} 결혼식`,
     startDate,

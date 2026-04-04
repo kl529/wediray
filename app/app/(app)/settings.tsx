@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import Constants from 'expo-constants';
@@ -84,9 +84,10 @@ export default function SettingsScreen() {
         title="로그아웃"
         message="정말 로그아웃할까요?"
         confirmLabel="로그아웃"
-        onConfirm={() => {
+        onConfirm={async () => {
           setShowLogout(false);
-          supabase.auth.signOut();
+          const { error } = await supabase.auth.signOut();
+          if (error) Alert.alert('로그아웃 실패', error.message);
         }}
         onCancel={() => setShowLogout(false)}
         destructive
