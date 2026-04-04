@@ -15,6 +15,7 @@ import {
 import { BRAND_PINK } from '../../lib/constants';
 import { supabase } from '../../lib/supabase';
 import { pickAndOcr, parseOcrText } from '../../lib/ocr';
+import { addWeddingToCalendar } from '../../lib/calendar';
 
 const ATTENDANCE_OPTIONS: { value: Attendance; label: string }[] = [
   { value: 'attending', label: '참석' },
@@ -43,6 +44,7 @@ export default function NewEventScreen() {
   const [scanning, setScanning] = useState<'camera' | 'gallery' | null>(null);
   const [formError, setFormError] = useState('');
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
   const confirmedCancel = useRef(false);
   const scrollRef = useRef<ScrollView>(null);
 
@@ -98,8 +100,18 @@ export default function NewEventScreen() {
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['weddings'] });
-      if (isEdit) qc.invalidateQueries({ queryKey: ['wedding', id] });
-      router.back();
+      if (isEdit) {
+        qc.invalidateQueries({ queryKey: ['wedding', id] });
+        router.back();
+        return;
+      }
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      const wDate = new Date(dateObjToString(dateObj) + 'T00:00:00');
+      if (wDate >= today) {
+        setShowCalendarModal(true);
+      } else {
+        router.back();
+      }
     },
     onError: (e: Error) => {
       setFormError(`저장 실패: ${e.message}`);
@@ -457,6 +469,33 @@ export default function NewEventScreen() {
         }}
         onCancel={() => setShowCancelConfirm(false)}
         destructive
+      />
+
+      <ConfirmModal
+        visible={showCalendarModal}
+        title="캘린더에 추가할까요?"
+        message="저장된 결혼식 일정을 기기 캘린더에 추가할 수 있어요."
+        confirmLabel="추가"
+        cancelLabel="건너뛰기"
+        onConfirm={async () => {
+          setShowCalendarModal(false);
+          try {
+            await addWeddingToCalendar({
+              groom,
+              bride,
+              date: dateObjToString(dateObj),
+              venue,
+              time: showTime ? timeObjToString(timeObj) : undefined,
+            });
+          } catch {
+            // 실패해도 그냥 넘어감
+          }
+          router.back();
+        }}
+        onCancel={() => {
+          setShowCalendarModal(false);
+          router.back();
+        }}
       />
     </KeyboardAvoidingView>
   );

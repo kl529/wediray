@@ -171,19 +171,21 @@ export default function EventDetailScreen() {
         }
       />
 
-      <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 60 }}>
-        {/* Wedding Info */}
-        <View className="mb-6">
-          <Text className="text-white text-3xl font-gaegu-bold mb-2">
+      <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 80 }}>
+
+        {/* ── 웨딩 정보 카드 ── */}
+        <View className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-4">
+          {/* 이름 */}
+          <Text className="text-white text-3xl font-gaegu-bold mb-4">
             {wedding.groom} ♥ {wedding.bride}
           </Text>
 
-          {/* Date + time row */}
-          <View className="flex-row items-center gap-2 flex-wrap mb-1">
-            <Ionicons name="calendar-outline" size={14} color="rgba(255,255,255,0.5)" />
-            <Text className="text-white/60 text-sm">{formatDateKR(wedding.date)}</Text>
+          {/* 날짜 + 시간 */}
+          <View className="flex-row items-center gap-2 flex-wrap mb-3">
+            <Ionicons name="calendar-outline" size={15} color="rgba(255,255,255,0.4)" />
+            <Text className="text-white/70 text-sm">{formatDateKR(wedding.date)}</Text>
             {wedding.time ? (
-              <Text className="text-white/60 text-sm">· {formatTimeKR(wedding.time)}</Text>
+              <Text className="text-white/50 text-sm">· {formatTimeKR(wedding.time)}</Text>
             ) : null}
             {(() => {
               const today = new Date();
@@ -196,105 +198,108 @@ export default function EventDetailScreen() {
             })()}
           </View>
 
-          {/* Venue row */}
+          {/* 장소 */}
           {wedding.venue ? (
-            <View className="flex-row items-center gap-2 mb-4">
-              <Ionicons name="location-outline" size={14} color="rgba(255,255,255,0.5)" />
-              <Text className="text-white/60 text-sm flex-1">{wedding.venue}</Text>
-              <TouchableOpacity
-                onPress={async () => {
-                  await Clipboard.setStringAsync(wedding.venue);
-                  setVenueCopied(true);
-                  setTimeout(() => setVenueCopied(false), 2000);
-                }}
-                accessibilityRole="button"
-                accessibilityLabel="장소 복사"
-                className="px-2 py-1"
-              >
-                {venueCopied
-                  ? <Text className="text-lime-400 text-xs">복사됨 ✓</Text>
-                  : <Ionicons name="copy-outline" size={14} color="rgba(255,255,255,0.35)" />}
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              onPress={async () => {
+                await Clipboard.setStringAsync(wedding.venue);
+                setVenueCopied(true);
+                setTimeout(() => setVenueCopied(false), 2000);
+              }}
+              accessibilityRole="button"
+              accessibilityLabel="장소 복사"
+              className={`flex-row items-center gap-2 mb-4 px-3 py-2.5 rounded-xl border ${
+                venueCopied ? 'bg-lime-400/10 border-lime-400/30' : 'bg-black/30 border-white/10'
+              }`}
+            >
+              <Ionicons name="location-outline" size={15} color={venueCopied ? '#a3e635' : 'rgba(255,255,255,0.4)'} />
+              <Text className={`text-sm flex-1 ${venueCopied ? 'text-lime-400' : 'text-white/70'}`}>{wedding.venue}</Text>
+              {venueCopied
+                ? <Text className="text-lime-400 text-xs font-semibold">복사됨 ✓</Text>
+                : <Ionicons name="copy-outline" size={13} color="rgba(255,255,255,0.3)" />}
+            </TouchableOpacity>
           ) : null}
 
-          {/* Attendance pill — 탭으로 인라인 변경 */}
-          {showAttendancePicker ? (
-            <View className="flex-row gap-2 mb-4">
-              {(['attending', 'absent', 'pending'] as Attendance[]).map((value) => (
-                <TouchableOpacity
-                  key={value}
-                  onPress={() => {
-                    updateAttendance.mutate(value);
-                    setShowAttendancePicker(false);
-                  }}
-                  className={`px-3 py-1.5 rounded-full border ${
-                    wedding.attendance === value
-                      ? `${ATTENDANCE_PILL_BG[value]} border-transparent`
-                      : 'bg-white/5 border-white/20'
-                  }`}
-                >
-                  <Text className={`text-xs font-bold ${
-                    wedding.attendance === value ? ATTENDANCE_PILL_TEXT[value] : 'text-white/50'
-                  }`}>
-                    {ATTENDANCE_LABEL[value]}
-                  </Text>
+          {/* 참석 여부 + 캘린더 — 한 row */}
+          <View className="flex-row items-center justify-between">
+            {/* 참석 뱃지 / 인라인 picker */}
+            {showAttendancePicker ? (
+              <View className="flex-row gap-2 flex-1">
+                {(['attending', 'absent', 'pending'] as Attendance[]).map((value) => (
+                  <TouchableOpacity
+                    key={value}
+                    onPress={() => {
+                      updateAttendance.mutate(value);
+                      setShowAttendancePicker(false);
+                    }}
+                    className={`px-3 py-1.5 rounded-full border ${
+                      wedding.attendance === value
+                        ? `${ATTENDANCE_PILL_BG[value]} border-transparent`
+                        : 'bg-white/5 border-white/20'
+                    }`}
+                  >
+                    <Text className={`text-xs font-bold ${
+                      wedding.attendance === value ? ATTENDANCE_PILL_TEXT[value] : 'text-white/50'
+                    }`}>
+                      {ATTENDANCE_LABEL[value]}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+                <TouchableOpacity onPress={() => setShowAttendancePicker(false)} className="px-2 py-1.5">
+                  <Text className="text-white/30 text-xs">취소</Text>
                 </TouchableOpacity>
-              ))}
-              <TouchableOpacity onPress={() => setShowAttendancePicker(false)} className="px-2 py-1.5">
-                <Text className="text-white/30 text-xs">취소</Text>
+              </View>
+            ) : (
+              <TouchableOpacity
+                onPress={() => setShowAttendancePicker(true)}
+                accessibilityRole="button"
+                accessibilityLabel="참석 여부 변경"
+                className={`px-3 py-1 rounded-full ${ATTENDANCE_PILL_BG[(ATTENDANCE_LABEL[wedding.attendance] ? wedding.attendance : 'pending') as Attendance]}`}
+              >
+                <Text className={`text-xs font-bold ${ATTENDANCE_PILL_TEXT[(ATTENDANCE_LABEL[wedding.attendance] ? wedding.attendance : 'pending') as Attendance]}`}>
+                  {ATTENDANCE_LABEL[(ATTENDANCE_LABEL[wedding.attendance] ? wedding.attendance : 'pending') as Attendance]}
+                </Text>
               </TouchableOpacity>
-            </View>
-          ) : (
-            <TouchableOpacity
-              onPress={() => setShowAttendancePicker(true)}
-              accessibilityRole="button"
-              accessibilityLabel="참석 여부 변경"
-              className={`self-start px-3 py-1 rounded-full mb-4 ${ATTENDANCE_PILL_BG[(ATTENDANCE_LABEL[wedding.attendance] ? wedding.attendance : 'pending') as Attendance]}`}
-            >
-              <Text className={`text-xs font-bold ${ATTENDANCE_PILL_TEXT[(ATTENDANCE_LABEL[wedding.attendance] ? wedding.attendance : 'pending') as Attendance]}`}>
-                {ATTENDANCE_LABEL[(ATTENDANCE_LABEL[wedding.attendance] ? wedding.attendance : 'pending') as Attendance]}
-              </Text>
-            </TouchableOpacity>
-          )}
-
-          {/* Calendar CTA — 예정된 결혼식에만 표시 */}
-          {isUpcoming(wedding) ? <TouchableOpacity
-            onPress={async () => {
-              try {
-                await addWeddingToCalendar({
-                  groom: wedding.groom,
-                  bride: wedding.bride,
-                  date: wedding.date,
-                  venue: wedding.venue,
-                  time: wedding.time,
-                });
-                setCalendarAdded(true);
-                setTimeout(() => setCalendarAdded(false), 3000);
-              } catch (e: any) {
-                Alert.alert('추가 실패', e.message);
-              }
-            }}
-            accessibilityRole="button"
-            accessibilityLabel="캘린더에 추가"
-            className={`flex-row items-center gap-3 px-4 py-3 rounded-xl border ${
-              calendarAdded ? 'bg-lime-400/15 border-lime-400/30' : 'bg-white/5 border-white/10'
-            }`}
-          >
-            <Ionicons
-              name={calendarAdded ? 'checkmark-circle' : 'calendar'}
-              size={20}
-              color={calendarAdded ? '#a3e635' : '#f472b6'}
-            />
-            <Text className={`text-sm font-semibold flex-1 ${calendarAdded ? 'text-lime-400' : 'text-white/80'}`}>
-              {calendarAdded ? '캘린더에 추가됨' : '캘린더에 추가'}
-            </Text>
-            {!calendarAdded && (
-              <Ionicons name="chevron-forward" size={16} color="rgba(255,255,255,0.3)" />
             )}
-          </TouchableOpacity> : null}
+
+            {/* 캘린더 버튼 — 예정 결혼식만 */}
+            {!showAttendancePicker && isUpcoming(wedding) ? (
+              <TouchableOpacity
+                onPress={async () => {
+                  try {
+                    await addWeddingToCalendar({
+                      groom: wedding.groom,
+                      bride: wedding.bride,
+                      date: wedding.date,
+                      venue: wedding.venue,
+                      time: wedding.time,
+                    });
+                    setCalendarAdded(true);
+                    setTimeout(() => setCalendarAdded(false), 3000);
+                  } catch (e: any) {
+                    Alert.alert('추가 실패', e.message);
+                  }
+                }}
+                accessibilityRole="button"
+                accessibilityLabel="캘린더에 추가"
+                className={`flex-row items-center gap-1.5 px-3 py-1.5 rounded-full border ${
+                  calendarAdded ? 'bg-lime-400/15 border-lime-400/30' : 'bg-white/5 border-white/15'
+                }`}
+              >
+                <Ionicons
+                  name={calendarAdded ? 'checkmark-circle' : 'calendar-outline'}
+                  size={14}
+                  color={calendarAdded ? '#a3e635' : 'rgba(255,255,255,0.5)'}
+                />
+                <Text className={`text-xs font-semibold ${calendarAdded ? 'text-lime-400' : 'text-white/50'}`}>
+                  {calendarAdded ? '추가됨' : '캘린더'}
+                </Text>
+              </TouchableOpacity>
+            ) : null}
+          </View>
         </View>
 
+        {/* 청첩장 링크 */}
         {wedding.invite_url ? (
           <TouchableOpacity
             onPress={() => Linking.openURL(wedding.invite_url!)}
@@ -305,17 +310,22 @@ export default function EventDetailScreen() {
             }}
             accessibilityRole="link"
             accessibilityLabel="청첩장 링크 열기"
-            className="mb-6 bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex-row items-center gap-2 active:opacity-70"
+            className="mb-4 bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex-row items-center gap-2 active:opacity-70"
           >
-            <Ionicons name="link-outline" size={16} color="rgba(255,255,255,0.4)" />
-            <Text className="text-white/50 text-xs flex-1" numberOfLines={1}>{wedding.invite_url}</Text>
-            <Text className={`text-xs ${urlCopied ? 'text-lime-400' : 'text-white/20'}`}>
-              {urlCopied ? '복사됨 ✓' : '탭=열기'}
-            </Text>
+            <Ionicons name="link-outline" size={15} color="rgba(255,255,255,0.4)" />
+            <Text className="text-white/40 text-xs flex-1" numberOfLines={1}>{wedding.invite_url}</Text>
+            {urlCopied
+              ? <Text className="text-lime-400 text-xs font-semibold">복사됨 ✓</Text>
+              : <Ionicons name="open-outline" size={14} color="rgba(255,255,255,0.25)" />}
           </TouchableOpacity>
         ) : null}
 
-        <View className="h-px bg-white/10 mb-8" />
+        {/* ── 추억 섹션 ── */}
+        <View className="flex-row items-center gap-2 mt-4 mb-5">
+          <View className="flex-1 h-px bg-white/10" />
+          <Text className="text-white/25 text-xs">추억 기록</Text>
+          <View className="flex-1 h-px bg-white/10" />
+        </View>
 
         {/* Memo */}
         <View className="mb-5">

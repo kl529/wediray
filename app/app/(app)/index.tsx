@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getWeddings, formatDateKR, formatTimeKR, isUpcoming, type Wedding } from '../../lib/db';
 import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_BORDER, ATTENDANCE_PILL_BG, ATTENDANCE_PILL_TEXT } from '../../lib/constants';
-import { addWeddingToCalendar } from '../../lib/calendar';
 
 function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => void }) {
-  const [calendarAdded, setCalendarAdded] = useState(false);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const wDate = new Date(wedding.date + 'T00:00:00');
@@ -41,34 +39,6 @@ function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => vo
           <View className={`px-2 py-0.5 rounded-full ${ATTENDANCE_PILL_BG[att]}`}>
             <Text className={`text-xs font-bold ${ATTENDANCE_PILL_TEXT[att]}`}>{ATTENDANCE_LABEL[att]}</Text>
           </View>
-          {upcoming && (
-            <TouchableOpacity
-              onPress={async () => {
-                try {
-                  await addWeddingToCalendar({
-                    groom: wedding.groom,
-                    bride: wedding.bride,
-                    date: wedding.date,
-                    venue: wedding.venue,
-                    time: wedding.time,
-                  });
-                  setCalendarAdded(true);
-                  setTimeout(() => setCalendarAdded(false), 3000);
-                } catch (e: any) {
-                  Alert.alert('추가 실패', e.message);
-                }
-              }}
-              accessibilityRole="button"
-              accessibilityLabel="캘린더에 추가"
-              className={`p-1.5 rounded-lg ${calendarAdded ? 'bg-lime-400/20' : 'bg-white/10'}`}
-            >
-              <Ionicons
-                name={calendarAdded ? 'checkmark' : 'calendar-outline'}
-                size={15}
-                color={calendarAdded ? '#a3e635' : 'rgba(255,255,255,0.5)'}
-              />
-            </TouchableOpacity>
-          )}
         </View>
       </View>
     </TouchableOpacity>
