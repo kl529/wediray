@@ -21,6 +21,12 @@ Android 에뮬레이터 스크린샷 기반으로 발견한 문제들. 임팩트
 - [x] **D-06** `new.tsx` — 입력 필드 border 강화 (`border-white/20`)
 - [x] **D-07** `new.tsx` — 날짜 표시 형식 `2026년 4월 4일` 한국어 형식 적용
 
+### 개인정보처리방침 실제 정보 설정
+
+- [ ] **privacy.tsx 5번 섹션** — "성명: 김리바", "이메일: lyva.kim@example.com" 을 실제 앱 서비스 담당자 이름 + 실제 연락 이메일로 교체 (현재 placeholder 상태)
+
+---
+
 ### 네이티브 앱 QA (iOS 시뮬레이터 or 실기기)
 
 웹 테스트 로그인(`router.replace('/(app)')`)이 Supabase 세션을 생성하지 않아서,

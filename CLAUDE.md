@@ -7,6 +7,13 @@
 **백엔드:** Supabase (Auth, Postgres, Storage, Edge Functions)
 **스타일:** NativeWind (Tailwind 클래스명 사용)
 
+## 테스트 시나리오
+
+표준 테스트 시나리오: `.gstack/test-scenarios.md`
+- QA 실행 시 이 파일의 SC-01~SC-10 시나리오를 순서대로 진행
+- 스크린샷: `.gstack/qa-reports/screenshots/` 에 저장
+- URL: `http://localhost:8081` (Expo web)
+
 ## Skill routing
 
 When the user's request matches an available skill, ALWAYS invoke it using the Skill

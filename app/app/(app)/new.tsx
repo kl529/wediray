@@ -55,6 +55,7 @@ export default function NewEventScreen() {
       setDateObj(new Date(existing.date + 'T00:00:00'));
       setVenue(existing.venue);
       setAttendance(existing.attendance);
+      setInviteUrl(existing.invite_url || '');
     }
   }, [existing]);
 
