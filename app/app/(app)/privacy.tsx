@@ -59,8 +59,8 @@ export default function PrivacyScreen() {
         </Section>
 
         <Section title="5. 개인정보 보호책임자">
-          <Item label="성명" value="김리바" />
-          <Item label="이메일" value="lyva.kim@example.com" />
+          <Item label="성명" value="김지원" />
+          <Item label="이메일" value="lyva@grwks.com" />
         </Section>
 
         <Section title="6. 개인정보처리방침 변경">
