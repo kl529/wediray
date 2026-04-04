@@ -142,7 +142,7 @@ export default function NewEventScreen() {
           </TouchableOpacity>
         }
         center={
-          <Text className="text-white font-bold text-base">
+          <Text className="text-white font-semibold text-base">
             {isEdit ? '결혼식 수정' : '새 결혼식'}
           </Text>
         }

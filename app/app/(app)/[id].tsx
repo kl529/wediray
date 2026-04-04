@@ -213,7 +213,7 @@ export default function EventDetailScreen() {
         }
         center={
           wedding ? (
-            <Text className="text-white font-semibold text-sm" numberOfLines={1}>
+            <Text className="text-white font-semibold text-base" numberOfLines={1}>
               {wedding.groom} ♥ {wedding.bride}
             </Text>
           ) : undefined
