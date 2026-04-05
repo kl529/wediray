@@ -1,6 +1,7 @@
 import { Platform, View } from 'react-native';
 import { Stack } from 'expo-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ToastHost } from '../../components/Toast';
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ export default function AppLayout() {
         <Stack.Screen name="[id]" />
         <Stack.Screen name="settings" />
       </Stack>
+      <ToastHost />
       </View>
     </QueryClientProvider>
   );

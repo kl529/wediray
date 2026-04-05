@@ -7,18 +7,17 @@ import {
 } from 'react-native';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { ConfirmModal } from '../../components/ConfirmModal';
-import { useRouter, useLocalSearchParams, useNavigation } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   getWedding, getMemory, upsertMemory,
   deleteWedding, updateWedding, formatDateKR, formatTimeKR, isUpcoming, type Attendance,
 } from '../../lib/db';
-import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_PILL_BG, ATTENDANCE_PILL_TEXT } from '../../lib/constants';
-import { addWeddingToCalendar } from '../../lib/calendar';
+import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_PILL_ACTIVE, ATTENDANCE_PILL_ACTIVE_TEXT } from '../../lib/constants';
+import { toast } from '../../lib/toast';
 
 export default function EventDetailScreen() {
   const router = useRouter();
-  const navigation = useNavigation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const qc = useQueryClient();
 
@@ -33,78 +32,69 @@ export default function EventDetailScreen() {
   const [memo, setMemo] = useState('');
   const [giftAmount, setGiftAmount] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [showUnsavedConfirm, setShowUnsavedConfirm] = useState(false);
-  const [justSaved, setJustSaved] = useState(false);
-  const [calendarAdded, setCalendarAdded] = useState(false);
   const [venueCopied, setVenueCopied] = useState(false);
   const [urlCopied, setUrlCopied] = useState(false);
-  const [showAttendancePicker, setShowAttendancePicker] = useState(false);
-  const bypassBeforeRemove = useRef(false);
+  const memoRef = useRef('');
+  const giftRef = useRef('');
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const updateAttendance = useMutation({
     mutationFn: (value: Attendance) => updateWedding(id, { attendance: value }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['wedding', id] });
       qc.invalidateQueries({ queryKey: ['weddings'] });
+      toast.show('참석 여부 업데이트됐어요');
     },
     onError: (e: Error) => Alert.alert('저장 실패', e.message),
   });
 
   useEffect(() => {
     if (memory) {
-      setMemo(memory.memo ?? '');
-      setGiftAmount(memory.gift_amount ? String(memory.gift_amount) : '');
+      const m = memory.memo ?? '';
+      const g = memory.gift_amount ? String(memory.gift_amount) : '';
+      setMemo(m);
+      setGiftAmount(g);
+      memoRef.current = m;
+      giftRef.current = g;
     }
   }, [memory]);
 
   const saveMemory = useMutation({
     mutationFn: () =>
       upsertMemory(id, {
-        memo: memo.trim() || undefined,
-        gift_amount: giftAmount ? Number(giftAmount) : null,
+        memo: memoRef.current.trim() || undefined,
+        gift_amount: giftRef.current ? Number(giftRef.current) : null,
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['memory', id] });
-      setJustSaved(true);
-      setTimeout(() => setJustSaved(false), 2000);
+      toast.show('저장됐어요');
     },
     onError: (e: Error) => Alert.alert('저장 실패', e.message),
   });
+
+  useEffect(() => {
+    return () => { if (saveTimerRef.current) clearTimeout(saveTimerRef.current); };
+  }, []);
+
+  function scheduleSave() {
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => saveMemory.mutate(), 1500);
+  }
+
+  function saveNow() {
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveMemory.mutate();
+  }
 
   async function confirmDeleteWedding() {
     setShowDeleteConfirm(false);
     try {
       await deleteWedding(id);
       qc.invalidateQueries({ queryKey: ['weddings'] });
+      toast.show('삭제됐어요');
       router.back();
     } catch (e: any) {
       Alert.alert('삭제 실패', e.message);
-    }
-  }
-
-  const isDirty =
-    memo !== (memory?.memo ?? '') ||
-    giftAmount !== (memory?.gift_amount ? String(memory.gift_amount) : '');
-
-  // beforeRemove catches the native iOS swipe-back gesture.
-  // bypassBeforeRemove is set when ConfirmModal already confirmed — avoids double-prompt.
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove' as any, (e: any) => {
-      if (!isDirty || bypassBeforeRemove.current) return;
-      e.preventDefault();
-      Alert.alert('저장하지 않은 변경사항', '나가면 변경사항이 사라져요.', [
-        { text: '계속 편집', style: 'cancel' },
-        { text: '나가기', style: 'destructive', onPress: () => navigation.dispatch(e.data.action) },
-      ]);
-    });
-    return unsubscribe;
-  }, [navigation, isDirty]);
-
-  function handleBack() {
-    if (isDirty) {
-      setShowUnsavedConfirm(true);
-    } else {
-      router.back();
     }
   }
 
@@ -128,6 +118,13 @@ export default function EventDetailScreen() {
     );
   }
 
+  const att = (ATTENDANCE_LABEL[wedding.attendance] ? wedding.attendance : 'pending') as Attendance;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const wDate = new Date(wedding.date + 'T00:00:00');
+  const daysUntil = Math.round((wDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -136,7 +133,7 @@ export default function EventDetailScreen() {
       <ScreenHeader
         left={
           <TouchableOpacity
-            onPress={handleBack}
+            onPress={() => router.back()}
             accessibilityRole="button"
             accessibilityLabel="뒤로"
             className="py-2 px-1"
@@ -145,11 +142,9 @@ export default function EventDetailScreen() {
           </TouchableOpacity>
         }
         center={
-          wedding ? (
-            <Text className="text-white font-semibold text-base" numberOfLines={1}>
-              {wedding.groom} ♥ {wedding.bride}
-            </Text>
-          ) : undefined
+          <Text className="text-white font-semibold text-base" numberOfLines={1}>
+            {wedding.groom} ♥ {wedding.bride}
+          </Text>
         }
         right={
           <View className="flex-row gap-5 items-center">
@@ -171,31 +166,37 @@ export default function EventDetailScreen() {
         }
       />
 
-      <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 80 }}>
+      <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 80 }}>
 
         {/* ── 웨딩 정보 카드 ── */}
-        <View className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-4">
+        <View className="bg-[#141414] border border-[#2A2A2A] rounded-2xl p-5 mb-3">
           {/* 이름 */}
-          <Text className="text-white text-3xl font-gaegu-bold mb-4">
-            {wedding.groom} ♥ {wedding.bride}
+          <Text className="text-white text-3xl font-gaegu-bold mb-2">
+            {wedding.groom} <Text className="text-pink-400">♥</Text> {wedding.bride}
           </Text>
 
+          {/* D-day 배지 */}
+          {daysUntil === 0 ? (
+            <View className="self-start bg-pink-400 rounded-full px-3 py-0.5 mb-4">
+              <Text className="text-white text-xs font-bold">D-Day</Text>
+            </View>
+          ) : daysUntil > 0 ? (
+            <View className="self-start bg-pink-400/15 border border-pink-400/40 rounded-full px-3 py-0.5 mb-4">
+              <Text className="text-pink-400 text-xs font-bold">D-{daysUntil}</Text>
+            </View>
+          ) : (
+            <View className="self-start bg-white/5 border border-white/10 rounded-full px-3 py-0.5 mb-4">
+              <Text className="text-white/30 text-xs">{Math.abs(daysUntil)}일 전</Text>
+            </View>
+          )}
+
           {/* 날짜 + 시간 */}
-          <View className="flex-row items-center gap-2 flex-wrap mb-3">
-            <Ionicons name="calendar-outline" size={15} color="rgba(255,255,255,0.4)" />
-            <Text className="text-white/70 text-sm">{formatDateKR(wedding.date)}</Text>
+          <View className="flex-row items-center gap-2 mb-3">
+            <Ionicons name="calendar-outline" size={15} color="#FF1493" />
+            <Text className="text-pink-400 text-sm font-semibold">{formatDateKR(wedding.date)}</Text>
             {wedding.time ? (
               <Text className="text-white/50 text-sm">· {formatTimeKR(wedding.time)}</Text>
             ) : null}
-            {(() => {
-              const today = new Date();
-              today.setHours(0, 0, 0, 0);
-              const wDate = new Date(wedding.date + 'T00:00:00');
-              const diff = Math.round((wDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-              if (diff === 0) return <Text className="text-pink-400 text-sm font-bold">D-Day</Text>;
-              if (diff > 0) return <Text className="text-pink-400 text-sm font-bold">D-{diff}</Text>;
-              return <Text className="text-white/30 text-sm">{-diff}일 전</Text>;
-            })()}
           </View>
 
           {/* 장소 */}
@@ -208,98 +209,50 @@ export default function EventDetailScreen() {
               }}
               accessibilityRole="button"
               accessibilityLabel="장소 복사"
-              className={`flex-row items-center gap-2 mb-4 px-3 py-2.5 rounded-xl border ${
+              className={`flex-row items-center gap-2 px-3 py-2.5 rounded-xl border ${
                 venueCopied ? 'bg-lime-400/10 border-lime-400/30' : 'bg-black/30 border-white/10'
               }`}
             >
-              <Ionicons name="location-outline" size={15} color={venueCopied ? '#a3e635' : 'rgba(255,255,255,0.4)'} />
-              <Text className={`text-sm flex-1 ${venueCopied ? 'text-lime-400' : 'text-white/70'}`}>{wedding.venue}</Text>
+              <Ionicons name="location-outline" size={15} color={venueCopied ? '#CCFF00' : '#7EB8FF'} />
+              <Text className={`text-sm flex-1 ${venueCopied ? 'text-lime-400' : 'text-[#7EB8FF]'}`}>
+                {wedding.venue}
+              </Text>
               {venueCopied
                 ? <Text className="text-lime-400 text-xs font-semibold">복사됨 ✓</Text>
                 : <Ionicons name="copy-outline" size={13} color="rgba(255,255,255,0.3)" />}
             </TouchableOpacity>
           ) : null}
+        </View>
 
-          {/* 참석 여부 + 캘린더 — 한 row */}
-          <View className="flex-row items-center justify-between">
-            {/* 참석 뱃지 / 인라인 picker */}
-            {showAttendancePicker ? (
-              <View className="flex-row gap-2 flex-1">
-                {(['attending', 'absent', 'pending'] as Attendance[]).map((value) => (
-                  <TouchableOpacity
-                    key={value}
-                    onPress={() => {
-                      updateAttendance.mutate(value);
-                      setShowAttendancePicker(false);
-                    }}
-                    className={`px-3 py-1.5 rounded-full border ${
-                      wedding.attendance === value
-                        ? `${ATTENDANCE_PILL_BG[value]} border-transparent`
-                        : 'bg-white/5 border-white/20'
-                    }`}
-                  >
-                    <Text className={`text-xs font-bold ${
-                      wedding.attendance === value ? ATTENDANCE_PILL_TEXT[value] : 'text-white/50'
-                    }`}>
-                      {ATTENDANCE_LABEL[value]}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-                <TouchableOpacity onPress={() => setShowAttendancePicker(false)} className="px-2 py-1.5">
-                  <Text className="text-white/30 text-xs">취소</Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
+        {/* ── 참석 여부 ── */}
+        <View className="bg-[#111] border border-[#2A2A2A] rounded-2xl p-4 mb-3">
+          <Text className="text-white/40 text-[11px] font-semibold mb-3">참석 여부</Text>
+          <View className="flex-row gap-2">
+            {(['attending', 'absent', 'pending'] as Attendance[]).map((value) => (
               <TouchableOpacity
-                onPress={() => setShowAttendancePicker(true)}
-                accessibilityRole="button"
-                accessibilityLabel="참석 여부 변경"
-                className={`px-3 py-1 rounded-full ${ATTENDANCE_PILL_BG[(ATTENDANCE_LABEL[wedding.attendance] ? wedding.attendance : 'pending') as Attendance]}`}
-              >
-                <Text className={`text-xs font-bold ${ATTENDANCE_PILL_TEXT[(ATTENDANCE_LABEL[wedding.attendance] ? wedding.attendance : 'pending') as Attendance]}`}>
-                  {ATTENDANCE_LABEL[(ATTENDANCE_LABEL[wedding.attendance] ? wedding.attendance : 'pending') as Attendance]}
-                </Text>
-              </TouchableOpacity>
-            )}
-
-            {/* 캘린더 버튼 — 예정 결혼식만 */}
-            {!showAttendancePicker && isUpcoming(wedding) ? (
-              <TouchableOpacity
-                onPress={async () => {
-                  try {
-                    await addWeddingToCalendar({
-                      groom: wedding.groom,
-                      bride: wedding.bride,
-                      date: wedding.date,
-                      venue: wedding.venue,
-                      time: wedding.time,
-                    });
-                    setCalendarAdded(true);
-                    setTimeout(() => setCalendarAdded(false), 3000);
-                  } catch (e: any) {
-                    Alert.alert('추가 실패', e.message);
-                  }
-                }}
-                accessibilityRole="button"
-                accessibilityLabel="캘린더에 추가"
-                className={`flex-row items-center gap-1.5 px-3 py-1.5 rounded-full border ${
-                  calendarAdded ? 'bg-lime-400/15 border-lime-400/30' : 'bg-white/5 border-white/15'
+                key={value}
+                onPress={() => updateAttendance.mutate(value)}
+                disabled={updateAttendance.isPending}
+                accessibilityRole="radio"
+                accessibilityLabel={ATTENDANCE_LABEL[value]}
+                accessibilityState={{ selected: att === value }}
+                className={`flex-1 py-2 rounded-full border items-center ${
+                  att === value
+                    ? ATTENDANCE_PILL_ACTIVE[value]
+                    : 'bg-white/5 border-white/10'
                 }`}
               >
-                <Ionicons
-                  name={calendarAdded ? 'checkmark-circle' : 'calendar-outline'}
-                  size={14}
-                  color={calendarAdded ? '#a3e635' : 'rgba(255,255,255,0.5)'}
-                />
-                <Text className={`text-xs font-semibold ${calendarAdded ? 'text-lime-400' : 'text-white/50'}`}>
-                  {calendarAdded ? '추가됨' : '캘린더'}
+                <Text className={`text-xs font-bold ${
+                  att === value ? ATTENDANCE_PILL_ACTIVE_TEXT[value] : 'text-white/30'
+                }`}>
+                  {ATTENDANCE_LABEL[value]}
                 </Text>
               </TouchableOpacity>
-            ) : null}
+            ))}
           </View>
         </View>
 
-        {/* 청첩장 링크 */}
+        {/* ── 청첩장 링크 ── */}
         {wedding.invite_url ? (
           <TouchableOpacity
             onPress={() => Linking.openURL(wedding.invite_url!)}
@@ -310,55 +263,39 @@ export default function EventDetailScreen() {
             }}
             accessibilityRole="link"
             accessibilityLabel="청첩장 링크 열기"
-            className="mb-4 bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex-row items-center gap-2 active:opacity-70"
+            className="mb-3 bg-[#111] border border-[#2A2A2A] rounded-2xl px-4 py-3 flex-row items-center gap-2 active:opacity-70"
           >
-            <Ionicons name="link-outline" size={15} color="rgba(255,255,255,0.4)" />
-            <Text className="text-white/40 text-xs flex-1" numberOfLines={1}>{wedding.invite_url}</Text>
+            <Text className="text-white/40 text-[11px] font-semibold w-16">URL</Text>
+            <Text className="text-[#7EB8FF] text-xs flex-1" numberOfLines={1}>{wedding.invite_url}</Text>
             {urlCopied
               ? <Text className="text-lime-400 text-xs font-semibold">복사됨 ✓</Text>
               : <Ionicons name="open-outline" size={14} color="rgba(255,255,255,0.25)" />}
           </TouchableOpacity>
         ) : null}
 
-        {/* ── 추억 섹션 ── */}
-        <View className="flex-row items-center gap-2 mt-4 mb-5">
-          <View className="flex-1 h-px bg-white/10" />
-          <Text className="text-white/25 text-xs">추억 기록</Text>
-          <View className="flex-1 h-px bg-white/10" />
-        </View>
-
-        {/* Memo */}
-        <View className="mb-5">
-          <Text className="text-white/40 text-xs mb-2">메모</Text>
-          <TextInput
-            value={memo}
-            onChangeText={setMemo}
-            placeholder="이날의 기억을 한 줄로..."
-            placeholderTextColor="#ffffff33"
-            multiline
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm min-h-20"
-            style={{ textAlignVertical: 'top' }}
-          />
-        </View>
-
-        {/* Gift Amount */}
-        <View className="mb-6">
-          <Text className="text-white/40 text-xs mb-2">축의금</Text>
-          <View className="flex-row flex-wrap gap-2 mb-2">
+        {/* ── 축의금 ── */}
+        <View className="bg-[#111] border border-[#2A2A2A] rounded-2xl p-4 mb-3">
+          <View className="flex-row items-center justify-between mb-3">
+            <Text className="text-white/40 text-[11px] font-semibold">축의금</Text>
+            <Text className="text-white/20 text-[10px]">자동 저장</Text>
+          </View>
+          <View className="flex-row gap-2 mb-3">
             {[50000, 100000, 150000, 200000].map((amount) => (
               <TouchableOpacity
                 key={amount}
-                onPress={() => setGiftAmount(String(amount))}
+                onPress={() => { const v = String(amount); setGiftAmount(v); giftRef.current = v; scheduleSave(); }}
                 accessibilityRole="button"
                 accessibilityLabel={`${amount.toLocaleString('ko-KR')}원`}
-                className={`px-3 py-1.5 rounded-full border ${
+                className={`flex-1 py-2 rounded-full border items-center ${
                   giftAmount === String(amount)
-                    ? 'bg-pink-400 border-pink-400'
-                    : 'bg-white/10 border-white/20'
+                    ? 'bg-pink-400/15 border-pink-400'
+                    : 'bg-white/5 border-white/10'
                 }`}
               >
-                <Text className={`text-xs font-semibold ${giftAmount === String(amount) ? 'text-black' : 'text-white/50'}`}>
-                  {(amount / 10000).toLocaleString('ko-KR')}만
+                <Text className={`text-xs font-bold ${
+                  giftAmount === String(amount) ? 'text-pink-400' : 'text-white/40'
+                }`}>
+                  {(amount / 10000)}만
                 </Text>
               </TouchableOpacity>
             ))}
@@ -366,33 +303,40 @@ export default function EventDetailScreen() {
           <View className="flex-row items-center gap-2">
             <TextInput
               value={giftAmount}
-              onChangeText={(v) => setGiftAmount(v.replace(/[^0-9]/g, ''))}
+              onChangeText={(v) => { const clean = v.replace(/[^0-9]/g, ''); setGiftAmount(clean); giftRef.current = clean; scheduleSave(); }}
+              onBlur={saveNow}
               placeholder="0"
               placeholderTextColor="#ffffff33"
               keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
-              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-base"
+              className="flex-1 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-4 py-3 text-white text-base"
             />
             <Text className="text-white/40 text-sm">원</Text>
           </View>
           {giftAmount ? (
-            <Text className="text-white/30 text-xs mt-1">
+            <Text className="text-white/30 text-xs mt-2">
               {Number(giftAmount).toLocaleString('ko-KR')}원
             </Text>
           ) : null}
         </View>
 
-        {/* Save Memory */}
-        <TouchableOpacity
-          onPress={() => saveMemory.mutate()}
-          disabled={saveMemory.isPending || justSaved}
-          accessibilityRole="button"
-          accessibilityLabel="기억 저장"
-          className={`rounded-xl py-4 items-center ${justSaved ? 'bg-lime-400' : 'bg-pink-400'}`}
-        >
-          {saveMemory.isPending
-            ? <ActivityIndicator color="#000" />
-            : <Text className="text-black font-bold text-base">{justSaved ? '저장됨 ✓' : '저장'}</Text>}
-        </TouchableOpacity>
+        {/* ── 메모 ── */}
+        <View className="bg-[#111] border border-[#2A2A2A] rounded-2xl p-4 mb-4">
+          <View className="flex-row items-center justify-between mb-3">
+            <Text className="text-white/40 text-[11px] font-semibold">메모</Text>
+            <Text className="text-white/20 text-[10px]">자동 저장</Text>
+          </View>
+          <TextInput
+            value={memo}
+            onChangeText={(v) => { setMemo(v); memoRef.current = v; scheduleSave(); }}
+            onBlur={saveNow}
+            placeholder="이날의 기억을 한 줄로..."
+            placeholderTextColor="#ffffff33"
+            multiline
+            className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-4 py-3 text-white text-sm min-h-20"
+            style={{ textAlignVertical: 'top' }}
+          />
+        </View>
+
       </ScrollView>
 
       <ConfirmModal
@@ -402,15 +346,6 @@ export default function EventDetailScreen() {
         confirmLabel="삭제"
         onConfirm={confirmDeleteWedding}
         onCancel={() => setShowDeleteConfirm(false)}
-        destructive
-      />
-      <ConfirmModal
-        visible={showUnsavedConfirm}
-        title="저장하지 않은 변경사항"
-        message="나가면 변경사항이 사라져요."
-        confirmLabel="나가기"
-        onConfirm={() => { bypassBeforeRemove.current = true; setShowUnsavedConfirm(false); router.back(); }}
-        onCancel={() => setShowUnsavedConfirm(false)}
         destructive
       />
     </KeyboardAvoidingView>

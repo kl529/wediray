@@ -16,12 +16,22 @@ import { BRAND_PINK } from '../../lib/constants';
 import { supabase } from '../../lib/supabase';
 import { pickAndOcr, parseOcrText } from '../../lib/ocr';
 import { addWeddingToCalendar } from '../../lib/calendar';
+import { toast } from '../../lib/toast';
 
 const ATTENDANCE_OPTIONS: { value: Attendance; label: string }[] = [
   { value: 'attending', label: '참석' },
   { value: 'absent', label: '불참' },
   { value: 'pending', label: '미정' },
 ];
+
+function SectionCard({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <View className="bg-[#111] border border-[#2A2A2A] rounded-2xl p-4 mb-3">
+      <Text className="text-white/40 text-[11px] font-semibold mb-3">{label}</Text>
+      {children}
+    </View>
+  );
+}
 
 export default function NewEventScreen() {
   const router = useRouter();
@@ -102,6 +112,7 @@ export default function NewEventScreen() {
       qc.invalidateQueries({ queryKey: ['weddings'] });
       if (isEdit) {
         qc.invalidateQueries({ queryKey: ['wedding', id] });
+        toast.show('수정됐어요');
         router.back();
         return;
       }
@@ -110,6 +121,8 @@ export default function NewEventScreen() {
       if (wDate >= today) {
         setShowCalendarModal(true);
       } else {
+        confirmedCancel.current = true;
+        toast.show('등록됐어요');
         router.back();
       }
     },
@@ -236,18 +249,16 @@ export default function NewEventScreen() {
         }
       />
 
-      <ScrollView ref={scrollRef} contentContainerStyle={{ padding: 24, paddingBottom: 60 }}>
+      <ScrollView ref={scrollRef} contentContainerStyle={{ padding: 20, paddingBottom: 60 }}>
         {/* Inline error banner */}
         {formError ? (
-          <View className="bg-red-500/20 border border-red-500/40 rounded-xl px-4 py-3 mb-4">
+          <View className="bg-red-500/20 border border-red-500/40 rounded-xl px-4 py-3 mb-3">
             <Text className="text-red-400 text-sm">{formError}</Text>
           </View>
         ) : null}
 
-        {/* Invitation URL + OCR */}
-        <View className="mb-6">
-          <Text className="text-white/40 text-xs mb-2">자동 입력</Text>
-          {/* URL row */}
+        {/* ── 섹션 1: 청첩장 URL / 이미지 ── */}
+        <SectionCard label="청첩장 URL / 이미지">
           <View className="flex-row gap-2 mb-2">
             <TextInput
               value={inviteUrl}
@@ -256,21 +267,20 @@ export default function NewEventScreen() {
               placeholderTextColor="#ffffff33"
               autoCapitalize="none"
               keyboardType="url"
-              className="flex-1 bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white text-sm"
+              className="flex-1 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-4 py-3 text-white text-sm"
             />
             <TouchableOpacity
               onPress={handleParse}
               disabled={parsing || !inviteUrl.trim()}
               accessibilityRole="button"
               accessibilityLabel="불러오기"
-              className={`rounded-xl px-4 items-center justify-center ${parsing || !inviteUrl.trim() ? 'bg-pink-400/40' : 'bg-pink-400'}`}
+              className={`rounded-xl px-4 items-center justify-center ${parsing || !inviteUrl.trim() ? 'bg-pink-400/30' : 'bg-pink-400/20 border border-pink-400/40'}`}
             >
               {parsing
-                ? <ActivityIndicator color="#000" size="small" />
-                : <Text className={`font-bold text-sm ${parsing || !inviteUrl.trim() ? 'text-black/40' : 'text-black'}`}>불러오기</Text>}
+                ? <ActivityIndicator color={BRAND_PINK} size="small" />
+                : <Text className={`font-bold text-sm ${parsing || !inviteUrl.trim() ? 'text-white/20' : 'text-pink-400'}`}>불러오기</Text>}
             </TouchableOpacity>
           </View>
-          {/* OCR row — native only */}
           {Platform.OS !== 'web' && (
             <View className="flex-row gap-2">
               <TouchableOpacity
@@ -278,162 +288,163 @@ export default function NewEventScreen() {
                 disabled={scanning !== null}
                 accessibilityRole="button"
                 accessibilityLabel="카메라로 촬영"
-                className="flex-1 items-center justify-center bg-white/5 border border-white/20 rounded-xl py-3"
+                className="flex-1 items-center justify-center bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl py-3 flex-row gap-2"
               >
                 {scanning === 'camera'
                   ? <ActivityIndicator color={BRAND_PINK} size="small" />
-                  : <Text className="text-white/60 text-sm">카메라 촬영</Text>}
+                  : <>
+                      <Ionicons name="camera-outline" size={16} color="rgba(255,255,255,0.4)" />
+                      <Text className="text-white/50 text-sm">카메라</Text>
+                    </>}
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handleScan('gallery')}
                 disabled={scanning !== null}
                 accessibilityRole="button"
                 accessibilityLabel="갤러리에서 선택"
-                className="flex-1 items-center justify-center bg-white/5 border border-white/20 rounded-xl py-3"
+                className="flex-1 items-center justify-center bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl py-3 flex-row gap-2"
               >
                 {scanning === 'gallery'
                   ? <ActivityIndicator color={BRAND_PINK} size="small" />
-                  : <Text className="text-white/60 text-sm">갤러리 선택</Text>}
+                  : <>
+                      <Ionicons name="image-outline" size={16} color="rgba(255,255,255,0.4)" />
+                      <Text className="text-white/50 text-sm">갤러리</Text>
+                    </>}
               </TouchableOpacity>
             </View>
           )}
-        </View>
+        </SectionCard>
 
-        <View className="h-px bg-white/10 mb-6" />
-
-        {/* Groom */}
-        <View className="mb-4">
-          <View className="flex-row items-center mb-2">
-            <Text className="text-white/40 text-xs">신랑</Text>
-            <Text className="text-red-400 text-xs ml-0.5">*</Text>
-          </View>
-          <TextInput
-            value={groom}
-            onChangeText={(v) => { setGroom(v); if (nameError) setNameError(false); if (formError) setFormError(''); }}
-            placeholder="이름"
-            placeholderTextColor="#ffffff33"
-            className={`bg-white/5 border rounded-xl px-4 py-3 text-white text-base ${nameError && !groom.trim() ? 'border-red-500' : 'border-white/20'}`}
-          />
-        </View>
-
-        {/* Bride */}
-        <View className="mb-4">
-          <View className="flex-row items-center mb-2">
-            <Text className="text-white/40 text-xs">신부</Text>
-            <Text className="text-red-400 text-xs ml-0.5">*</Text>
-          </View>
-          <TextInput
-            value={bride}
-            onChangeText={(v) => { setBride(v); if (nameError) setNameError(false); if (formError) setFormError(''); }}
-            placeholder="이름"
-            placeholderTextColor="#ffffff33"
-            className={`bg-white/5 border rounded-xl px-4 py-3 text-white text-base ${nameError && !bride.trim() ? 'border-red-500' : 'border-white/20'}`}
-          />
-        </View>
-
-        {/* Date */}
-        <View className="mb-4">
-          <Text className="text-white/40 text-xs mb-2">날짜</Text>
-          {Platform.OS === 'ios' ? (
-            <DateTimePicker
-              value={dateObj}
-              mode="date"
-              display="compact"
-              onChange={(_, d) => { if (d) setDateObj(d); }}
-              themeVariant="dark"
-              style={{ alignSelf: 'flex-start', marginLeft: -8 }}
+        {/* ── 섹션 2: 기본 정보 ── */}
+        <SectionCard label="기본 정보">
+          {/* 신랑 */}
+          <View className="mb-3">
+            <View className="flex-row items-center mb-1.5">
+              <Text className="text-white/40 text-xs">신랑</Text>
+              <Text className="text-pink-400 text-xs ml-0.5">*</Text>
+            </View>
+            <TextInput
+              value={groom}
+              onChangeText={(v) => { setGroom(v); if (nameError) setNameError(false); if (formError) setFormError(''); }}
+              placeholder="이름"
+              placeholderTextColor="#ffffff33"
+              className={`bg-[#1A1A1A] border rounded-xl px-4 py-3 text-white text-base ${nameError && !groom.trim() ? 'border-red-500' : 'border-[#2A2A2A]'}`}
             />
-          ) : (
-            <>
-              <TouchableOpacity
-                onPress={() => setShowDatePicker(true)}
-                className="bg-white/5 border border-white/20 rounded-xl px-4 py-3"
-              >
-                <Text className="text-white text-base">{formatDateKR(dateObjToString(dateObj))}</Text>
-              </TouchableOpacity>
-              {showDatePicker && (
+          </View>
+
+          {/* 신부 */}
+          <View className="mb-3">
+            <View className="flex-row items-center mb-1.5">
+              <Text className="text-white/40 text-xs">신부</Text>
+              <Text className="text-pink-400 text-xs ml-0.5">*</Text>
+            </View>
+            <TextInput
+              value={bride}
+              onChangeText={(v) => { setBride(v); if (nameError) setNameError(false); if (formError) setFormError(''); }}
+              placeholder="이름"
+              placeholderTextColor="#ffffff33"
+              className={`bg-[#1A1A1A] border rounded-xl px-4 py-3 text-white text-base ${nameError && !bride.trim() ? 'border-red-500' : 'border-[#2A2A2A]'}`}
+            />
+          </View>
+
+          {/* 날짜 + 시간 — 한 row */}
+          <View className="flex-row gap-2 mb-3">
+            <View className="flex-1">
+              <Text className="text-white/40 text-xs mb-1.5">날짜</Text>
+              {Platform.OS === 'ios' ? (
                 <DateTimePicker
                   value={dateObj}
                   mode="date"
-                  display="default"
-                  onChange={(_, d) => {
-                    setShowDatePicker(false);
-                    if (d) setDateObj(d);
-                  }}
-                />
-              )}
-            </>
-          )}
-        </View>
-
-        {/* Time */}
-        <View className="mb-4">
-          <Text className="text-white/40 text-xs mb-2">시간</Text>
-          <View className="flex-row items-center gap-2">
-            {Platform.OS === 'ios' ? (
-              showTime ? (
-                <DateTimePicker
-                  value={timeObj}
-                  mode="time"
                   display="compact"
-                  onChange={(_, d) => { if (d) setTimeObj(d); }}
+                  onChange={(_, d) => { if (d) setDateObj(d); }}
                   themeVariant="dark"
                   style={{ alignSelf: 'flex-start', marginLeft: -8 }}
                 />
               ) : (
-                <TouchableOpacity
-                  onPress={() => setShowTime(true)}
-                  className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3"
-                >
-                  <Text className="text-white/30 text-base">시간 없음</Text>
-                </TouchableOpacity>
-              )
-            ) : (
-              <>
-                <TouchableOpacity
-                  onPress={() => { setShowTime(true); setShowTimePicker(true); }}
-                  className="flex-1 bg-white/5 border border-white/20 rounded-xl px-4 py-3"
-                >
-                  <Text className={`text-base ${showTime ? 'text-white' : 'text-white/30'}`}>
-                    {showTime ? formatTimeKR(timeObjToString(timeObj)) : '시간 없음'}
-                  </Text>
-                </TouchableOpacity>
-                {showTimePicker && (
-                  <DateTimePicker
-                    value={timeObj}
-                    mode="time"
-                    display="spinner"
-                    onChange={(_, d) => {
-                      setShowTimePicker(false);
-                      if (d) { setTimeObj(d); setShowTime(true); }
-                    }}
-                  />
-                )}
-              </>
-            )}
-            {showTime && (
-              <TouchableOpacity onPress={() => setShowTime(false)} className="p-1">
-                <Ionicons name="close-circle-outline" size={20} color="rgba(255,255,255,0.3)" />
-              </TouchableOpacity>
-            )}
+                <>
+                  <TouchableOpacity
+                    onPress={() => setShowDatePicker(true)}
+                    className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-4 py-3"
+                  >
+                    <Text className="text-white text-sm">{formatDateKR(dateObjToString(dateObj))}</Text>
+                  </TouchableOpacity>
+                  {showDatePicker && (
+                    <DateTimePicker
+                      value={dateObj}
+                      mode="date"
+                      display="default"
+                      onChange={(_, d) => { setShowDatePicker(false); if (d) setDateObj(d); }}
+                    />
+                  )}
+                </>
+              )}
+            </View>
+            <View className="flex-1">
+              <Text className="text-white/40 text-xs mb-1.5">시간</Text>
+              {Platform.OS === 'ios' ? (
+                showTime ? (
+                  <View className="flex-row items-center gap-1">
+                    <DateTimePicker
+                      value={timeObj}
+                      mode="time"
+                      display="compact"
+                      onChange={(_, d) => { if (d) setTimeObj(d); }}
+                      themeVariant="dark"
+                      style={{ alignSelf: 'flex-start', marginLeft: -8 }}
+                    />
+                    <TouchableOpacity onPress={() => setShowTime(false)} className="p-1">
+                      <Ionicons name="close-circle-outline" size={18} color="rgba(255,255,255,0.3)" />
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => setShowTime(true)}
+                    className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-4 py-3"
+                  >
+                    <Text className="text-white/30 text-sm">없음</Text>
+                  </TouchableOpacity>
+                )
+              ) : (
+                <>
+                  <TouchableOpacity
+                    onPress={() => { setShowTime(true); setShowTimePicker(true); }}
+                    className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-4 py-3"
+                  >
+                    <Text className={`text-sm ${showTime ? 'text-white' : 'text-white/30'}`}>
+                      {showTime ? formatTimeKR(timeObjToString(timeObj)) : '없음'}
+                    </Text>
+                  </TouchableOpacity>
+                  {showTimePicker && (
+                    <DateTimePicker
+                      value={timeObj}
+                      mode="time"
+                      display="spinner"
+                      onChange={(_, d) => {
+                        setShowTimePicker(false);
+                        if (d) { setTimeObj(d); setShowTime(true); }
+                      }}
+                    />
+                  )}
+                </>
+              )}
+            </View>
           </View>
-        </View>
 
-        {/* Venue */}
-        <View className="mb-6">
-          <Text className="text-white/40 text-xs mb-2">장소</Text>
-          <TextInput
-            value={venue}
-            onChangeText={(v) => { setVenue(v); if (formError) setFormError(''); }}
-            placeholder="웨딩홀 이름"
-            placeholderTextColor="#ffffff33"
-            className="bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white text-base"
-          />
-        </View>
+          {/* 장소 */}
+          <View>
+            <Text className="text-white/40 text-xs mb-1.5">장소</Text>
+            <TextInput
+              value={venue}
+              onChangeText={(v) => { setVenue(v); if (formError) setFormError(''); }}
+              placeholder="웨딩홀 이름"
+              placeholderTextColor="#ffffff33"
+              className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-4 py-3 text-white text-base"
+            />
+          </View>
+        </SectionCard>
 
-        {/* Attendance */}
-        <View>
-          <Text className="text-white/40 text-xs mb-2">참석 여부</Text>
+        {/* ── 섹션 3: 참석 여부 ── */}
+        <SectionCard label="참석 여부">
           <View className="flex-row gap-2">
             {ATTENDANCE_OPTIONS.map((opt) => (
               <TouchableOpacity
@@ -444,17 +455,27 @@ export default function NewEventScreen() {
                 accessibilityState={{ selected: attendance === opt.value }}
                 className={`flex-1 py-3 rounded-xl items-center border ${
                   attendance === opt.value
-                    ? 'bg-pink-400 border-pink-400'
-                    : 'bg-white/5 border-white/20'
+                    ? opt.value === 'attending'
+                      ? 'bg-lime-400/15 border-lime-400'
+                      : opt.value === 'absent'
+                        ? 'bg-pink-400/15 border-pink-400'
+                        : 'bg-white/15 border-white/30'
+                    : 'bg-[#1A1A1A] border-[#2A2A2A]'
                 }`}
               >
-                <Text className={`font-semibold text-sm ${attendance === opt.value ? 'text-black' : 'text-white/50'}`}>
+                <Text className={`font-semibold text-sm ${
+                  attendance === opt.value
+                    ? opt.value === 'attending' ? 'text-lime-400'
+                    : opt.value === 'absent' ? 'text-pink-400'
+                    : 'text-white/70'
+                    : 'text-white/30'
+                }`}>
                   {opt.label}
                 </Text>
               </TouchableOpacity>
             ))}
           </View>
-        </View>
+        </SectionCard>
       </ScrollView>
 
       <ConfirmModal
@@ -490,10 +511,14 @@ export default function NewEventScreen() {
           } catch {
             // 실패해도 그냥 넘어감
           }
+          confirmedCancel.current = true;
+          toast.show('등록됐어요');
           router.back();
         }}
         onCancel={() => {
           setShowCalendarModal(false);
+          confirmedCancel.current = true;
+          toast.show('등록됐어요');
           router.back();
         }}
       />
