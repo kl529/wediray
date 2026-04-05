@@ -5,30 +5,31 @@ import { formatDateKR, isUpcoming } from '../lib/db';
 import type { Wedding } from '../lib/db';
 
 // ── formatDateKR ─────────────────────────────────────────────
+// formatDateKR은 "YYYY년 M월 D일 (요일)" 형식을 반환한다.
 
 describe('formatDateKR', () => {
-  it('formats a date string to Korean', () => {
-    expect(formatDateKR('2026-03-31')).toBe('2026년 3월 31일');
+  it('formats a date string to Korean with day-of-week', () => {
+    expect(formatDateKR('2026-03-31')).toBe('2026년 3월 31일 (화)');
   });
 
   it('strips leading zeros from month and day', () => {
-    expect(formatDateKR('2026-01-05')).toBe('2026년 1월 5일');
+    expect(formatDateKR('2026-01-05')).toBe('2026년 1월 5일 (월)');
   });
 
   it('handles December correctly', () => {
-    expect(formatDateKR('2025-12-25')).toBe('2025년 12월 25일');
+    expect(formatDateKR('2025-12-25')).toBe('2025년 12월 25일 (목)');
   });
 
   it('February (shortest month)', () => {
-    expect(formatDateKR('2026-02-14')).toBe('2026년 2월 14일');
+    expect(formatDateKR('2026-02-14')).toBe('2026년 2월 14일 (토)');
   });
 
   it('January 1st (year start boundary)', () => {
-    expect(formatDateKR('2026-01-01')).toBe('2026년 1월 1일');
+    expect(formatDateKR('2026-01-01')).toBe('2026년 1월 1일 (목)');
   });
 
   it('December 31st (year end boundary)', () => {
-    expect(formatDateKR('2025-12-31')).toBe('2025년 12월 31일');
+    expect(formatDateKR('2025-12-31')).toBe('2025년 12월 31일 (수)');
   });
 });
 

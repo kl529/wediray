@@ -2,6 +2,12 @@ import { supabase } from './supabase';
 
 export type Attendance = 'attending' | 'absent' | 'pending';
 
+function normalizeAttendance(v: string): Attendance {
+  if (v === 'attended') return 'attending';
+  if (v === 'attending' || v === 'absent' || v === 'pending') return v;
+  return 'pending';
+}
+
 export type Wedding = {
   id: string;
   user_id: string;
@@ -44,7 +50,7 @@ export async function getWeddings() {
     .eq('user_id', user.id)
     .order('date', { ascending: true });
   if (error) throw error;
-  return data as Wedding[];
+  return (data as Wedding[]).map((w) => ({ ...w, attendance: normalizeAttendance(w.attendance) }));
 }
 
 export async function getWedding(id: string) {
@@ -54,7 +60,8 @@ export async function getWedding(id: string) {
     .eq('id', id)
     .single();
   if (error) throw error;
-  return data as Wedding;
+  const w = data as Wedding;
+  return { ...w, attendance: normalizeAttendance(w.attendance) };
 }
 
 export async function createWedding(
