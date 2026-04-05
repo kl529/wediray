@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       colors: {
         // Y2K 다이어리 팔레트
-        pink: { 400: '#FF69B4', 500: '#FF1493' },
+        pink: { 400: '#FF1493' },
         lime: { 400: '#CCFF00', 500: '#AAEE00' },
         sky: { 400: '#00CFFF', 500: '#00AADD' },
       },
@@ -19,6 +19,8 @@ module.exports = {
         'fredoka-semibold': ['Fredoka_600SemiBold'],
         gaegu: ['Gaegu_400Regular'],              // 한국어 다이어리 감성 타이틀
         'gaegu-bold': ['Gaegu_700Bold'],
+        pretendard: ['PretendardVariable'],       // UI / 본문 — 모든 한국어 UI 텍스트
+
       },
       borderRadius: {
         // 시맨틱 radius 계층 — rounded-{token} 으로 사용

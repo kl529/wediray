@@ -1,10 +1,11 @@
 import '../global.css';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking } from 'react-native';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { supabase } from '../lib/supabase';
 import { useFonts, Gaegu_400Regular, Gaegu_700Bold } from '@expo-google-fonts/gaegu';
 import { Fredoka_400Regular, Fredoka_600SemiBold } from '@expo-google-fonts/fredoka';
+import PretendardVariable from '../assets/fonts/PretendardVariable.ttf';
 import * as SplashScreen from 'expo-splash-screen';
 import * as WebBrowser from 'expo-web-browser';
 
@@ -22,11 +23,14 @@ export default function RootLayout() {
     Fredoka_600SemiBold,
     Gaegu_400Regular,
     Gaegu_700Bold,
+    PretendardVariable,
   });
 
+  const [authReady, setAuthReady] = useState(false);
+
   useEffect(() => {
-    if (fontsLoaded) SplashScreen.hideAsync();
-  }, [fontsLoaded]);
+    if (fontsLoaded && authReady) SplashScreen.hideAsync();
+  }, [fontsLoaded, authReady]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -37,6 +41,8 @@ export default function RootLayout() {
       } else if (!session && !inAuthGroup) {
         router.replace('/(auth)/login');
       }
+
+      setAuthReady(true);
     });
 
     return () => subscription.unsubscribe();

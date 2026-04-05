@@ -5,40 +5,73 @@ import { useRouter } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getWeddings, formatDateKR, formatTimeKR, isUpcoming, type Wedding } from '../../lib/db';
-import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_BORDER, ATTENDANCE_PILL_BG, ATTENDANCE_PILL_TEXT } from '../../lib/constants';
+import { BRAND_PINK, ATTENDANCE_LABEL } from '../../lib/constants';
+
+const STRIP_COLOR: Record<string, string> = {
+  attending: '#CCFF00',
+  absent: '#FF1493',
+  pending: '#2A2A2A',
+};
 
 function WeddingCard({ wedding, onPress }: { wedding: Wedding; onPress: () => void }) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const wDate = new Date(wedding.date + 'T00:00:00');
   const daysUntil = Math.round((wDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-  const upcoming = daysUntil >= 0;
-  const showDDay = upcoming;
-  const dDayLabel = daysUntil === 0 ? 'D-Day' : `D-${daysUntil}`;
   const att = (ATTENDANCE_LABEL[wedding.attendance] ? wedding.attendance : 'pending') as typeof wedding.attendance;
 
   return (
     <TouchableOpacity
       onPress={onPress}
       accessibilityLabel={`${wedding.groom} ♥ ${wedding.bride}, ${formatDateKR(wedding.date)}, ${ATTENDANCE_LABEL[att]}`}
-      className={`bg-white/10 border rounded-2xl p-4 mb-3 active:opacity-70 ${ATTENDANCE_BORDER[att]}`}
+      className="bg-[#141414] border border-[#2A2A2A] rounded-2xl mb-3 overflow-hidden active:opacity-70"
     >
-      <View className="flex-row items-start justify-between">
-        <View className="flex-1 mr-3">
-          <Text className="text-white text-lg font-gaegu-bold">
-            {wedding.groom} ♥ {wedding.bride}
-          </Text>
-          <View className="flex-row items-center gap-2 mt-1 flex-wrap">
-            <Text className="text-white/80 text-sm">{formatDateKR(wedding.date)}</Text>
-            {wedding.time ? <Text className="text-white/80 text-sm">{formatTimeKR(wedding.time)}</Text> : null}
-            {showDDay && <Text className="text-pink-400 text-xs font-semibold">{dDayLabel}</Text>}
-          </View>
-          {wedding.venue ? <Text className="text-white/40 text-xs mt-0.5">{wedding.venue}</Text> : null}
+      {/* Left accent strip */}
+      <View
+        className="absolute left-0 top-0 bottom-0 w-[3px]"
+        style={{ backgroundColor: STRIP_COLOR[att] ?? '#2A2A2A' }}
+      />
+
+      <View className="p-4 pl-[18px]">
+        {/* Couple names */}
+        <Text className="text-white text-lg font-gaegu-bold mb-2">
+          {wedding.groom} <Text className="text-pink-400">♥</Text> {wedding.bride}
+        </Text>
+
+        {/* Date + time row */}
+        <View className="flex-row items-center gap-2 mb-1.5">
+          <Ionicons name="calendar-outline" size={12} color="#FF1493" />
+          <Text className="text-pink-400 text-xs font-semibold">{formatDateKR(wedding.date)}</Text>
+          {wedding.time ? (
+            <Text className="text-white/40 text-xs">{formatTimeKR(wedding.time)}</Text>
+          ) : null}
         </View>
-        <View className="items-end gap-2">
-          <View className={`px-2 py-0.5 rounded-full ${ATTENDANCE_PILL_BG[att]}`}>
-            <Text className={`text-xs font-bold ${ATTENDANCE_PILL_TEXT[att]}`}>{ATTENDANCE_LABEL[att]}</Text>
+
+        {/* Venue row */}
+        {wedding.venue ? (
+          <View className="flex-row items-center gap-2">
+            <Ionicons name="location-outline" size={12} color="rgba(255,255,255,0.3)" />
+            <Text className="text-[#7EB8FF] text-xs font-medium" numberOfLines={1}>
+              {wedding.venue}
+            </Text>
           </View>
+        ) : null}
+
+        {/* D-day / past row */}
+        <View className="border-t border-[#2A2A2A] mt-3 pt-2.5 flex-row items-center">
+          {daysUntil >= 0 ? (
+            <View
+              className="bg-pink-400 rounded-full px-3 py-1 flex-row items-center gap-1.5"
+              style={{ shadowColor: '#FF1493', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.4, shadowRadius: 6 } as any}
+            >
+              <Ionicons name="calendar" size={10} color="#fff" />
+              <Text className="text-white text-xs font-extrabold tracking-tight">
+                {daysUntil === 0 ? 'D-Day' : `D-${daysUntil}`}
+              </Text>
+            </View>
+          ) : (
+            <Text className="text-white/20 text-xs">{Math.abs(daysUntil)}일 전</Text>
+          )}
         </View>
       </View>
     </TouchableOpacity>
@@ -154,11 +187,10 @@ export default function HomeScreen() {
         accessibilityRole="button"
         accessibilityLabel="결혼식 추가"
         className="absolute right-6 bg-pink-400 w-14 h-14 rounded-full items-center justify-center"
-        style={{ bottom: insets.bottom + 16, boxShadow: `0 0 12px 4px rgba(244,114,182,0.5)`, elevation: 8 } as any}
+        style={{ bottom: insets.bottom + 16, shadowColor: '#FF1493', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.5, shadowRadius: 12, elevation: 8 } as any}
       >
         <Text className="text-black text-3xl font-bold">+</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
