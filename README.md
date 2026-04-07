@@ -6,11 +6,11 @@
 
 - **결혼식 관리** — 신랑/신부 이름, 날짜, 시간, 장소, 참석 여부 저장 (신랑/신부는 필수 입력)
 - **청첩장 자동 파싱** — 청첩장 링크 입력 시 정보 자동 추출 (Supabase Edge Function)
-- **청첩장 OCR 스캔** — 카메라/갤러리로 청첩장 사진 촬영 후 정보 자동 인식 (온디바이스 ML Kit)
+- **청첩장 OCR 스캔** — 카메라/갤러리로 청첩장 사진 촬영 후 정보 자동 인식 (온디바이스 ML Kit, 네이티브 앱 전용)
 - **기억 기록** — 메모, 축의금 금액
 - **D-Day 카운트다운** — 모든 예정 결혼식에 D-N 표시 (홈 목록 + 상세 화면)
 - **청첩장 링크 표시** — 등록된 청첩장 URL을 상세 화면에서 확인 가능
-- **캘린더 연동** — 결혼식 일정을 iOS/Android 기기 캘린더에 추가 (하루 전 알림 포함)
+- **캘린더 연동** — 결혼식 일정을 기기 캘린더에 추가 (하루 전 알림 포함). iOS/Android: 기기 캘린더 직접 등록. 웹(PWA): Web Share API로 `.ics` 공유 → iOS Safari는 캘린더 시트 직접 뜸
 - **탭 구분** — 예정(오늘 이후 날짜) / 지난 결혼식(이미 지난 날짜) 구분
 - **참석 여부 시각화** — 카드 border 색으로 구분: 참석(연두), 불참(빨강), 미정(기본)
 - **카카오 로그인** — Kakao OAuth2 소셜 로그인 (Supabase Auth + expo-web-browser)
@@ -27,6 +27,7 @@
 | 백엔드 | Supabase (Postgres + Auth + Storage + Edge Functions) |
 | OCR | @react-native-ml-kit/text-recognition (온디바이스) |
 | 빌드 | EAS Build (Expo Application Services) |
+| 웹 배포 | Vercel (PWA, 정적 배포) |
 
 ## 시작하기
 
@@ -36,7 +37,7 @@ cp .env.example .env   # EXPO_PUBLIC_SUPABASE_URL, EXPO_PUBLIC_SUPABASE_ANON_KEY
 npm install
 npm run ios            # iOS 시뮬레이터
 npm run android        # Android 에뮬레이터
-npm run web            # 브라우저 (개발/테스트용)
+npm run web            # 브라우저 (개발용, http://localhost:8081)
 ```
 
 ### 환경 변수
@@ -73,7 +74,9 @@ EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 3. 카카오 로그인 활성화, 동의항목: `profile_nickname`, `account_email`
 4. Redirect URI: `https://[supabase-project].supabase.co/auth/v1/callback`
 5. Supabase Dashboard → Auth → Providers → Kakao: REST API 키 입력
-6. Supabase → Auth → URL Configuration → Redirect URLs에 `wediary://callback` 추가
+6. Supabase → Auth → URL Configuration → Redirect URLs에 아래 추가:
+   - `wediary://callback` (네이티브 앱)
+   - `https://wediary-lyvas-projects.vercel.app/**` (웹 PWA)
 
 ## 프로젝트 구조
 
@@ -85,10 +88,13 @@ wediary/
 │   │   └── (app)/          # 홈, 새 결혼식, 상세, 설정
 │   └── lib/
 │       ├── db.ts           # Supabase 쿼리 함수
+│       ├── calendar.ts     # 기기 캘린더 연동 (네이티브)
+│       ├── calendar.web.ts # 캘린더 연동 웹 버전 (Web Share API + .ics)
 │       └── supabase.ts     # 클라이언트 초기화
-└── supabase/
-    └── functions/
-        └── parse-invitation/   # 청첩장 URL 파싱 Edge Function
+├── supabase/
+│   └── functions/
+│       └── parse-invitation/   # 청첩장 URL 파싱 Edge Function
+└── vercel.json             # Vercel 웹 배포 설정 (빌드 커맨드, SPA 라우팅)
 ```
 
 ## 개발 노트
@@ -98,3 +104,17 @@ wediary/
 - **OAuth deep link**: Expo Router의 `(auth)` 그룹은 URL에서 투명하게 처리됨. `callback.tsx`의 실제 딥링크는 `wediary://callback` (not `wediary://auth/callback`).
 - **OCR**: 네이티브 모듈(`@react-native-ml-kit/text-recognition`) 사용으로 `npx expo run:ios` 또는 EAS 빌드 필요. Expo Go 불가.
 - **EAS APK 빌드**: `cd app && eas build --platform android --profile preview`
+
+## 웹 배포 (PWA)
+
+**라이브 URL**: https://wediary-lyvas-projects.vercel.app
+
+```bash
+# 웹 빌드 + 배포
+cd app && npx expo export --platform web   # app/dist/ 생성
+vercel deploy dist --prod                  # Vercel 배포
+```
+
+**웹 미지원 기능**: OCR 스캔 (ML Kit 네이티브 전용), 기기 캘린더 직접 접근 (→ .ics 다운로드로 대체)
+
+**GitHub 연결**: Vercel 대시보드 → wediary 프로젝트 → Settings → Git → `kl529/wediray` 연결 시 `main` push마다 자동 배포.

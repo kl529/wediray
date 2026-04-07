@@ -1,8 +1,10 @@
 ## 프로젝트 개요
 
-결혼식 청첩장 관리 React Native 앱 (Expo 54). 모바일 우선, web은 개발 테스트용.
+결혼식 청첩장 관리 React Native 앱 (Expo 54). 모바일 우선, PWA 웹 배포 병행.
 
 **앱 실행:** `cd app && npm run ios` (또는 `npm run web`)
+**웹 배포:** `cd app && npx expo export --platform web && vercel deploy dist --prod`
+**라이브 URL:** https://wediary-lyvas-projects.vercel.app
 **주요 파일:** `app/app/(app)/` — 화면들, `app/lib/db.ts` — Supabase 쿼리
 **백엔드:** Supabase (Auth, Postgres, Storage, Edge Functions)
 **스타일:** NativeWind (Tailwind 클래스명 사용)
