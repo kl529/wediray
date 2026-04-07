@@ -18,7 +18,7 @@ export default function RootLayout() {
   const segmentsRef = useRef(segments);
   segmentsRef.current = segments;
 
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     Fredoka_400Regular,
     Fredoka_600SemiBold,
     Gaegu_400Regular,
@@ -29,11 +29,14 @@ export default function RootLayout() {
   const [authReady, setAuthReady] = useState(false);
 
   useEffect(() => {
-    if (fontsLoaded && authReady) SplashScreen.hideAsync();
+    if ((fontsLoaded || fontError) && authReady) SplashScreen.hideAsync();
   }, [fontsLoaded, authReady]);
 
   useEffect(() => {
+    const timeout = setTimeout(() => setAuthReady(true), 5000);
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      clearTimeout(timeout);
       const inAuthGroup = segmentsRef.current[0] === '(auth)';
 
       if (session && inAuthGroup) {
@@ -45,7 +48,10 @@ export default function RootLayout() {
       setAuthReady(true);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      clearTimeout(timeout);
+      subscription.unsubscribe();
+    };
   }, []);
 
   // Android: handle OAuth deep link callback
@@ -73,7 +79,7 @@ export default function RootLayout() {
     return () => sub.remove();
   }, []);
 
-  if (!fontsLoaded) return null;
+  if (!fontsLoaded && !fontError) return null;
 
   return (
     <Stack screenOptions={{ headerShown: false }}>

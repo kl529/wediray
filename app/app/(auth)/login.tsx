@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert, Platform } from 'react-native';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { supabase } from '../../lib/supabase';
@@ -11,6 +11,19 @@ export default function LoginScreen() {
 
   async function handleKakaoLogin() {
     setLoading(true);
+
+    if (Platform.OS === 'web') {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'kakao',
+        options: {
+          redirectTo: `${window.location.origin}/callback`,
+          scopes: 'profile_nickname account_email',
+        },
+      });
+      if (error) { Alert.alert('로그인 실패', error.message); setLoading(false); }
+      return;
+    }
+
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options: {
