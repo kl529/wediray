@@ -42,7 +42,10 @@
       ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "themeColor": "#FF1493",
+      "backgroundColor": "#000000",
+      "output": "static"
     },
     "plugins": [
       "expo-router",

@@ -14,7 +14,6 @@ import {
 } from '../../lib/db';
 import { BRAND_PINK } from '../../lib/constants';
 import { supabase } from '../../lib/supabase';
-import { pickAndOcr, parseOcrText } from '../../lib/ocr';
 import { addWeddingToCalendar } from '../../lib/calendar';
 import { toast } from '../../lib/toast';
 
@@ -51,7 +50,6 @@ export default function NewEventScreen() {
   const [attendance, setAttendance] = useState<Attendance>('pending');
   const [inviteUrl, setInviteUrl] = useState('');
   const [parsing, setParsing] = useState(false);
-  const [scanning, setScanning] = useState<'camera' | 'gallery' | null>(null);
   const [formError, setFormError] = useState('');
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [showCalendarModal, setShowCalendarModal] = useState(false);
@@ -152,25 +150,6 @@ export default function NewEventScreen() {
     }
   }
 
-  async function handleScan(source: 'camera' | 'gallery') {
-    setScanning(source);
-    try {
-      const text = await pickAndOcr(source);
-      if (!text) return;
-      const parsed = parseOcrText(text);
-      if (parsed.groom && !groom.trim()) setGroom(parsed.groom);
-      if (parsed.bride && !bride.trim()) setBride(parsed.bride);
-      if (parsed.date) setDateObj(new Date(parsed.date + 'T00:00:00'));
-      if (parsed.venue && !venue.trim()) setVenue(parsed.venue);
-      if (!parsed.groom && !parsed.bride && !parsed.date && !parsed.venue) {
-        Alert.alert('인식 실패', '청첩장 텍스트를 찾지 못했습니다. 직접 입력해주세요.');
-      }
-    } catch {
-      Alert.alert('스캔 실패', '직접 입력해주세요.');
-    } finally {
-      setScanning(null);
-    }
-  }
 
   async function handleParse() {
     const url = inviteUrl.trim();
@@ -257,9 +236,9 @@ export default function NewEventScreen() {
           </View>
         ) : null}
 
-        {/* ── 섹션 1: 청첩장 URL / 이미지 ── */}
-        <SectionCard label="청첩장 URL / 이미지">
-          <View className="flex-row gap-2 mb-2">
+        {/* ── 섹션 1: 청첩장 URL ── */}
+        <SectionCard label="청첩장 URL">
+          <View className="flex-row gap-2">
             <TextInput
               value={inviteUrl}
               onChangeText={setInviteUrl}
@@ -281,38 +260,6 @@ export default function NewEventScreen() {
                 : <Text className={`font-bold text-sm ${parsing || !inviteUrl.trim() ? 'text-white/20' : 'text-pink-400'}`}>불러오기</Text>}
             </TouchableOpacity>
           </View>
-          {Platform.OS !== 'web' && (
-            <View className="flex-row gap-2">
-              <TouchableOpacity
-                onPress={() => handleScan('camera')}
-                disabled={scanning !== null}
-                accessibilityRole="button"
-                accessibilityLabel="카메라로 촬영"
-                className="flex-1 items-center justify-center bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl py-3 flex-row gap-2"
-              >
-                {scanning === 'camera'
-                  ? <ActivityIndicator color={BRAND_PINK} size="small" />
-                  : <>
-                      <Ionicons name="camera-outline" size={16} color="rgba(255,255,255,0.4)" />
-                      <Text className="text-white/50 text-sm">카메라</Text>
-                    </>}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => handleScan('gallery')}
-                disabled={scanning !== null}
-                accessibilityRole="button"
-                accessibilityLabel="갤러리에서 선택"
-                className="flex-1 items-center justify-center bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl py-3 flex-row gap-2"
-              >
-                {scanning === 'gallery'
-                  ? <ActivityIndicator color={BRAND_PINK} size="small" />
-                  : <>
-                      <Ionicons name="image-outline" size={16} color="rgba(255,255,255,0.4)" />
-                      <Text className="text-white/50 text-sm">갤러리</Text>
-                    </>}
-              </TouchableOpacity>
-            </View>
-          )}
         </SectionCard>
 
         {/* ── 섹션 2: 기본 정보 ── */}
