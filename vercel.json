@@ -2,5 +2,10 @@
   "buildCommand": "cd app && npx expo export --platform web",
   "outputDirectory": "app/dist",
   "installCommand": "cd app && npm install",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/((?!assets|_expo|favicon\\.ico|manifest\\.json|service-worker\\.js).*)",
+      "destination": "/index.html"
+    }
+  ]
 }

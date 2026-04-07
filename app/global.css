@@ -4,7 +4,11 @@
 
 /* Web: set body background to match app background */
 @media screen {
-  html, body {
+  html, body, #root, #root > div {
     background-color: #000;
+  }
+  /* Override react-native-web AppContainer inline light-gray background */
+  div[style*="background-color: rgb(242, 242, 242)"] {
+    background-color: #000 !important;
   }
 }
