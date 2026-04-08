@@ -36,6 +36,15 @@
   src: url(https://fonts.gstatic.com/s/gaegu/v23/TuGSUVB6Up9NU573jvw7.ttf) format('truetype');
 }
 
+/* Web: Ionicons — also broken under /assets/node_modules path on Vercel */
+@font-face {
+  font-family: 'Ionicons';
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+  src: url(https://cdn.jsdelivr.net/npm/@expo/vector-icons@15.1.1/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf) format('truetype');
+}
+
 /* Web: set body background to match app background */
 @media screen {
   html, body, #root, #root > div {
