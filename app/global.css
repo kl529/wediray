@@ -2,6 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Web: load Fredoka & Gaegu from Google CDN */
+/* expo-google-fonts TTF paths under /assets/node_modules/ are not served by Vercel */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Gaegu:wght@400;700&display=swap');
+
+/* Expose fonts under the exact names useFonts/tailwind reference on web */
+@font-face {
+  font-family: 'Fredoka_400Regular';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/fredoka/v17/X7nP4b87HvSqjb_WIi2yDCRwoQ_k7367_B-i2yQag0-mac3O8SLMFg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Fredoka_600SemiBold';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/fredoka/v17/X7nP4b87HvSqjb_WIi2yDCRwoQ_k7367_B-i2yQag0-mac3OLyXMFg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Gaegu_400Regular';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/gaegu/v23/TuGfUVB6Up9NU6ZL.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Gaegu_700Bold';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/gaegu/v23/TuGSUVB6Up9NU573jvw7.ttf) format('truetype');
+}
+
 /* Web: set body background to match app background */
 @media screen {
   html, body, #root, #root > div {

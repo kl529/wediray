@@ -1,6 +1,6 @@
 import '../global.css';
 import { useEffect, useRef, useState } from 'react';
-import { Alert, Linking } from 'react-native';
+import { Alert, Linking, Platform } from 'react-native';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { supabase } from '../lib/supabase';
 import { useFonts, Gaegu_400Regular, Gaegu_700Bold } from '@expo-google-fonts/gaegu';
@@ -18,13 +18,13 @@ export default function RootLayout() {
   const segmentsRef = useRef(segments);
   segmentsRef.current = segments;
 
-  const [fontsLoaded, fontError] = useFonts({
-    Fredoka_400Regular,
-    Fredoka_600SemiBold,
-    Gaegu_400Regular,
-    Gaegu_700Bold,
-    PretendardVariable,
-  });
+  // On web, Fredoka/Gaegu are loaded via CSS in global.css (Vercel doesn't serve
+  // files from /assets/node_modules/@expo-google-fonts paths)
+  const [fontsLoaded, fontError] = useFonts(
+    Platform.OS === 'web'
+      ? { PretendardVariable }
+      : { Fredoka_400Regular, Fredoka_600SemiBold, Gaegu_400Regular, Gaegu_700Bold, PretendardVariable }
+  );
 
   const [authReady, setAuthReady] = useState(false);
 
