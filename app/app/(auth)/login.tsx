@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, ActivityIndicator, Alert, Platform } from 'react-native';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
+import Head from 'expo-router/head';
 import { supabase } from '../../lib/supabase';
 import { KAKAO_YELLOW } from '../../lib/constants';
 import * as WebBrowser from 'expo-web-browser';
@@ -40,6 +41,11 @@ export default function LoginScreen() {
   }
 
   return (
+    <>
+    <Head>
+      <title>wediary — 결혼식 다이어리</title>
+      <meta name="robots" content="index, follow" />
+    </Head>
     <View className="flex-1 bg-black items-center justify-center gap-8">
       <View className="items-center gap-2">
         <Text className="text-pink-400 text-5xl font-fredoka-semibold tracking-widest">wediary</Text>
@@ -70,5 +76,6 @@ export default function LoginScreen() {
         </TouchableOpacity>
       )}
     </View>
+    </>
   );
 }

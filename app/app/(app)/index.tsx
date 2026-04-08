@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import Head from 'expo-router/head';
 import { useQuery } from '@tanstack/react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getWeddings, formatDateKR, formatTimeKR, isUpcoming, type Wedding } from '../../lib/db';
@@ -113,6 +114,11 @@ export default function HomeScreen() {
   const list = tab === 'upcoming' ? upcoming : done;
 
   return (
+    <>
+    <Head>
+      <title>wediary — 결혼식 다이어리</title>
+      <meta name="robots" content="noindex, nofollow" />
+    </Head>
     <View className="flex-1 bg-black">
       {/* Header */}
       <View className="flex-row items-center justify-between px-6 pt-16 pb-4">
@@ -192,5 +198,6 @@ export default function HomeScreen() {
         <Text className="text-black text-3xl font-bold">+</Text>
       </TouchableOpacity>
     </View>
+    </>
   );
 }

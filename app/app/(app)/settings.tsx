@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import Head from 'expo-router/head';
 import Constants from 'expo-constants';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { ConfirmModal } from '../../components/ConfirmModal';
@@ -26,6 +27,11 @@ export default function SettingsScreen() {
   }, []);
 
   return (
+    <>
+    <Head>
+      <title>설정 — wediary</title>
+      <meta name="robots" content="noindex, nofollow" />
+    </Head>
     <View className="flex-1 bg-black">
       <ScreenHeader
         left={
@@ -93,5 +99,6 @@ export default function SettingsScreen() {
         destructive
       />
     </View>
+    </>
   );
 }

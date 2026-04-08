@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import Head from 'expo-router/head';
 import * as Clipboard from 'expo-clipboard';
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView,
@@ -126,6 +127,11 @@ export default function EventDetailScreen() {
   const daysUntil = Math.round((wDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 
   return (
+    <>
+    <Head>
+      <title>{wedding.groom} ♥ {wedding.bride} — wediary</title>
+      <meta name="robots" content="noindex, nofollow" />
+    </Head>
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       className="flex-1 bg-black"
@@ -349,5 +355,6 @@ export default function EventDetailScreen() {
         destructive
       />
     </KeyboardAvoidingView>
+    </>
   );
 }

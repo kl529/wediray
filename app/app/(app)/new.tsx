@@ -8,6 +8,7 @@ import { ScreenHeader } from '../../components/ScreenHeader';
 import { ConfirmModal } from '../../components/ConfirmModal';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter, useLocalSearchParams, useNavigation } from 'expo-router';
+import Head from 'expo-router/head';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createWedding, updateWedding, getWedding, formatDateKR, formatTimeKR, type Attendance,
@@ -193,6 +194,11 @@ export default function NewEventScreen() {
   }
 
   return (
+    <>
+    <Head>
+      <title>{isEdit ? '결혼식 수정' : '새 결혼식'} — wediary</title>
+      <meta name="robots" content="noindex, nofollow" />
+    </Head>
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       className="flex-1 bg-black"
@@ -328,7 +334,35 @@ export default function NewEventScreen() {
             </View>
             <View className="flex-1">
               <Text className="text-white/40 text-xs mb-1.5">시간</Text>
-              {Platform.OS === 'ios' ? (
+              {Platform.OS === 'web' ? (
+                <View className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-4 py-3 flex-row items-center">
+                  {showTime ? (
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                      {/* @ts-ignore */}
+                      <input
+                        type="time"
+                        value={timeObjToString(timeObj)}
+                        onChange={(e: any) => {
+                          if (e.target.value) {
+                            const [h, m] = e.target.value.split(':').map(Number);
+                            const d = new Date(timeObj);
+                            d.setHours(h, m, 0, 0);
+                            setTimeObj(d);
+                          }
+                        }}
+                        style={{ background: 'transparent', border: 'none', color: 'white', fontSize: 14, outline: 'none' }}
+                      />
+                      <TouchableOpacity onPress={() => setShowTime(false)} className="p-1">
+                        <Ionicons name="close-circle-outline" size={18} color="rgba(255,255,255,0.3)" />
+                      </TouchableOpacity>
+                    </View>
+                  ) : (
+                    <TouchableOpacity onPress={() => setShowTime(true)}>
+                      <Text className="text-white/30 text-sm">없음</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              ) : Platform.OS === 'ios' ? (
                 showTime ? (
                   <View className="flex-row items-center gap-1">
                     <DateTimePicker
@@ -470,5 +504,6 @@ export default function NewEventScreen() {
         }}
       />
     </KeyboardAvoidingView>
+    </>
   );
 }

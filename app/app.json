@@ -45,7 +45,10 @@
       "favicon": "./assets/favicon.png",
       "themeColor": "#FF1493",
       "backgroundColor": "#000000",
-      "output": "static"
+      "output": "static",
+      "name": "wediary",
+      "shortName": "wediary",
+      "description": "결혼식 청첩장을 관리하고, 축의금과 기억을 기록하는 나만의 웨딩 다이어리"
     },
     "plugins": [
       "expo-router",

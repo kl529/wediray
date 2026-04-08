@@ -1,6 +1,7 @@
 import '../global.css';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking, Platform } from 'react-native';
+import Head from 'expo-router/head';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { supabase } from '../lib/supabase';
 import { useFonts, Gaegu_400Regular, Gaegu_700Bold } from '@expo-google-fonts/gaegu';
@@ -82,9 +83,31 @@ export default function RootLayout() {
   if (!fontsLoaded && !fontError) return null;
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(auth)" />
-      <Stack.Screen name="(app)" />
-    </Stack>
+    <>
+      <Head>
+        <title>wediary — 결혼식 다이어리</title>
+        <meta name="description" content="결혼식 청첩장을 관리하고, 축의금과 기억을 기록하는 나만의 웨딩 다이어리" />
+        <meta property="og:title" content="wediary — 결혼식 다이어리" />
+        <meta property="og:description" content="결혼식 청첩장을 관리하고, 축의금과 기억을 기록하는 나만의 웨딩 다이어리" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="wediary" />
+        <meta property="og:url" content="https://wediary-lyvas-projects.vercel.app" />
+        <meta property="og:image" content="https://wediary-lyvas-projects.vercel.app/favicon.png" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="wediary — 결혼식 다이어리" />
+        <meta name="twitter:description" content="결혼식 청첩장을 관리하고, 축의금과 기억을 기록하는 나만의 웨딩 다이어리" />
+        <meta name="twitter:image" content="https://wediary-lyvas-projects.vercel.app/favicon.png" />
+        <meta name="theme-color" content="#FF1493" />
+        <meta name="color-scheme" content="dark" />
+        <meta name="application-name" content="wediary" />
+        <meta name="apple-mobile-web-app-title" content="wediary" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      </Head>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(app)" />
+      </Stack>
+    </>
   );
 }
