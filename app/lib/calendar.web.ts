@@ -10,15 +10,21 @@ export async function addWeddingToCalendar(params: {
   let dtStart: string;
   let dtEnd: string;
 
+  const pad = (n: number) => String(n).padStart(2, '0');
   if (params.time) {
     const [h, min] = params.time.split(':').map(Number);
-    const pad = (n: number) => String(n).padStart(2, '0');
-    dtStart = `${y}${pad(m)}${pad(d)}T${pad(h)}${pad(min)}00`;
-    dtEnd   = `${y}${pad(m)}${pad(d)}T${pad(h + 2)}${pad(min)}00`;
+    // Use Date for end time to handle midnight overflow (e.g. 22:00 + 2h = next day 00:00)
+    const start = new Date(y, m - 1, d, h, min, 0);
+    const end   = new Date(y, m - 1, d, h + 2, min, 0);
+    const fmt = (dt: Date) =>
+      `${dt.getFullYear()}${pad(dt.getMonth() + 1)}${pad(dt.getDate())}T${pad(dt.getHours())}${pad(dt.getMinutes())}00`;
+    dtStart = fmt(start);
+    dtEnd   = fmt(end);
   } else {
-    const pad = (n: number) => String(n).padStart(2, '0');
     dtStart = `${y}${pad(m)}${pad(d)}`;
-    dtEnd   = `${y}${pad(m)}${pad(d)}`;
+    // RFC 5545: all-day DTEND is exclusive — must be the day after
+    const next = new Date(y, m - 1, d + 1);
+    dtEnd = `${next.getFullYear()}${pad(next.getMonth() + 1)}${pad(next.getDate())}`;
   }
 
   const allDay = !params.time;
