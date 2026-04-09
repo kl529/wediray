@@ -6,6 +6,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { ConfirmModal } from '../../components/ConfirmModal';
+import { ParseFailModal } from '../../components/ParseFailModal';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter, useLocalSearchParams, useNavigation } from 'expo-router';
 import Head from 'expo-router/head';
@@ -51,6 +52,7 @@ export default function NewEventScreen() {
   const [attendance, setAttendance] = useState<Attendance>('pending');
   const [inviteUrl, setInviteUrl] = useState('');
   const [parsing, setParsing] = useState(false);
+  const [parseFailType, setParseFailType] = useState<'not_found' | 'network_error' | null>(null);
   const [formError, setFormError] = useState('');
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [showCalendarModal, setShowCalendarModal] = useState(false);
@@ -165,15 +167,22 @@ export default function NewEventScreen() {
         body: { url },
       });
       if (error) throw error;
-      if (data.groom && !groom.trim()) setGroom(data.groom);
-      if (data.bride && !bride.trim()) setBride(data.bride);
+      if (data.groom) setGroom(data.groom);
+      if (data.bride) setBride(data.bride);
       if (data.date) setDateObj(new Date(data.date + 'T00:00:00'));
-      if (data.venue && !venue.trim()) setVenue(data.venue);
+      if (data.time) {
+        const [h, m] = data.time.split(':').map(Number);
+        const t = new Date();
+        t.setHours(h, m, 0, 0);
+        setTimeObj(t);
+        setShowTime(true);
+      }
+      if (data.venue) setVenue(data.venue);
       if (!data.groom && !data.bride && !data.date && !data.venue) {
-        Alert.alert('파싱 실패', '정보를 찾지 못했습니다. 직접 입력해주세요.');
+        setParseFailType('not_found');
       }
     } catch {
-      Alert.alert('파싱 실패', '직접 입력해주세요.');
+      setParseFailType('network_error');
     } finally {
       setParsing(false);
     }
@@ -266,6 +275,9 @@ export default function NewEventScreen() {
                 : <Text className={`font-bold text-sm ${parsing || !inviteUrl.trim() ? 'text-white/20' : 'text-pink-400'}`}>불러오기</Text>}
             </TouchableOpacity>
           </View>
+          {parsing && (
+            <Text className="text-white/30 text-xs mt-2">청첩장 정보를 가져오는 중...</Text>
+          )}
         </SectionCard>
 
         {/* ── 섹션 2: 기본 정보 ── */}
@@ -317,7 +329,8 @@ export default function NewEventScreen() {
                 <>
                   <TouchableOpacity
                     onPress={() => setShowDatePicker(true)}
-                    className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-4 py-3"
+                    className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-4 flex-row items-center"
+                    style={{ height: 46 }}
                   >
                     <Text className="text-white text-sm">{formatDateKR(dateObjToString(dateObj))}</Text>
                   </TouchableOpacity>
@@ -335,7 +348,7 @@ export default function NewEventScreen() {
             <View className="flex-1">
               <Text className="text-white/40 text-xs mb-1.5">시간</Text>
               {Platform.OS === 'web' ? (
-                <View className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-4 py-3 flex-row items-center">
+                <View className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-4 flex-row items-center" style={{ height: 46 }}>
                   {showTime ? (
                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
                       {/* @ts-ignore */}
@@ -458,6 +471,13 @@ export default function NewEventScreen() {
           </View>
         </SectionCard>
       </ScrollView>
+
+      <ParseFailModal
+        visible={parseFailType !== null}
+        type={parseFailType ?? 'not_found'}
+        onDismiss={() => setParseFailType(null)}
+        onRetry={parseFailType === 'network_error' ? () => { setParseFailType(null); handleParse(); } : undefined}
+      />
 
       <ConfirmModal
         visible={showCancelConfirm}
