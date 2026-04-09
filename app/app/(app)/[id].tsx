@@ -14,6 +14,7 @@ import {
   getWedding, getMemory, upsertMemory,
   deleteWedding, updateWedding, formatDateKR, formatTimeKR, isUpcoming, type Attendance,
 } from '../../lib/db';
+import { addWeddingToCalendar } from '../../lib/calendar';
 import { BRAND_PINK, ATTENDANCE_LABEL, ATTENDANCE_PILL_ACTIVE, ATTENDANCE_PILL_ACTIVE_TEXT } from '../../lib/constants';
 import { toast } from '../../lib/toast';
 
@@ -87,6 +88,21 @@ export default function EventDetailScreen() {
     saveMemory.mutate();
   }
 
+  async function handleAddToCalendar() {
+    try {
+      await addWeddingToCalendar({
+        groom: wedding!.groom,
+        bride: wedding!.bride,
+        date: wedding!.date,
+        venue: wedding!.venue,
+        time: wedding!.time ?? undefined,
+      });
+      toast.show('캘린더에 추가됐어요');
+    } catch (e: any) {
+      Alert.alert('캘린더 추가 실패', e.message);
+    }
+  }
+
   async function confirmDeleteWedding() {
     setShowDeleteConfirm(false);
     try {
@@ -154,6 +170,15 @@ export default function EventDetailScreen() {
         }
         right={
           <View className="flex-row gap-5 items-center">
+            {Platform.OS !== 'web' && isUpcoming(wedding.date) && (
+              <TouchableOpacity
+                onPress={handleAddToCalendar}
+                accessibilityRole="button"
+                accessibilityLabel="캘린더에 추가"
+              >
+                <Ionicons name="calendar-outline" size={22} color="#FF69B4" />
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
               onPress={() => router.push(`/(app)/new?id=${id}`)}
               accessibilityRole="button"

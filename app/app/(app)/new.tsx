@@ -316,7 +316,19 @@ export default function NewEventScreen() {
           <View className="flex-row gap-2 mb-3">
             <View className="flex-1">
               <Text className="text-white/40 text-xs mb-1.5">날짜</Text>
-              {Platform.OS === 'ios' ? (
+              {Platform.OS === 'web' ? (
+                <View className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-4 flex-row items-center" style={{ height: 46 }}>
+                  {/* @ts-ignore */}
+                  <input
+                    type="date"
+                    value={dateObjToString(dateObj)}
+                    onChange={(e: any) => {
+                      if (e.target.value) setDateObj(new Date(e.target.value + 'T00:00:00'));
+                    }}
+                    style={{ background: 'transparent', border: 'none', color: 'white', fontSize: 14, outline: 'none', width: '100%' }}
+                  />
+                </View>
+              ) : Platform.OS === 'ios' ? (
                 <DateTimePicker
                   value={dateObj}
                   mode="date"
