@@ -170,7 +170,7 @@ export default function EventDetailScreen() {
         }
         right={
           <View className="flex-row gap-5 items-center">
-            {Platform.OS !== 'web' && isUpcoming(wedding.date) && (
+            {isUpcoming(wedding.date) && (
               <TouchableOpacity
                 onPress={handleAddToCalendar}
                 accessibilityRole="button"
