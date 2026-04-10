@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import Head from 'expo-router/head';
@@ -121,7 +121,7 @@ export default function HomeScreen() {
     </Head>
     <View className="flex-1 bg-black">
       {/* Header */}
-      <View className="flex-row items-center justify-between px-6 pt-16 pb-4">
+      <View className="flex-row items-center justify-between px-6 pb-4" style={{ paddingTop: insets.top + (Platform.OS === 'web' ? 12 : 4) }}>
         <Text className="text-pink-400 text-2xl font-fredoka-semibold tracking-widest">wediary</Text>
         <TouchableOpacity
           onPress={() => router.push('/(app)/settings')}
