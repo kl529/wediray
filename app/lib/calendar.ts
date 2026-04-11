@@ -1,4 +1,3 @@
-import * as Calendar from 'expo-calendar';
 import { Platform } from 'react-native';
 
 function downloadIcs(params: {
@@ -49,7 +48,9 @@ function downloadIcs(params: {
   const a = document.createElement('a');
   a.href = url;
   a.download = `${groom}_${bride}_결혼식.ics`;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
 
@@ -65,6 +66,7 @@ export async function addWeddingToCalendar(params: {
     return;
   }
 
+  const Calendar = await import('expo-calendar');
   const { status } = await Calendar.requestCalendarPermissionsAsync();
   if (status !== 'granted') throw new Error('캘린더 접근 권한이 필요합니다.');
 
