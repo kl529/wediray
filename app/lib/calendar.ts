@@ -1,6 +1,58 @@
 import * as Calendar from 'expo-calendar';
 import { Platform } from 'react-native';
 
+function downloadIcs(params: {
+  groom: string;
+  bride: string;
+  date: string;
+  venue: string;
+  time?: string | null;
+}): void {
+  const { groom, bride, date, venue, time } = params;
+  const [y, m, d] = date.split('-').map(Number);
+
+  let dtStart: string;
+  let dtEnd: string;
+
+  if (time) {
+    const [h, min] = time.split(':').map(Number);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    dtStart = `${y}${pad(m)}${pad(d)}T${pad(h)}${pad(min)}00`;
+    const endH = h + 2;
+    dtEnd = `${y}${pad(m)}${pad(d)}T${pad(endH)}${pad(min)}00`;
+  } else {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    dtStart = `${y}${pad(m)}${pad(d)}`;
+    dtEnd = `${y}${pad(m)}${pad(d)}`;
+  }
+
+  const allDay = !time;
+  const ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'BEGIN:VEVENT',
+    `SUMMARY:${groom} ♥ ${bride} 결혼식`,
+    allDay ? `DTSTART;VALUE=DATE:${dtStart}` : `DTSTART:${dtStart}`,
+    allDay ? `DTEND;VALUE=DATE:${dtEnd}` : `DTEND:${dtEnd}`,
+    `LOCATION:${venue}`,
+    'BEGIN:VALARM',
+    'TRIGGER:-P1D',
+    'ACTION:DISPLAY',
+    'DESCRIPTION:Reminder',
+    'END:VALARM',
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n');
+
+  const blob = new Blob([ics], { type: 'text/calendar' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${groom}_${bride}_결혼식.ics`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 export async function addWeddingToCalendar(params: {
   groom: string;
   bride: string;
@@ -8,6 +60,11 @@ export async function addWeddingToCalendar(params: {
   venue: string;
   time?: string | null;  // HH:MM
 }): Promise<void> {
+  if (Platform.OS === 'web') {
+    downloadIcs(params);
+    return;
+  }
+
   const { status } = await Calendar.requestCalendarPermissionsAsync();
   if (status !== 'granted') throw new Error('캘린더 접근 권한이 필요합니다.');
 
